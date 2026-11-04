@@ -50,8 +50,8 @@ export function OrdinancesArchive({ measures }: OrdinancesArchiveProps) {
     <div className="space-y-6">
       {/* Sticky Filter Controls */}
       <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
-        <div className="grid gap-3 md:grid-cols-3">
-          <div className="relative md:col-span-2">
+        <div className="grid gap-3 md:grid-cols-3 items-center">
+          <div className="relative h-10 md:col-span-2">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
               <Search className="size-4 text-muted-foreground" />
             </div>

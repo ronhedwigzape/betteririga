@@ -870,6 +870,20 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "global-civic-search.tsx must center the search icon using inset-y-0 flex items-center"
     )
 
+    const projectsExplorerContent = fs.readFileSync("components/civic/projects-explorer.tsx", "utf8")
+    assert.ok(
+      projectsExplorerContent.includes("relative h-10 lg:col-span-6"),
+      "projects-explorer.tsx must constrain search container to h-10 to prevent grid-stretch misalignment"
+    )
+    assert.ok(
+      projectsExplorerContent.includes("inset-y-0 left-0 flex items-center pl-3.5"),
+      "projects-explorer.tsx must center search icon vertically in inset-y-0 with pl-3.5"
+    )
+    assert.ok(
+      projectsExplorerContent.includes("grid gap-3 lg:grid-cols-12 items-center"),
+      "projects-explorer.tsx must align search input and filter buttons with items-center"
+    )
+
     // 3. Button and Badge variants have explicit text-foreground
     const buttonContent = fs.readFileSync("components/ui/button.tsx", "utf8")
     assert.ok(

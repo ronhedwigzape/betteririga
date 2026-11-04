@@ -15,6 +15,7 @@ import {
   RotateCcw,
   Layers,
   ShieldCheck,
+  X,
 } from "lucide-react"
 import { formatPeso, type ProjectRecord, type BetterGovRecord } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -368,10 +369,10 @@ export function ProjectsExplorer({
         </div>
 
         {/* Search, Status, and Sort Controls with shadcn Input and Select */}
-        <div className="grid gap-3 lg:grid-cols-12">
+        <div className="grid gap-3 lg:grid-cols-12 items-center">
           {/* Search Input */}
-          <div className="relative lg:col-span-6">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <div className="relative h-10 lg:col-span-6">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 z-10">
               <Search className="size-4 text-muted-foreground" />
             </div>
             <Input
@@ -380,8 +381,20 @@ export function ProjectsExplorer({
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by barangay (e.g. San Roque, Sagrada), road, contractor, or GAA..."
               aria-label="Search infrastructure projects and social programs"
-              className="h-10 w-full rounded-xl pl-9 pr-4 text-sm"
+              className="h-10 w-full rounded-xl pl-10 pr-10 text-sm border-input bg-background focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
             />
+            {query ? (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 z-10">
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search query"
+                  className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+            ) : null}
           </div>
 
           {/* Status Filter Buttons */}
