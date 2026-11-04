@@ -1,0 +1,292 @@
+{
+  "meta": {
+    "retrievedAt": "2026-11-04",
+    "docsUrl": "https://budget.bettergov.ph/docs",
+    "apiUrl": "https://budget.bettergov.ph/api/v1",
+    "mcpUrl": "https://budget.bettergov.ph/mcp",
+    "openapiUrl": "https://budget.bettergov.ph/api/v1/openapi.json"
+  },
+  "gaaNationalTotals": [
+    {
+      "year": 2020,
+      "amountPhp": 4099988785000,
+      "lineItems": 593491,
+      "displayTotal": "₱4.10 Trillion",
+      "status": "Enacted by Congress (R.A. 11465)"
+    },
+    {
+      "year": 2021,
+      "amountPhp": 4506000000000,
+      "lineItems": 498342,
+      "displayTotal": "₱4.51 Trillion",
+      "status": "Enacted by Congress (R.A. 11518)"
+    },
+    {
+      "year": 2022,
+      "amountPhp": 5023600000000,
+      "lineItems": 628666,
+      "displayTotal": "₱5.02 Trillion",
+      "status": "Enacted by Congress (R.A. 11639)"
+    },
+    {
+      "year": 2023,
+      "amountPhp": 5268000000000,
+      "lineItems": 650367,
+      "displayTotal": "₱5.27 Trillion",
+      "status": "Enacted by Congress (R.A. 11936)"
+    },
+    {
+      "year": 2024,
+      "amountPhp": 5767600000000,
+      "lineItems": 682812,
+      "displayTotal": "₱5.77 Trillion",
+      "status": "Enacted by Congress (R.A. 11975)"
+    },
+    {
+      "year": 2025,
+      "amountPhp": 6326324300000,
+      "lineItems": 723103,
+      "displayTotal": "₱6.33 Trillion",
+      "status": "Enacted by Congress (R.A. 12068)"
+    },
+    {
+      "year": 2026,
+      "amountPhp": 6793162000000,
+      "lineItems": 761604,
+      "displayTotal": "₱6.79 Trillion",
+      "status": "Enacted by Congress (General Appropriations Act)"
+    }
+  ],
+  "nep2027National": {
+    "fiscalYear": 2027,
+    "proposedAmountPhp": 7200186000000,
+    "baseAmountPhp": 6793162000000,
+    "deltaPhp": 407024000000,
+    "pctChange": 5.99,
+    "lineItems": 532313,
+    "topDepartments": [
+      {
+        "id": "AUTO",
+        "name": "Automatic Appropriations (AUTO)",
+        "amountPhp": 2581483002000,
+        "baseAmountPhp": 2277692070000,
+        "deltaPhp": 303790932000,
+        "pctChange": 13.34
+      },
+      {
+        "id": "07",
+        "name": "Department of Education (DepEd)",
+        "amountPhp": 975962852000,
+        "baseAmountPhp": 1015309677000,
+        "deltaPhp": -39346825000,
+        "pctChange": -3.88
+      },
+      {
+        "id": "18",
+        "name": "Department of Public Works and Highways (DPWH)",
+        "amountPhp": 643953276000,
+        "baseAmountPhp": 530898861000,
+        "deltaPhp": 113054415000,
+        "pctChange": 21.29
+      },
+      {
+        "id": "SPF",
+        "name": "Special Purpose Funds (SPF)",
+        "amountPhp": 447873520000,
+        "baseAmountPhp": 437010706000,
+        "deltaPhp": 10862814000,
+        "pctChange": 2.49
+      },
+      {
+        "id": "14",
+        "name": "Department of the Interior and Local Government (DILG)",
+        "amountPhp": 332507655000,
+        "baseAmountPhp": 310472131000,
+        "deltaPhp": 22035524000,
+        "pctChange": 7.10
+      },
+      {
+        "id": "17",
+        "name": "Department of National Defense (DND)",
+        "amountPhp": 328783253000,
+        "baseAmountPhp": 309996299000,
+        "deltaPhp": 18786954000,
+        "pctChange": 6.06
+      },
+      {
+        "id": "38",
+        "name": "Department of Transportation (DOTr)",
+        "amountPhp": 300960436000,
+        "baseAmountPhp": 137846388000,
+        "deltaPhp": 163114048000,
+        "pctChange": 118.33
+      },
+      {
+        "id": "13",
+        "name": "Department of Health (DOH)",
+        "amountPhp": 270983741000,
+        "baseAmountPhp": 304586458000,
+        "deltaPhp": -33602717000,
+        "pctChange": -11.03
+      },
+      {
+        "id": "20",
+        "name": "Department of Social Welfare and Development (DSWD)",
+        "amountPhp": 241560136000,
+        "baseAmountPhp": 270189401000,
+        "deltaPhp": -28629265000,
+        "pctChange": -10.60
+      },
+      {
+        "id": "05",
+        "name": "Department of Agriculture (DA)",
+        "amountPhp": 172165114000,
+        "baseAmountPhp": 186513434000,
+        "deltaPhp": -14348320000,
+        "pctChange": -7.69
+      }
+    ]
+  },
+  "budgetCycleStages": [
+    {
+      "stage": "nep",
+      "order": 1,
+      "title": "Stage 1: NEP Proposal (Executive Branch)",
+      "badge": "August Submission",
+      "summary": "The President submits the National Expenditure Program (NEP) to the House of Representatives within 30 days of Congress opening.",
+      "details": "Prepared by the Department of Budget and Management (DBM). Every agency defends its proposed allocations before congressional committees in televised budget hearings."
+    },
+    {
+      "stage": "gaa",
+      "order": 2,
+      "title": "Stage 2: Legislative Enactment (GAA Law)",
+      "badge": "Congress to Law",
+      "summary": "The House passes the General Appropriations Bill (HB 10858), the Senate amends it, and the Bicameral Committee reconciles the text.",
+      "details": "Once signed by the President (with any line-item vetoes), it becomes the General Appropriations Act (GAA) — the official budget law of the Philippines."
+    },
+    {
+      "stage": "execution",
+      "order": 3,
+      "title": "Stage 3: Allotments & Local Releases (NTA)",
+      "badge": "City Hall Transfers",
+      "summary": "DBM issues Special Allotment Release Orders (SARO) and Notices of Cash Allocation (NCA) to agencies, while transferring National Tax Allotments directly to LGUs.",
+      "details": "For Iriga City, this delivers the ₱913.50M National Tax Allotment directly to the City Treasury, with statutory obligations for 20% development, disaster resilience, youth, and social welfare."
+    }
+  ],
+  "expenseClasses": [
+    {
+      "code": "PS",
+      "name": "Personnel Services",
+      "summary": "Salaries, wages, standard allowances, honoraria, and statutory retirement benefits for civil servants.",
+      "localImpact": "Powers teachers, public healthcare workers, city hall staff, and emergency response teams."
+    },
+    {
+      "code": "MOOE",
+      "name": "Maintenance and Other Operating Expenses",
+      "summary": "Supplies, utilities, gasoline, official travel, facility maintenance, communications, and public services.",
+      "localImpact": "Keeps municipal offices, ambulances, street lighting, and community programs operational day to day."
+    },
+    {
+      "code": "CO",
+      "name": "Capital Outlays",
+      "summary": "Major investments in infrastructure, permanent public assets, roads, bridges, flood controls, and heavy machinery.",
+      "localImpact": "Funds public works across Iriga City and Camarines Sur 5th District via DPWH and the Local Development Fund."
+    },
+    {
+      "code": "FE",
+      "name": "Financial Expenses",
+      "summary": "Bank service charges, loan interest, insurance management fees, and statutory debt service costs.",
+      "localImpact": "Ensures sovereign debt and municipal credit facilities remain fully serviced and in good standing."
+    }
+  ],
+  "camSur5thDistrictLedger": {
+    "districtId": "leg:camarines-sur:5th",
+    "districtLabel": "Camarines Sur, 5th Legislative District",
+    "representativeName": "Villafuerte, Miguel Luis R.",
+    "representativeCode": "K094",
+    "servingOffice": "Camarines Sur 5th DEO",
+    "attributionTier": "Tier A · the office serves only this district",
+    "attributionMeaning": "Every office that builds here serves only this district. Its figures can be read directly as this district's public works allocation.",
+    "years": [
+      {
+        "fy": 2020,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 1319464000,
+        "displayAmount": "₱1.32 Billion"
+      },
+      {
+        "fy": 2021,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 1624409000,
+        "displayAmount": "₱1.62 Billion"
+      },
+      {
+        "fy": 2022,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 1304882000,
+        "displayAmount": "₱1.30 Billion"
+      },
+      {
+        "fy": 2023,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 1031141000,
+        "displayAmount": "₱1.03 Billion"
+      },
+      {
+        "fy": 2024,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 557696000,
+        "displayAmount": "₱557.70 Million"
+      },
+      {
+        "fy": 2025,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 582501000,
+        "displayAmount": "₱582.50 Million"
+      },
+      {
+        "fy": 2026,
+        "stage": "gaa",
+        "stageLabel": "Enacted (GAA)",
+        "scope": "the whole office",
+        "amountPhp": 1012023000,
+        "displayAmount": "₱1.01 Billion"
+      },
+      {
+        "fy": 2027,
+        "stage": "nep",
+        "stageLabel": "NEP Proposal",
+        "scope": "the whole office",
+        "amountPhp": 471102000,
+        "displayAmount": "₱471.10 Million"
+      },
+      {
+        "fy": 2027,
+        "stage": "hgab3",
+        "stageLabel": "House Bill 10858",
+        "scope": "named projects only",
+        "amountPhp": 532412000,
+        "displayAmount": "₱532.41 Million"
+      }
+    ]
+  },
+  "citation": {
+    "sourceUrl": "https://budget.bettergov.ph/docs",
+    "sourceName": "BetterGov.ph Philippine Budget Data API & Documentation",
+    "retrievedAt": "2026-11-04",
+    "archiveUrl": "https://budget.bettergov.ph/api/v1/openapi.json"
+  }
+}
+

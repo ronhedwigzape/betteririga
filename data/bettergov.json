@@ -1,0 +1,743 @@
+[
+  {
+    "id": "bg-camsur-5th-deo-history",
+    "title": "DPWH Camarines Sur 5th District Engineering Office (DEO) Multi-Year Budget (2020–2027)",
+    "category": "Legislative District Representation",
+    "district": "Camarines Sur, 5th District (Rinconada — Iriga City, Baao, Balatan, Bato, Buhi, Bula, Nabua)",
+    "location": "Iriga City & 5th Congressional District of Camarines Sur",
+    "contractorOrProponent": "Camarines Sur 5th DEO • District Rep. Villafuerte, Miguel Luis R. (172 House Bills tracked)",
+    "fundingSource": "Enacted GAA (2020–2026) & FY 2027 NEP / House Bill 10858 (Tier A District Office)",
+    "amountPhp": 1012023000,
+    "amountDisplay": "₱1.01 Billion (FY 2026 Enacted GAA) • ₱532.41M (FY 2027 House Bill)",
+    "status": "Live BetterGov API Sync",
+    "plainSummary": "BetterGov.ph tracks the entire multi-year DPWH Camarines Sur 5th DEO budget serving Iriga City and Rinconada: ₱1.32B (2020), ₱1.62B (2021), ₱1.30B (2022), ₱1.03B (2023), ₱557.70M (2024), ₱582.50M (2025), ₱1.01B (2026 Enacted GAA), and ₱532.41M in FY 2027 House Bill named projects.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/districts/camarines-sur-5th",
+      "sourceName": "BetterGov.ph Open Budget API — Camarines Sur 5th District & DEO Multi-Year Ledger",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=221"
+    },
+    "duration": "2020 – 2027 (Multi-Year Cumulative Tracking)"
+  },
+  {
+    "id": "bg-dpwh-24fn0084-san-roque",
+    "title": "DPWH Multi-Purpose Building in Barangay San Roque (Contract 24FN0084)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — DPWH Camarines Sur 5th DEO",
+    "location": "Barangay San Roque, Iriga City",
+    "contractorOrProponent": "Iriga Jetstone Construction, Inc.",
+    "fundingSource": "GAA 2024 Basic Infrastructure Program (BIP)",
+    "amountPhp": 47840000,
+    "amountDisplay": "₱47.84 Million (Verified Contract Award)",
+    "status": "Awarded / Tracked on BetterGov",
+    "plainSummary": "Construction of a multi-purpose community building in Barangay San Roque funded through the General Appropriations Act (GAA) and implemented by the DPWH Camarines Sur 5th District Engineering Office.",
+    "citation": {
+      "sourceUrl": "https://transparency.bettergov.ph/contracts/24FN0084",
+      "sourceName": "BetterGov.ph Transparency Dashboard — DPWH Camarines Sur 5th DEO (Contract 24FN0084)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dpwh.gov.ph/dpwh/business/procurement/civil_works/notice_award/24FN0084"
+    },
+    "duration": "2024 – 2026 (Awarded Implementation)"
+  },
+  {
+    "id": "bg-2027-house-reading-2397",
+    "title": "Tabaco City–Malinao–Buhi–Iriga Road (4.2-Kilometer Missing Link Corridor, Albay/Camarines Sur)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Central Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Central Office) — Network Development Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (Construction of Missing Links/ New Roads)",
+    "amountPhp": 150000000,
+    "amountDisplay": "House Bill: ₱150.00 Million • NEP: ₱150.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"Construction of Missing Links/ New Roads\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A2397",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:2397)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=238"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Chainage 6020 to Chainage 10220"
+  },
+  {
+    "id": "bg-2027-house-reading-2118",
+    "title": "Iriga City Rapid Exit Bypass Road (781-Meter Phase 2 Segment, Iriga City)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Central Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Central Office) — Network Development Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (Construction of By-Pass and Diversion Roads)",
+    "amountPhp": 120000000,
+    "amountDisplay": "House Bill: ₱120.00 Million • NEP: ₱120.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"Construction of By-Pass and Diversion Roads\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A2118",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:2118)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=221"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Sta. 1+660.00 to Sta. 2+441.00"
+  },
+  {
+    "id": "bg-2027-house-reading-2396",
+    "title": "Tabaco City–Malinao–Buhi–Iriga City Road (800-Meter Concreting Segment, Camarines Sur)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Central Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Central Office) — Network Development Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (Construction of Missing Links/ New Roads)",
+    "amountPhp": 85000000,
+    "amountDisplay": "House Bill: ₱85.00 Million • NEP: ₱85.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"Construction of Missing Links/ New Roads\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A2396",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:2396)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=238"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Sta. 40+300.00 to Sta. 41+100.00"
+  },
+  {
+    "id": "bg-2027-house-reading-8973",
+    "title": "Construction of Sagrada Diversion Road (300-Meter Segment, Daang Maharlika to Baao-Iriga-Nabua Rd)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Central Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Central Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 75000000,
+    "amountDisplay": "House Bill: ₱75.00 Million • NEP: ₱75.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8973",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8973)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=432"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Sta. 0+000.00 to Sta. 0+300.00"
+  },
+  {
+    "id": "bg-2027-house-reading-13837",
+    "title": "Construction of Multi-purpose Building, Barangay San Roque, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Multi-Purpose Buildings/ Facilities to support Social Services)",
+    "amountPhp": 50000000,
+    "amountDisplay": "House Bill: ₱50.00 Million • NEP: ₱50.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Multi-Purpose Buildings/ Facilities to support Social Services\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A13837",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:13837)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=803"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-house-reading-8897",
+    "title": "Construction of Concrete Bridge, Zone Mississippi, Barangay Sagrada, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 40025000,
+    "amountDisplay": "House Bill: ₱40.02 Million • NEP: —",
+    "status": "FY 2027 (House bill only)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8897",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8897)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=563"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-house-reading-8898",
+    "title": "Construction of Concrete Bridge, Zone Montañoza, Barangay Sagrada, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 38054000,
+    "amountDisplay": "House Bill: ₱38.05 Million • NEP: —",
+    "status": "FY 2027 (House bill only)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8898",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8898)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=563"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-house-reading-999",
+    "title": "Iriga City–Masoli Road Preventive Maintenance (1.02-Kilometer Road Section)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Asset Preservation Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (Rehabilitation/ Reconstruction/ Upgrading of Damaged Paved Roads - Secondary Roads)",
+    "amountPhp": 26887000,
+    "amountDisplay": "House Bill: ₱26.89 Million • NEP: ₱26.89 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"Rehabilitation/ Reconstruction/ Upgrading of Damaged Paved Roads - Secondary Roads\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A999",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:999)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=162"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Km 474+000 to Km 474+050 & Km 474+182 to Km 475+150"
+  },
+  {
+    "id": "bg-2027-house-reading-8901",
+    "title": "Road Concreting of J. Mrtinez Highway, San Rafael, Iriga City.",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 20602000,
+    "amountDisplay": "House Bill: ₱20.60 Million • NEP: —",
+    "status": "FY 2027 (House bill only)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8901",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8901)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=563"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-house-reading-8899",
+    "title": "Construction of NIA Service Road (518-Meter Concreting, Brgy. Sto. Domingo to Santiago)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 15000000,
+    "amountDisplay": "House Bill: ₱15.00 Million • NEP: ₱15.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8899",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8899)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=563"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Sta. 6+223.80 to Sta. 6+741.80"
+  },
+  {
+    "id": "bg-2027-house-reading-8896",
+    "title": "Construction of Bridge in Barangay Sagrada, Iriga, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 10000000,
+    "amountDisplay": "House Bill: ₱10.00 Million • NEP: ₱10.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8896",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8896)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=563"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-house-reading-524",
+    "title": "Iriga City–San Isidro–Sagrada–San Ramon–Hanawan Road (278-Meter Road Section)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Asset Preservation Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (Preventive Maintenance - Secondary Roads)",
+    "amountPhp": 5702000,
+    "amountDisplay": "House Bill: ₱5.70 Million • NEP: ₱5.70 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"Preventive Maintenance - Secondary Roads\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A524",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:524)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=135"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)",
+    "engineeringMarker": "Km 487+000 to Km 487+278.10"
+  },
+  {
+    "id": "bg-2027-house-reading-13836",
+    "title": "Construction of Multi-Purpose Building in Barangay Sta. Maria, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Multi-Purpose Buildings/ Facilities to support Social Services)",
+    "amountPhp": 5000000,
+    "amountDisplay": "House Bill: ₱5.00 Million • NEP: ₱5.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Multi-Purpose Buildings/ Facilities to support Social Services\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A13836",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:13836)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=803"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-house-reading-8900",
+    "title": "Construction of Road, Barangay San Rafael, Iriga, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Camarines Sur 5th District Engineering Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Camarines Sur 5th District Engineering Office) — Convergence and Special Support Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities)",
+    "amountPhp": 5000000,
+    "amountDisplay": "House Bill: ₱5.00 Million • NEP: ₱5.00 Million",
+    "status": "FY 2027 (Same amount in both)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"BIP - Access Roads and/or Bridges from the National Roads leading to Major/ Strategic Public Buildings/ Facilities\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A8900",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (house-reading:8900)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=563"
+    },
+    "duration": "FY 2027 (NEP & House Bill 10858)"
+  },
+  {
+    "id": "bg-2027-stage-16449",
+    "title": "Tabaco City–Malinao–Buhi–Iriga Road (4.59-Kilometer Missing Link Corridor, Albay/Camarines Sur)",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District — Central Office",
+    "location": "Iriga City / Rinconada Corridor, Camarines Sur",
+    "contractorOrProponent": "DPWH (Central Office) — Network Development Program",
+    "fundingSource": "FY 2027 NEP & House Bill 10858 (Construction of By-Pass and Diversion Roads)",
+    "amountPhp": 150000000,
+    "amountDisplay": "House Bill: — • NEP: ₱150.00 Million",
+    "status": "FY 2027 (NEP only)",
+    "plainSummary": "Public works item in the FY 2027 National Expenditure Program (NEP) and House Bill 10858 under \"Construction of By-Pass and Diversion Roads\", verified with direct PDF page citations via BetterGov.ph.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/stage%3A16449",
+      "sourceName": "BetterGov.ph FY 2027 Budget Tracker (stage:16449)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/nep2027-vol-iib.pdf#page=282"
+    },
+    "duration": "FY 2027 (NEP Allocation)",
+    "engineeringMarker": "Chainage 10220 to Chainage 14812"
+  },
+  {
+    "id": "bg-gaa-35-005-waras-small-reservoir-irrigation-project-",
+    "title": "Waras Small Reservoir Irrigation Project, (SRIP) boundary between Baao and Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Budgetary Support to Government Corporations (BSGC)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 350000000,
+    "amountDisplay": "2025 GAA: ₱630.00 Million • 2026 GAA: ₱350.00 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Budgetary Support to Government Corporations (BSGC) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Waras%20Small%20Reservoir%20Irrigation%20Project%2C%20SRIP",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Budgetary Support to Government Corporations (BSGC)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)"
+  },
+  {
+    "id": "bg-gaa-18-001-iriga-city-rapid-exit-bypass-road-baranga",
+    "title": "Iriga City Rapid Exit Bypass Road (1.44-Kilometer Corridor, Brgy. San Isidro to San Roque)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 117600000,
+    "amountDisplay": "2026 GAA: ₱117.60 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Iriga%20City%20Rapid%20Exit%20Bypass%20Road%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 0+000.00 to Sta. 1+441.00"
+  },
+  {
+    "id": "bg-gaa-18-001-construction-of-bridge-barangay-santa-ter",
+    "title": "Construction of Bridge at San Andres Spillway (Barangay Santa Teresita, Iriga City)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 90000000,
+    "amountDisplay": "2026 GAA: ₱90.00 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Construction%20of%20Bridge%2C%20Barangay%20Santa%20Teresita",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 0+947.00 Bridge Crossing"
+  },
+  {
+    "id": "bg-gaa-18-001-tabaco-citymalinaobuhiiriga-city-road-sta",
+    "title": "Tabaco City–Malinao–Buhi–Iriga City Road (1.5-Kilometer Concreting Section, Camarines Sur)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 82980000,
+    "amountDisplay": "2026 GAA: ₱82.98 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Tabaco%20City-Malinao-Buhi-Iriga%20City%20Road.%20Sta.%2038",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 38+800 to Sta. 40+300"
+  },
+  {
+    "id": "bg-gaa-18-001-baaoiriga-citynabua-rd-k0471-000-k0472-00",
+    "title": "Baao–Iriga City–Nabua Road Maintenance (1.0-Kilometer Asphalt/Concrete Section)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 53040000,
+    "amountDisplay": "2026 GAA: ₱53.04 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Baao-Iriga%20City-Nabua%20Rd%20-%20K0471%20%2B",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Km 471+000 to Km 472+000"
+  },
+  {
+    "id": "bg-gaa-18-001-nia-service-road-san-isidro-san-nicolas",
+    "title": "Construction of NIA Service Road (1.95-Kilometer Concreting, Brgy. San Isidro to San Nicolas)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 48812000,
+    "amountDisplay": "2026 GAA: ₱48.81 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Construction%20of%20Road%2C%20NIA%20Service%20Road%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 2+233.70 to Sta. 4+178.70"
+  },
+  {
+    "id": "bg-gaa-18-001-nia-service-road-san-juan-santo-domingo",
+    "title": "Construction of NIA Service Road (2.04-Kilometer Concreting, Brgy. San Juan to Santo Domingo)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 48812000,
+    "amountDisplay": "2026 GAA: ₱48.81 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Construction%20of%20Road%2C%20NIA%20Service%20Road%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 4+178.70 to Sta. 6+218.80"
+  },
+  {
+    "id": "bg-gaa-18-001-tabaco-citymalinaobuhiiriga-road-barangay",
+    "title": "Tabaco City–Malinao–Buhi–Iriga Road (700-Meter Multi-Segment Paving, Brgy. Quinarabasahan)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 48812000,
+    "amountDisplay": "2026 GAA: ₱48.81 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Tabaco%20City-Malinao-Buhi-Iriga%20Road%2C%20Barangay%20Quinarabasahan%2C%20Sta.",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 1+873 to Sta. 4+135 Segments"
+  },
+  {
+    "id": "bg-gaa-18-001-baaoiriga-citynabua-rd-k0466-000-k0466-69",
+    "title": "Baao–Iriga City–Nabua Road Maintenance (885-Meter Road Section)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 44181000,
+    "amountDisplay": "2026 GAA: ₱44.18 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Baao-Iriga%20City-Nabua%20Rd%20-%20K0466%20%2B",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Km 466+000 to Km 466+693 & Km 467+363 to Km 467+555"
+  },
+  {
+    "id": "bg-gaa-18-001-iriga-citymasoli-rd-k0480-000-k0480-810",
+    "title": "Iriga City–Masoli Road Preventive Maintenance (810-Meter Road Section)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 36515000,
+    "amountDisplay": "2026 GAA: ₱36.52 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Iriga%20City-Masoli%20Rd%20-%20K0480%20%2B",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Km 480+000 to Km 480+810"
+  },
+  {
+    "id": "bg-gaa-18-001-iriga-hanawan-rd-k0482-k0484",
+    "title": "Iriga City–San Isidro–Sagrada–San Ramon–Hanawan Road (1.37-Kilometer Section)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 35577000,
+    "amountDisplay": "2026 GAA: ₱35.58 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Iriga%20City-Sn%20Isidro-Sagrada-Sn%20Ramon-Hanawan%20Rd%20-",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Km 482+785 to Km 484+150"
+  },
+  {
+    "id": "bg-gaa-18-001-iriga-hanawan-rd-k0487-k0488",
+    "title": "Iriga City–San Isidro–Sagrada–San Ramon–Hanawan Road (1.55-Kilometer Section)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 34255000,
+    "amountDisplay": "2026 GAA: ₱34.26 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Iriga%20City-Sn%20Isidro-Sagrada-Sn%20Ramon-Hanawan%20Rd%20-",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Km 487+387 to Km 488+936"
+  },
+  {
+    "id": "bg-gaa-18-001-iriga-hanawan-rd-k0475-000-480",
+    "title": "Iriga City–San Isidro–Sagrada–San Ramon–Hanawan Road (480-Meter Section)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 30353000,
+    "amountDisplay": "2026 GAA: ₱30.35 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Iriga%20City-Sn%20Isidro-Sagrada-Sn%20Ramon-Hanawan%20Rd%20-",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Km 475+000 to Km 475+480"
+  },
+  {
+    "id": "bg-gaa-18-001-construction-of-road-barangay-san-antonio",
+    "title": "Construction of Concrete Road (960-Meter Segment, Barangay San Antonio, Iriga City)",
+    "category": "DPWH 5th DEO Contract",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Public Works and Highways (DPWH)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 29287000,
+    "amountDisplay": "2026 GAA: ₱29.29 Million",
+    "status": "Enacted FY 2026 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Public Works and Highways (DPWH) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Construction%20of%20Road%2C%20Barangay%20San%20Antonio%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Public Works and Highways (DPWH)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)",
+    "engineeringMarker": "Sta. 2+645.00 to Sta. 3+605.00"
+  },
+  {
+    "id": "bg-gaa-05-001-concreting-of-arangon-st-zone-2-fmr-brgy-",
+    "title": "Concreting of Arangon St., Zone 2 FMR, Brgy. Salvacion, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Agriculture (DA)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 15000000,
+    "amountDisplay": "2025 GAA: ₱15.00 Million",
+    "status": "Enacted FY 2024–2025 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Agriculture (DA) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Concreting%20of%20Arangon%20St.%2C%20Zone%202",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Agriculture (DA)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)"
+  },
+  {
+    "id": "bg-gaa-05-001-concreting-of-brgy-salvacion-fmr-brgy-sal",
+    "title": "Concreting of Brgy. Salvacion FMR, Brgy. Salvacion, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Agriculture (DA)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 15000000,
+    "amountDisplay": "2024 GAA: ₱15.00 Million",
+    "status": "Enacted FY 2024–2025 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Agriculture (DA) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Concreting%20of%20Brgy.%20Salvacion%20FMR%2C%20Brgy.",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Agriculture (DA)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)"
+  },
+  {
+    "id": "bg-gaa-05-001-concreting-of-brgy-san-isidro-fmr-brgy-sa",
+    "title": "Concreting of Brgy. San Isidro FMR, Brgy. San Isidro, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Agriculture (DA)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 15000000,
+    "amountDisplay": "2024 GAA: ₱15.00 Million",
+    "status": "Enacted FY 2024–2025 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Agriculture (DA) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Concreting%20of%20Brgy.%20San%20Isidro%20FMR%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Agriculture (DA)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)"
+  },
+  {
+    "id": "bg-gaa-05-001-concreting-of-brgy-san-jose-fmr-brgy-san-",
+    "title": "Concreting of Brgy. San Jose FMR, Brgy. San Jose, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Agriculture (DA)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 15000000,
+    "amountDisplay": "2024 GAA: ₱15.00 Million",
+    "status": "Enacted FY 2024–2025 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Agriculture (DA) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Concreting%20of%20Brgy.%20San%20Jose%20FMR%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Agriculture (DA)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)"
+  },
+  {
+    "id": "bg-gaa-05-001-concreting-of-zone-3-bagong-sirang-brgy-s",
+    "title": "Concreting of Zone 3 Bagong Sirang, Brgy. San Pedro FMR, Brgy. San Pedro, Iriga City, Camarines Sur",
+    "category": "GAA / House Bill Public Works",
+    "district": "Camarines Sur 5th District (Rinconada) — Enacted GAA",
+    "location": "Iriga City, Camarines Sur",
+    "contractorOrProponent": "Department of Agriculture (DA)",
+    "fundingSource": "Enacted General Appropriations Act (GAA 2024–2026)",
+    "amountPhp": 10000000,
+    "amountDisplay": "2024 GAA: ₱10.00 Million",
+    "status": "Enacted FY 2024–2025 GAA",
+    "plainSummary": "Official national budget line item enacted under the General Appropriations Act (GAA) and implemented by Department of Agriculture (DA) for Iriga City residents, automatically synced from BetterGov.ph's Open Budget API.",
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/gaa?q=Concreting%20of%20Zone%203%20Bagong%20Sirang%2C",
+      "sourceName": "BetterGov.ph Open Budget GAA API — Department of Agriculture (DA)",
+      "retrievedAt": "2026-11-03",
+      "archiveUrl": "https://www.dbm.gov.ph/index.php/budget-documents/general-appropriations-act-gaa"
+    },
+    "duration": "FY 2024 – 2026 (Enacted GAA)"
+  }
+]

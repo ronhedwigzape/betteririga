@@ -1,0 +1,114 @@
+{
+  "officialName": "City of Iriga",
+  "vernacularName": "Lungsod ng Iriga",
+  "monikers": [
+    "City of Crystal Clear Springs",
+    "Conscience of Bicol",
+    "Premier Agro-Ecotourism Center"
+  ],
+  "psgcCode": "051716000",
+  "psgc10DigitCode": "0501716000",
+  "province": "Camarines Sur",
+  "provincePsgc": "051700000",
+  "region": "Region V (Bicol Region)",
+  "regionPsgc": "050000000",
+  "legislativeDistrict": "5th Congressional District of Camarines Sur (Rinconada)",
+  "incomeClass": "4th Class Component City",
+  "barangayCount": 36,
+  "landAreaSqKm": 174,
+  "landUseBreakdown": {
+    "agriculturalPct": 78.31,
+    "urbanizedPct": 15.37,
+    "forestPct": 6.32
+  },
+  "population2024": 115306,
+  "population2020": 114457,
+  "population2015": 111757,
+  "households2015": 23754,
+  "growthRatePct": 1.72,
+  "urbanPopulationPct": 53.6,
+  "ruralPopulationPct": 46.4,
+  "cityHallAddress": "New Government Center, Brgy. Sta. Cruz Sur, Iriga City, Camarines Sur 4431, Philippines",
+  "coordinatesHint": "478 km south of Manila, 35 km from Naga City, 65 km north of Legazpi City",
+  "patronSaintFiesta": "St. Anthony of Padua (June 13 Annual Fiesta)",
+  "majorFestival": "Tinagba Festival (Every February 11 — Feast of Our Lady of Lourdes)",
+  "geo": {
+    "latitude": 13.421,
+    "longitude": 123.4126,
+    "postalCode": "4431",
+    "osmEmbedUrl": "https://www.openstreetmap.org/export/embed.html?bbox=123.3826%2C13.3960%2C123.4426%2C13.4460&layer=mapnik&marker=13.4210%2C123.4126",
+    "osmLinkUrl": "https://www.openstreetmap.org/?mlat=13.4210&mlon=123.4126#map=14/13.4210/123.4126",
+    "landmarks": [
+      "Iriga City Hall (Brgy. Sta. Cruz Sur)",
+      "Mt. Asog / Mt. Iriga (4,823 ft above sea level)",
+      "Emerald Grotto of Our Lady of Lourdes (Calvario Hill, San Francisco)",
+      "Inorogan Shrine (Sto. Domingo)",
+      "Iliyan Hills & Agta Settlements (San Nicolas)"
+    ]
+  },
+  "weatherBaseline": {
+    "temperatureC": 29,
+    "conditionLabel": "Partly Cloudy • Mt. Asog Breeze",
+    "humidityPct": 74,
+    "windKmh": 12,
+    "usdPhpFallback": "1 USD ≈ ₱58.40",
+    "hourly": [
+      { "timeLabel": "9 AM", "tempC": 28, "isRainy": false },
+      { "timeLabel": "12 PM", "tempC": 31, "isRainy": false },
+      { "timeLabel": "3 PM", "tempC": 30, "isRainy": true },
+      { "timeLabel": "6 PM", "tempC": 27, "isRainy": false }
+    ]
+  },
+  "historyTimeline": [
+    {
+      "year": "1578",
+      "title": "Founded as a Visita of I-raga (\"Where There Is Land\")",
+      "description": "Due to seasonal flooding in lowland Nabua, Father Felix de Huertas advised farmers to move to the fertile elevated slopes of Sumagang Mountain (Mt. Iriga / Mt. Asog), called I-raga (\"donde hay tierra\" or \"where there is land\"). In 1578, Franciscan missionaries Fray Pablo de Jesus and Fray Bartolome Ruiz established I-raga as a visita."
+    },
+    {
+      "year": "1641",
+      "title": "Eruption of Mt. Asog & Miracle of Nuestra Señora de Angustia",
+      "description": "On January 4, 1641, Mt. Asog (named after the Agta chieftain who ruled the mountain's aborigines) erupted, forming the steep gorge on the side of Buhi. Local accounts record the apparition of the Blessed Virgin Mother and Child Jesus (Nuestra Señora de Angustia) at Sitio Inorogan, sparing the settlement."
+    },
+    {
+      "year": "1683",
+      "title": "Converted into a Pueblo of Ambos Camarines",
+      "description": "With a growing population of 8,908 residents, the progressive visita of I-raga was converted into a full Pueblo de la Provincia de Ambos Camarines with St. Anthony of Padua as its patron saint (annual fiesta every June 13). Spanish authorities later changed I-raga to Iriga."
+    },
+    {
+      "year": "1901–1940s",
+      "title": "Agricultural, Transport & Educational Center of Rinconada",
+      "description": "Situated along the Philippine-Japanese Friendship Highway and the PNR southern railway line (35 km south of Naga City and 65 km north of Legazpi City), Iriga grew into the commercial, transport (ALATCO/Philtranco terminal at San Nicolas), and educational hub of the Rinconada district."
+    },
+    {
+      "year": "1968",
+      "title": "Chartered as the City of Iriga (Republic Act No. 5261)",
+      "description": "Iriga was formally chartered as a component city of Camarines Sur under Republic Act No. 5261, enacted on June 15, 1968 and inaugurated on September 3, 1968."
+    },
+    {
+      "year": "Today",
+      "title": "City of Crystal Clear Springs & Tinagba Heritage",
+      "description": "Home to 115,306 Irigueños (2024 Census) across 36 barangays and 174 sq. km., Iriga celebrates the ancient Tinagba Festival every February 11 (Feast of Our Lady of Lourdes at Emerald Grotto) and serves as the educational and agro-ecotourism heart of Rinconada."
+    }
+  ],
+  "historyHighlights": [
+    {
+      "title": "Why \"I-raga\" Became Iriga",
+      "description": "Derived from the Bicol/Spanish phrase \"I-raga\" (donde hay tierra — \"where there is higher, flood-free land\"), where settlers harvested bountiful crops at the foot of Sumagang Mountain (Mt. Iriga)."
+    },
+    {
+      "title": "Educational & Healthcare Hub of Rinconada",
+      "description": "Per Iriga City's official profile, the city hosts 2 universities, 2 colleges, 8 technical-vocational schools, 26 secondary schools, 57 elementary schools, and 5 hospitals serving Rinconada and neighboring Albay towns."
+    },
+    {
+      "title": "Tinagba Festival & Emerald Grotto",
+      "description": "Celebrated every February 11, the Tinagba Festival is an ancient first-harvest offering tradition honoring Our Lady of Lourdes at the Emerald Grotto atop Calvario Hill in Barangay San Francisco."
+    }
+  ],
+  "citation": {
+    "sourceUrl": "https://iriga.gov.ph/facts-stats-and-demography/",
+    "sourceName": "Iriga City Official Website — Historical Background, Profile & 2024 Census",
+    "retrievedAt": "2026-11-04",
+    "archiveUrl": "https://web.archive.org/web/20230208012627/https://iriga.gov.ph/facts-stats-and-demography/"
+  }
+}

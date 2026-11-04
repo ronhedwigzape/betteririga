@@ -1,0 +1,198 @@
+[
+  {
+    "id": "dpwh-24fn0084",
+    "title": "Construction of Multi-Purpose Building, Barangay San Roque, Iriga City",
+    "category": "Infrastructure",
+    "status": "Ongoing",
+    "location": "Barangay San Roque, Iriga City",
+    "implementingAgency": "DPWH Camarines Sur 5th District Engineering Office (DEO)",
+    "contractOrReferenceId": "Contract ID 24FN0084 (GAA 2024 Basic Infrastructure Program)",
+    "contractor": "Iriga Jetstone Construction, Inc.",
+    "amountPhp": 47840000,
+    "amountNote": "₱47.84 Million (Verified DPWH / BetterGov Award Amount)",
+    "period": "2024 – 2026",
+    "summary": "Construction of a multi-purpose public facility in Barangay San Roque under the DPWH Basic Infrastructure Program (BIP).",
+    "citation": {
+      "sourceUrl": "https://transparency.bettergov.ph/contracts/24FN0084",
+      "sourceName": "DPWH Notice of Award & BetterGov.ph Contract 24FN0084",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://www.dpwh.gov.ph/dpwh/business/procurement/civil_works/notice_award/24FN0084"
+    }
+  },
+  {
+    "id": "lgu-5storey-commercial-san-francisco",
+    "title": "5-Storey Mixed-Use Commercial Building (CBD I Decongestion Project)",
+    "category": "Infrastructure",
+    "status": "Ongoing",
+    "location": "Barangay San Francisco, Iriga City",
+    "implementingAgency": "City Government of Iriga / City Engineer's Office",
+    "amountNote": "Contract amount not yet verified from PhilGEPS/LGU Notice of Award",
+    "period": "Initiated January 2025 – Ongoing",
+    "summary": "Flagship 5-storey commercial building initiated in January 2025 to stimulate local enterprise, create employment, and decongest Central Business District I.",
+    "gaps": [
+      "Exact awarded contract cost and PhilGEPS reference number not yet verified"
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/city-engineers-office/",
+      "sourceName": "Iriga City Engineer's Office & LGU Infrastructure Portal",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://www.facebook.com/irigacitygovt"
+    }
+  },
+  {
+    "id": "lgu-iriga-city-public-hospital",
+    "title": "Iriga City Public Hospital (Land Development & Facility Planning)",
+    "category": "Health & Rehabilitation",
+    "status": "Ongoing",
+    "location": "Iriga City, Camarines Sur",
+    "implementingAgency": "City Government of Iriga / City Health Office & City Engineer's Office",
+    "amountNote": "Multi-phase appropriation; total contract cost not yet verified",
+    "period": "2025 – 2026",
+    "summary": "Site development and planning for the flagship city-run public hospital to expand affordable inpatient and emergency healthcare for Irigueños.",
+    "gaps": [
+      "Phase-by-phase appropriation ordinance and contract amounts not yet verified"
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/city-health-office/",
+      "sourceName": "Iriga City Health Office & City Engineer Hospital Development Project",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://iriga.gov.ph/city-engineers-office/"
+    }
+  },
+  {
+    "id": "lgu-arriba-iriga-ngc",
+    "title": "Arriba Iriga National Government Center (Land Acquisition & Site Development)",
+    "category": "Infrastructure",
+    "status": "Planning",
+    "location": "Barangay Sta. Elena, Iriga City",
+    "implementingAgency": "City Government of Iriga / OCPDC",
+    "amountNote": "Included in Supplemental Annual Investment Program (AIP); peso total not yet verified",
+    "period": "2025 – 2026",
+    "summary": "Land acquisition and master site development in Barangay Sta. Elena to host national government agency field offices in a single accessible hub.",
+    "gaps": [
+      "Supplemental AIP line-item budget amount awaiting PDF verification"
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/city-planning-and-development-coordinator/",
+      "sourceName": "Iriga City Planning & Development Coordinator (OCPDC) AIP",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/"
+    }
+  },
+  {
+    "id": "lgu-sabantan-road-lamedalla",
+    "title": "Sabantan Street Local Access Road Opening & Concreting",
+    "category": "Infrastructure",
+    "status": "Completed",
+    "location": "Sabantan Street, Barangay La Medalla, Iriga City",
+    "implementingAgency": "City Government of Iriga / City Engineer's Office",
+    "amountNote": "Completed October 2025; exact contract cost not yet verified",
+    "period": "Completed October 2025",
+    "summary": "Newly concreted local road corridor improving neighborhood mobility and drainage in Barangay La Medalla.",
+    "gaps": [
+      "Final Statement of Work Accomplished (SWA) peso figure not yet verified"
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/city-engineers-office/",
+      "sourceName": "Iriga City Engineer's Office Local Road Projects",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://www.facebook.com/irigacitygovt"
+    }
+  },
+  {
+    "id": "lgu-rapid-exit-bypass-road",
+    "title": "Iriga City Rapid Exit Bypass Road Network (Sta. Cruz Sur – Francia – San Jose – San Nicolas)",
+    "category": "Infrastructure",
+    "status": "Ongoing",
+    "location": "Barangays Sta. Cruz Sur, Francia, San Jose, and San Nicolas",
+    "implementingAgency": "City Government of Iriga & DPWH Camarines Sur 5th DEO",
+    "amountNote": "Multi-segment road network; total budget not yet verified",
+    "period": "2024 – 2026",
+    "summary": "Strategic bypass road corridor connecting Sta. Cruz Sur through Francia, San Jose, and San Nicolas to divert through-traffic and ease urban congestion.",
+    "gaps": [
+      "Segment-level contract breakdowns not yet verified"
+    ],
+    "citation": {
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/dpwh/p/house-reading%3A2118",
+      "sourceName": "DPWH Camarines Sur 5th DEO & BetterGov.ph (House Reading 2118)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=221"
+    }
+  },
+  {
+    "id": "dpwh-19fg0102-rntvs",
+    "title": "3-Storey Regular Workshop, Science Lab & ICT Lab Building — Rinconada National Technical Vocational School",
+    "category": "Infrastructure",
+    "status": "Completed",
+    "location": "Sto. Domingo, Iriga City",
+    "implementingAgency": "DPWH Camarines Sur DEO / DepEd",
+    "contractOrReferenceId": "Contract ID 19FG0102",
+    "amountNote": "Verified DPWH Contract Record (19FG0102)",
+    "period": "Completed (Prior GAA Implementation)",
+    "summary": "Three-storey technical-vocational workshop, science laboratory, and ICT facility at Rinconada National Technical and Vocational School (RNTVS).",
+    "citation": {
+      "sourceUrl": "https://www.dpwh.gov.ph/dpwh/business/procurement/civil_works/notice_award/19FG0102",
+      "sourceName": "DPWH Camarines Sur DEO Notice of Award Contract ID 19FG0102",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://transparency.bettergov.ph/contracts/19FG0102"
+    }
+  },
+  {
+    "id": "ddb-community-rehab-2026",
+    "title": "Community-Based Drug Treatment, Recovery & Rehabilitation Facility Grant",
+    "category": "Health & Rehabilitation",
+    "status": "Ongoing",
+    "location": "Iriga City, Camarines Sur",
+    "implementingAgency": "Dangerous Drugs Board (DDB) & City Government of Iriga",
+    "amountPhp": 5000000,
+    "amountNote": "₱5.00 Million Financial Assistance Grant (August 2026)",
+    "period": "August 2026 – Ongoing",
+    "summary": "Partnership between the Dangerous Drugs Board and LGU Iriga providing ₱5 million to scale up community-based treatment, recovery, and reintegration programs.",
+    "citation": {
+      "sourceUrl": "https://ddb.gov.ph/newsroom/",
+      "sourceName": "Dangerous Drugs Board (DDB) & LGU Iriga Community Assistance Grant",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://www.facebook.com/irigacitygovt"
+    }
+  },
+  {
+    "id": "cswdo-senior-social-pension",
+    "title": "Indigent Senior Citizens Quarterly Social Pension Payout Program",
+    "category": "Social Program",
+    "status": "Ongoing",
+    "location": "Iriga City Sports Center (City-wide across 36 Barangays)",
+    "implementingAgency": "City Social Welfare and Development Office (CSWDO) & DSWD FO V",
+    "amountNote": "Recurring quarterly social pension distributions; total annual payout per barangay not yet verified",
+    "period": "Recurring Quarterly (2024 – 2026)",
+    "summary": "Multi-day social pension distribution cycles managed by CSWDO and OSCA supporting thousands of indigent senior citizens across all 36 barangays.",
+    "gaps": [
+      "Exact beneficiary count per quarter and total annual disbursement not yet verified"
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/city-social-welfare-and-development-office/",
+      "sourceName": "Iriga CSWDO & Office for Senior Citizens Affairs (OSCA) Social Pension",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://iriga.gov.ph/office-for-senior-citizens-affairs-osca/"
+    }
+  },
+  {
+    "id": "lgu-agta-ip-empowerment",
+    "title": "Agta Indigenous Peoples (IP) Livelihood, Scholarship & Cultural Preservation Program",
+    "category": "Social Program",
+    "status": "Ongoing",
+    "location": "Iliyan Hills (San Nicolas), Sitio Mamoco (Perpetual Help) & Upland Barangays",
+    "implementingAgency": "City Government of Iriga / CSWDO & NCIP",
+    "amountNote": "LGU & partner appropriations; specific line-item budget not yet verified",
+    "period": "Ongoing (2024 – 2026)",
+    "summary": "Dedicated support for Iriga City's Indigenous Agta communities, including scholarship grants, livelihood assistance, multipurpose tribal halls, and Indigenous Peoples Day programs.",
+    "gaps": [
+      "Annual appropriation breakdown for IP programs not yet verified"
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/city-social-welfare-and-development-office/",
+      "sourceName": "Iriga CSWDO & National Commission on Indigenous Peoples (NCIP) Programs",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://ncip.gov.ph/"
+    }
+  }
+]

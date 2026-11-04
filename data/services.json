@@ -1,0 +1,616 @@
+[
+  {
+    "id": "srv-civil-birth-cert",
+    "title": "Birth, Marriage & Death Certificates (Certified Copy & Endorsement)",
+    "category": "Certificates & Civil Registry",
+    "officeId": "off-civil-registrar",
+    "officeName": "City Civil Registrar's Office",
+    "officeHead": "Mrs. Ma. Nancy R. Occiano",
+    "officePhone": "(054) 299 9921",
+    "officeEmail": "localcivilregistraririgacity@gmail.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Registered individuals, parents/spouses, or authorized representatives with a signed authorization letter and valid government ID.",
+    "summary": "Request certified true copies, local civil registry transcriptions, timely or delayed registration of birth, marriage, or death, marriage licenses, and PSA endorsement for civil registry records registered in Iriga City.",
+    "steps": [
+      "Visit the City Civil Registrar's Office at Iriga City Hall (or email localcivilregistraririgacity@gmail.com for preliminary inquiry).",
+      "Fill out the verification/request slip with the full name, date of event (birth, marriage, or death), and parents' or spouses' names.",
+      "Pay the prescribed local civil registry fee at the City Treasurer's Office cashier window and present the Official Receipt.",
+      "Claim the Certified True Copy, Marriage License, or PSA Endorsement at the releasing window."
+    ],
+    "requirements": [
+      "Valid government-issued ID of the requester",
+      "Signed Authorization Letter + valid ID of document owner (if requested by a representative)",
+      "Official Receipt from the City Treasurer's Office",
+      "For Late Registration: Negative Certification from PSA and supporting baptismal/school/medical records"
+    ],
+    "feeNote": "Data not yet available online — exact fee depends on transaction type under the 2020 Iriga City Revised Revenue Code (Ordinance No. 2020-02) and Citizen's Charter.",
+    "processingTimeNote": "Same-day release for verification/certified copies; 10-day statutory posting period for Marriage Licenses and Delayed Registrations.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "archiveCharterPdfUrl": "https://web.archive.org/web/20221205215726/https://iriga.gov.ph/iriga-city-citizens-charter/",
+    "gaps": [
+      "Exact itemized schedule of civil registry fees is inside the downloadable 2022 Citizen's Charter PDF (CGO-IRIGA-CITIZENS-CHARTER-2022.pdf)."
+    ],
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/iriga-city-citizens-charter/",
+      "sourceName": "LGU Iriga Official Website — Iriga City Citizen's Charter & Civil Registrar Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20221205215726/https://iriga.gov.ph/iriga-city-citizens-charter/"
+    }
+  },
+  {
+    "id": "srv-business-permit-bplo",
+    "title": "Mayor's Business Permit (New Application & Annual Renewal)",
+    "category": "Business, Trade & Market",
+    "officeId": "off-econ-tourism-market-peso",
+    "officeName": "Local Economic Development & Investment Promotions Office (LEDIPO) / BPLO",
+    "officePhone": "(054) 299 9905",
+    "officeEmail": "businessfriendlyiriga@gmail.com",
+    "officeLocation": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Sole proprietors, partnerships, corporations, and cooperatives operating or opening a business in Iriga City.",
+    "summary": "Apply for a new Mayor's Permit to Operate or renew an existing business license through Iriga City's Business One-Stop Shop (BOSS) and LEDIPO, in compliance with the 2020 Revised Revenue Code (Ordinance No. 2020-02) and Mandatory CCTV Ordinance (Ordinance No. 2023-24).",
+    "steps": [
+      "Submit your Unified Business Permit Application Form along with DTI/SEC/CDA registration and Barangay Business Clearance.",
+      "Undergo one-stop regulatory assessment (Zoning/Locational, Sanitary/Health, Engineering/Building, Fire Safety Inspection, and CCTV compliance under Ordinance No. 2023-24 where applicable).",
+      "Receive the Order of Payment (Tax Order of Payment) and pay business taxes and regulatory fees at the City Treasurer's Office.",
+      "Claim your Mayor's Business Permit, Business Plate/Sticker, and Official Receipt."
+    ],
+    "requirements": [
+      "DTI Business Name Registration (Sole Proprietorship), SEC Registration (Corporation/Partnership), or CDA Certificate (Cooperative)",
+      "Barangay Business Clearance from the Iriga barangay where the business is located",
+      "Proof of right to use business location (Title, Tax Declaration, or Contract of Lease)",
+      "Prior year's Gross Sales Declaration / Audited Financial Statement (for renewals)",
+      "Sanitary Permit (CHO), Fire Safety Inspection Certificate (BFP), and CCTV compliance check (for covered establishments under Ordinance No. 2023-24)"
+    ],
+    "feeNote": "Computed based on business capitalization (new) or prior-year gross receipts (renewal) under Ordinance No. 2020-02 (2020 Iriga City Revised Revenue Code).",
+    "processingTimeNote": "Streamlined processing under RA 11032 (Ease of Doing Business) and the Iriga City Citizen's Charter.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "archiveCharterPdfUrl": "https://web.archive.org/web/20230201181054/https://iriga.gov.ph/wp-content/uploads/2021/10/Ordinance-No.-2020-02.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/iriga-city-citizens-charter/",
+      "sourceName": "LGU Iriga Citizen's Charter & Ordinance No. 2020-02 (Revised Revenue Code)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20221205215726/https://iriga.gov.ph/iriga-city-citizens-charter/"
+    }
+  },
+  {
+    "id": "srv-treasurer-rpt-cedula",
+    "title": "Real Property Tax (Amilyar) Payment, Tax Clearance & Community Tax Certificate (Cedula)",
+    "category": "Taxes, Assessment & Treasury",
+    "officeId": "off-treasurer",
+    "officeName": "City Treasurer's Office",
+    "officeHead": "Mrs. Segundina V. Egipto (Acting City Treasurer)",
+    "officePhone": "(054) 299 9915",
+    "officeEmail": "cto.cityofiriga@gmail.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Property owners, residents aged 18 and above, businesses, and corporations in Iriga City.",
+    "summary": "Pay annual Real Property Tax (RPT / Amilyar), secure a Real Property Tax Clearance Certificate, or obtain a Community Tax Certificate (Cedula) required for notarization, employment, and business permits.",
+    "steps": [
+      "For Real Property Tax (RPT): Present your latest Official Receipt or Tax Declaration Number at the City Treasurer's Office RPT Window for billing computation.",
+      "Pay the assessed amount at the Cashier Window (early annual payments qualify for prompt-payment discounts under the Revised Revenue Code).",
+      "For Cedula (Community Tax Certificate): Present a valid ID and declare gross income/receipts at the Cedula Window, pay the fee, and sign/thumbmark your CTC.",
+      "Collect your Official Receipt or Real Property Tax Clearance."
+    ],
+    "requirements": [
+      "For RPT Payment: Previous year's Official Receipt or Tax Declaration Number (ARP/TD No.)",
+      "For Tax Clearance: Latest RPT Official Receipt and valid ID",
+      "For Cedula (CTC): Valid government ID and proof/declaration of gross annual income"
+    ],
+    "feeNote": "Assessed under Ordinance No. 2020-02 (2020 Iriga City Revised Revenue Code) and the Local Government Code (RA 7160).",
+    "processingTimeNote": "15 to 30 minutes for walk-in Cedula and RPT assessment/payment.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "archiveCharterPdfUrl": "https://web.archive.org/web/20230201181054/https://iriga.gov.ph/wp-content/uploads/2021/10/Ordinance-No.-2020-02.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Treasurer's Office & Ordinance No. 2020-02",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-assessor-tax-declaration",
+    "title": "Property Tax Declaration, Transfer/Reassessment & Certificate of No Improvement",
+    "category": "Taxes, Assessment & Treasury",
+    "officeId": "off-assessor",
+    "officeName": "City Assessor's Office",
+    "officeHead": "Engr. Jonas T. Florece",
+    "officePhone": "(054) 299 9920",
+    "officeEmail": "iriga.assessor@gmail.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Landowners, property buyers/heirs, and residents requesting Certificates of Property Holdings or No Improvement.",
+    "summary": "Request certified true copies of Tax Declarations, transfer a Tax Declaration to a new owner after a sale or inheritance, request field appraisal/reassessment of land or buildings, or obtain a Certificate of Landholdings / No Improvement.",
+    "steps": [
+      "Present your request and supporting ownership documents at the City Assessor's Office (Iriga City Hall).",
+      "For Certified True Copies or Certifications: Receive an Order of Payment, pay the certification fee at the City Treasurer's Office, and return the Official Receipt.",
+      "For Transfer or New Assessment: Submit Deed of Conveyance, BIR eCAR, Transfer Tax Receipt, and Title for appraisal and tax mapping verification.",
+      "Claim your updated Tax Declaration or Certification."
+    ],
+    "requirements": [
+      "Valid government ID of owner or authorized representative",
+      "Latest Real Property Tax Official Receipt / Tax Clearance from City Treasurer's Office",
+      "For Transfer of Ownership: Certified copy of Title (TCT/OCT), Deed of Sale/Donation/Extrajudicial Settlement, BIR Certificate Authorizing Registration (eCAR), and Transfer Tax Receipt"
+    ],
+    "feeNote": "Standard certification and annotation fees under Ordinance No. 2020-02 (2020 Iriga City Revised Revenue Code).",
+    "processingTimeNote": "Same day for Certified True Copies / Certifications; 3 to 5 working days for Transfer of Tax Declaration or field inspection.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Assessor's Office Directory & Citizen's Charter",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-engineer-building-permit",
+    "title": "Building Permit, Occupancy Permit & Excavation/Fencing Clearances",
+    "category": "Infrastructure, Zoning & Permits",
+    "officeId": "off-engineer",
+    "officeName": "City Engineer's Office (Office of the Building Official)",
+    "officeHead": "Engr. Eddie M. Belmonte (Acting City Engineer)",
+    "officePhone": "(054) 299 9911",
+    "officeEmail": "Officeofthecityengineer@gmail.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Property owners, developers, and licensed engineers/architects constructing, renovating, or occupying buildings in Iriga City.",
+    "summary": "Apply for a Building Permit prior to construction or renovation, an Occupancy Permit upon completion, or ancillary electrical, plumbing, fencing, and excavation permits under the National Building Code (PD 1096).",
+    "steps": [
+      "Secure a Locational / Zoning Clearance first from the City Planning and Development Coordinator's Office (OCPDC) and Architectural design review if required.",
+      "Submit signed and sealed building plans, structural computations, bill of materials, and ownership documents to the City Engineer's Office.",
+      "Undergo site inspection and Fire Safety Evaluation Clearance (FSEC) endorsement with the Bureau of Fire Protection (BFP).",
+      "Pay the assessed National Building Code fees at the City Treasurer's Office and claim your Building or Occupancy Permit."
+    ],
+    "requirements": [
+      "Unified Building Permit Application Form signed by owner and licensed Civil Engineer / Architect",
+      "Five (5) sets of architectural, structural, electrical, and sanitary/plumbing plans signed and sealed by licensed professionals",
+      "Bill of Materials, Cost Estimates, and Technical Specifications",
+      "Certified True Copy of Land Title (TCT), latest Tax Declaration, and Real Property Tax Receipt",
+      "Locational Clearance (OCPDC), Barangay Construction Clearance, and BFP Fire Safety Clearance"
+    ],
+    "feeNote": "Computed per square meter and building category under the National Building Code (PD 1096) Schedule of Fees.",
+    "processingTimeNote": "3 to 7 working days upon submission of complete plans and clearances.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Engineer's Office & Citizen's Charter",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-cpdc-zoning-locational",
+    "title": "Locational / Zoning Clearance, Land Reclassification & Socio-Economic Data",
+    "category": "Infrastructure, Zoning & Permits",
+    "officeId": "off-cpdc",
+    "officeName": "City Planning and Development Coordinator's Office (OCPDC)",
+    "officeHead": "Engr. Cynthia D. Audal (OIC)",
+    "officePhone": "(054) 299 9923",
+    "officeEmail": "ocpdcirigaofficial@gmail.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Property owners, business applicants, researchers, and developers verifying land use compliance in Iriga City.",
+    "summary": "Secure a Locational / Zoning Clearance for building or business permit applications, verify land use classification under the Comprehensive Land Use Plan (CLUP), or request official socio-economic and demographic profile data for Iriga City.",
+    "steps": [
+      "Submit your application form, site development/vicinity map, and proof of land ownership at the OCPDC office.",
+      "Zoning staff verify the parcel against Iriga City's Comprehensive Land Use Plan (CLUP) and zoning ordinances (and SP reclassification resolutions where applicable).",
+      "Pay the zoning/locational clearance fee at the City Treasurer's Office.",
+      "Present the Official Receipt to claim your signed Locational / Zoning Clearance."
+    ],
+    "requirements": [
+      "Duly notarized Locational Clearance Application Form",
+      "Vicinity Map and Site Development Plan",
+      "Certified copy of Title (TCT), Tax Declaration, and latest Real Property Tax Receipt",
+      "Barangay Clearance for Construction or Business"
+    ],
+    "feeNote": "Standard zoning and locational clearance fees under Ordinance No. 2020-02.",
+    "processingTimeNote": "1 to 3 working days (or longer if Sangguniang Panlungsod land reclassification is required).",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — OCPDC Directory & Citizen's Charter",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-architect-design-review",
+    "title": "Architectural Design Preparation & City Facility Plan Review",
+    "category": "Infrastructure, Zoning & Permits",
+    "officeId": "off-architect",
+    "officeName": "City Architect's Office",
+    "officeHead": "Arch. Romano R. Alvaro",
+    "officePhone": "(054) 299 5253",
+    "officeEmail": "cityarchitect_irigacity@yahoo.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Barangay councils, city departments, and project proponents coordinating architectural plans with the City Government.",
+    "summary": "Provides architectural planning, design review, heritage/parks design, and technical assistance for city and barangay public facilities across Iriga City.",
+    "steps": [
+      "Submit a formal request letter or project brief to the City Architect's Office.",
+      "Conduct site ocular inspection and design consultation with the City Architect's technical team.",
+      "Receive architectural schematic/working drawings for integration with the City Engineer's Office."
+    ],
+    "requirements": [
+      "Formal request letter from Barangay Council or requesting office/entity",
+      "Lot plan / site description and intended public use"
+    ],
+    "feeNote": "Free for official barangay and city government public infrastructure projects.",
+    "processingTimeNote": "Varies by project scope and site survey requirements.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Architect's Office Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-osca-senior-citizen",
+    "title": "Senior Citizen ID, Purchase Booklets & Social Pension Coordination",
+    "category": "Social Welfare, Senior & PWD",
+    "officeId": "off-osca",
+    "officeName": "Senior Citizens Affairs Office (OSCA)",
+    "officePhone": "(054) 299 6036",
+    "officeEmail": "seniorcitizeniriga@gmail.com",
+    "officeLocation": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Iriga City residents aged 60 years old and above.",
+    "summary": "Apply for a free OSCA Senior Citizen ID and Medicine/Grocery Purchase Booklets to avail of mandatory 20% discounts and VAT exemption under RA 9994, and inquire about indigent Social Pension validation.",
+    "steps": [
+      "Visit the Senior Citizens Affairs Office (OSCA) at the Iriga City Hall Complex.",
+      "Submit the accomplished OSCA Registration Form with proof of age/birth date and residency in Iriga City.",
+      "Have your ID photo and signature captured and receive your OSCA Senior Citizen ID and Purchase Booklets."
+    ],
+    "requirements": [
+      "Birth Certificate or any valid government ID showing date of birth (at least 60 years old)",
+      "Barangay Certificate of Residency in Iriga City",
+      "Two (2) recent 1x1 ID pictures"
+    ],
+    "feeNote": "Free of charge for new Senior Citizen ID and purchase booklets under RA 9994.",
+    "processingTimeNote": "Same-day issuance for complete walk-in applications.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — OSCA Directory & Social Pension Updates",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-pdao-pwd-id",
+    "title": "Persons with Disability (PWD) ID, Booklets & Assistive Support",
+    "category": "Social Welfare, Senior & PWD",
+    "officeId": "off-pdao",
+    "officeName": "Persons with Disability Affairs Office (PDAO)",
+    "officePhone": "(054) 299 9906",
+    "officeEmail": "pdaoiriga17@gmail.com",
+    "officeLocation": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Iriga City residents with long-term physical, mental, intellectual, sensory, or psychosocial disabilities certified by a licensed physician.",
+    "summary": "Register for a National/Local PWD Identification Card and purchase booklets under RA 10754, and coordinate access to assistive devices and livelihood/rehabilitation referrals.",
+    "steps": [
+      "Secure a Medical Certificate confirming the type of disability from the City Health Office or a licensed attending physician.",
+      "Submit the Philippine Registry Form for Persons with Disability (PRPWD) and requirements to PDAO at the Iriga City Hall Complex.",
+      "Receive your validated PWD ID card and medicine/grocery purchase booklets."
+    ],
+    "requirements": [
+      "Medical Certificate / Clinical Abstract stating the type of disability (or direct assessment for apparent disability)",
+      "Barangay Certificate of Residency in Iriga City",
+      "Two (2) 1x1 ID photos and Birth Certificate / valid ID"
+    ],
+    "feeNote": "Free of charge under RA 10754.",
+    "processingTimeNote": "Same-day release upon complete medical and residency verification.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — Persons with Disability Affairs Office (PDAO)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-cswdo-social-welfare",
+    "title": "Solo Parent ID, Certificate of Indigency, AICS Crisis Aid & Pre-Marriage Counseling",
+    "category": "Social Welfare, Senior & PWD",
+    "officeId": "off-cswdo",
+    "officeName": "City Social Welfare and Development Office (CSWDO)",
+    "officeHead": "Mrs. Maridel C. Verrosa",
+    "officePhone": "(054) 299 9913",
+    "officeEmail": "ilovecswdiriga@gmail.com",
+    "officeLocation": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Solo parents, indigent families in crisis, couples applying for a marriage license, women/children in need of protection, and IP/Agta families in Iriga City.",
+    "summary": "Provides Assistance to Individuals in Crisis Situations (AICS — medical, burial, educational, or food aid), Social Case Study Reports (SCSR), Solo Parent IDs (RA 11861), Pre-Marriage Counseling Certificates, and Indigenous Peoples (Agta) community welfare programs.",
+    "steps": [
+      "Visit the CSWDO intake desk at the Iriga City Hall Complex with your Barangay Certificate of Indigency/Residency and supporting documents.",
+      "Undergo social worker intake interview and assessment (for AICS, Social Case Study Report, or Solo Parent evaluation).",
+      "For Pre-Marriage Counseling: Register with the CSWDO / Population & CHO counseling team as part of your Marriage License application.",
+      "Claim your Social Case Study Report, Solo Parent ID, Counseling Certificate, or AICS endorsement."
+    ],
+    "requirements": [
+      "Barangay Certificate of Indigency / Residency",
+      "Valid ID of client / claimant",
+      "For Medical/Burial AICS: Hospital Bill, Medical Abstract/Prescription, or Registered Death Certificate & Funeral Contract",
+      "For Solo Parent ID: Birth Certificates of child/children, Barangay Certification as Solo Parent, and Sworn Affidavit of Solo Parent status"
+    ],
+    "feeNote": "Free of charge for social welfare intake, Solo Parent ID, and crisis assistance programs.",
+    "processingTimeNote": "Same day for intake and emergency AICS assessment; scheduled weekly sessions for Pre-Marriage Counseling.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — CSWDO Directory & Citizen's Charter",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-cho-health-sanitary",
+    "title": "Medical Consultations, Health Certificates & Sanitary Permits",
+    "category": "Health, Safety & Emergency",
+    "officeId": "off-health",
+    "officeName": "City Health Office (CHO)",
+    "officeHead": "Dr. Ronald G. Pereña",
+    "officePhone": "(054) 299 9912",
+    "officeEmail": "choiriga@gmail.com",
+    "officeLocation": "Iriga City Health Complex",
+    "whoCanApply": "All Iriga City residents, food/non-food handlers, students, job applicants, and business owners.",
+    "summary": "Access primary outpatient medical and dental consultations, maternal/child immunization, TB-DOTS, Medico-Legal/Medical Certificates for employment or schooling, Health Cards for food handlers, and Sanitary Permits for businesses.",
+    "steps": [
+      "Proceed to the Iriga City Health Office (CHO) triage and registration desk.",
+      "For Medical Consultation / Immunization: Present your patient record or Barangay Health Station referral for doctor/nurse consultation.",
+      "For Health Card / Sanitary Permit: Present required laboratory results (urinalysis, fecalysis, chest X-ray) and Official Receipt from the City Treasurer's Office.",
+      " undergo Sanitary Inspector verification and claim your signed Health Card, Medical Certificate, or Sanitary Permit."
+    ],
+    "requirements": [
+      "Valid ID and Barangay Residency / Health Referral",
+      "For Health Card & Sanitary Permit: Laboratory results (Chest X-Ray, Stool/Urine exam for food handlers) and Official Receipt"
+    ],
+    "feeNote": "Outpatient consultations and national immunization programs are free; regulatory fees apply for Medical Certificates, Health Cards, and Sanitary Permits under Ordinance No. 2020-02.",
+    "processingTimeNote": "Same-day release once laboratory results and inspection requirements are complete.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Health Office (CHO) Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-cdrrmo-emergency-rescue",
+    "title": "24/7 Emergency Medical/Rescue Response, Disaster Advisories & Safety Training",
+    "category": "Health, Safety & Emergency",
+    "officeId": "off-cdrrmo",
+    "officeName": "City Disaster Risk Reduction and Management Office (CDRRMO)",
+    "officePhone": "(054) 299 9918 / 0921 636 4018 / 0956 172 9656",
+    "officeEmail": "irigacitydrrmo@gmail.com",
+    "officeLocation": "CDRRMO Emergency Operations Center, Iriga City",
+    "whoCanApply": "All residents, schools, barangays, and travelers in Iriga City needing emergency rescue, ambulance response, or disaster preparedness training.",
+    "summary": "24/7 Emergency Operations Center (EOC) for medical emergencies, vehicular accidents, flood/typhoon/lahar evacuation around Mt. Iriga (Mt. Asog), and Basic Life Support / DRRM drills for barangays and schools.",
+    "steps": [
+      "For Emergencies: Call CDRRMO immediately at Landline (054) 299 9918, Smart 0921 636 4018 / 0921 903 3933, or Globe 0956 172 9656.",
+      "State the exact location/barangay landmark, nature of the emergency, number of patients, and callback number.",
+      "For DRRM Training or Weather/Disaster Certifications: Send a request letter to irigacitydrrmo@gmail.com or visit the CDRRMO EOC."
+    ],
+    "requirements": [
+      "No requirements for 24/7 emergency rescue and ambulance dispatch",
+      "Formal request letter from school, barangay, or organization for scheduled Basic Life Support (BLS) / earthquake / flood drills"
+    ],
+    "feeNote": "100% Free 24/7 public emergency service.",
+    "processingTimeNote": "Immediate 24/7 dispatch for emergency calls.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — CDRRMO Directory & 24/7 EOC Hotlines",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-peso-jobs-employment",
+    "title": "Job Placement, SPES Student Employment, Job Fairs & OFW Helpdesk",
+    "category": "Agriculture, Jobs & Livelihood",
+    "officeId": "off-econ-tourism-market-peso",
+    "officeName": "Public Employment Service Office (PESO Iriga)",
+    "officePhone": "(054) 299 9907",
+    "officeEmail": "irigapeso@gmail.com",
+    "officeLocation": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Jobseekers, fresh graduates, students/out-of-school youth (SPES), displaced workers (TUPAD), returning OFWs, and local employers.",
+    "summary": "Provides free job matching and referral letters, DOLE Special Program for Employment of Students (SPES), TUPAD emergency employment coordination, local/overseas job fairs, and OFW family welfare assistance.",
+    "steps": [
+      "Visit the Public Employment Service Office (PESO) at Iriga City Hall or email irigapeso@gmail.com with your updated resume/curriculum vitae.",
+      "Register in the PESO Employment Information System (PEIS) and review active job vacancies from accredited local and national employers.",
+      "Receive an official PESO Referral Letter or application slot for SPES / DOLE livelihood programs."
+    ],
+    "requirements": [
+      "Updated Resume / Personal Data Sheet and valid government ID",
+      "For SPES Applicants: Birth Certificate, latest school grades/registration form, and Certificate of Indigency / Parents' Income Tax Return"
+    ],
+    "feeNote": "Free of charge for all jobseekers and students.",
+    "processingTimeNote": "Same-day registration and job referral issuance.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — PESO Office Contact Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-agri-rsbsa-seeds",
+    "title": "RSBSA Farmer Registration, Seeds/Fertilizer Support & Tilapia/Fishpond Assistance",
+    "category": "Agriculture, Jobs & Livelihood",
+    "officeId": "off-agriculture",
+    "officeName": "City Agriculture Office",
+    "officeHead": "Engr. Janice B. Orciga",
+    "officePhone": "(054) 299 9916",
+    "officeEmail": "irigacity.agriculture@gmail.com",
+    "officeLocation": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Rice, corn, high-value crop, and livestock farmers, fisherfolk, and rural barangay associations across Iriga City (where 78.31% of land is agricultural).",
+    "summary": "Enroll in the Registry System for Basic Sectors in Agriculture (RSBSA), request certified seeds, fertilizer vouchers, organic farming technical assistance, PCIC crop insurance endorsement, and freshwater fingerling dispersal.",
+    "steps": [
+      "Coordinate with your Barangay Agricultural Technologist or visit the City Agriculture Office at the Iriga City Hall Complex.",
+      "Complete RSBSA enrollment or update your farm parcel profile.",
+      "Submit your request for seeds, soil analysis, farm machinery scheduling, or fingerling dispersal."
+    ],
+    "requirements": [
+      "RSBSA Enrollment Form signed by the Punong Barangay / Barangay Agriculture Chairman",
+      "Valid ID, 2x2 photo, and proof of farm cultivation/tenancy or ownership in Iriga City"
+    ],
+    "feeNote": "RSBSA registration and DA/LGU agricultural extension services are free.",
+    "processingTimeNote": "Same-day intake; input distribution follows seasonal planting and fingerling dispersal schedules.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Agriculture Office Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-vet-rabies-abattoir",
+    "title": "Anti-Rabies Pet Vaccination, Livestock Health Certificate & Slaughterhouse Inspection",
+    "category": "Agriculture, Jobs & Livelihood",
+    "officeId": "off-vet",
+    "officeName": "City Veterinary Office & City Abattoir",
+    "officeHead": "Dr. Virtudes N. Rayel (Acting City Veterinarian)",
+    "officePhone": "(054) 299 9926 / (054) 299 9910",
+    "officeEmail": "cityvetiriga@gmail.com",
+    "officeLocation": "Iriga City Hall / City Slaughterhouse",
+    "whoCanApply": "Pet owners, livestock/poultry raisers, meat vendors, and livestock traders in Iriga City.",
+    "summary": "Provides anti-rabies dog/cat vaccination, veterinary consultations, Veterinary Health Certificates for livestock transport, and ante-mortem/post-mortem meat inspection at the Iriga City Abattoir (Slaughterhouse).",
+    "steps": [
+      "For Pet Vaccination / Consultation: Bring your pet or coordinate with the City Veterinary Office ((054) 299 9926) during scheduled barangay or walk-in vaccination days.",
+      "For Livestock Transport / Slaughterhouse: Present livestock ownership certificates and undergo inspection at the City Abattoir ((054) 299 9910).",
+      "Pay applicable slaughterhouse/regulatory fees under Ordinance No. 2020-02 and claim the Meat Inspection or Veterinary Health Certificate."
+    ],
+    "requirements": [
+      "Pet vaccination card (if previously vaccinated) and owner's valid ID",
+      "For Livestock / Slaughterhouse: Barangay Livestock Ownership/Origin Certificate and Official Receipt"
+    ],
+    "feeNote": "Anti-rabies campaigns are free; slaughterhouse and livestock shipping inspection fees follow Ordinance No. 2020-02.",
+    "processingTimeNote": "Same-day inspection and certification.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — City Veterinary & Abattoir Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-market-terminal-permits",
+    "title": "Public Market Stall Lease, Tourism Accreditation & Central Terminal Dispatch",
+    "category": "Business, Trade & Market",
+    "officeId": "off-econ-tourism-market-peso",
+    "officeName": "Public Market, City Tourism & City Terminal Offices",
+    "officePhone": "Market: (054) 299 9927 | Tourism: (054) 299 9914 | Terminal: (054) 299 1978",
+    "officeEmail": "irigatourism@yahoo.com.ph / iccterminal2004@gmail.com",
+    "officeLocation": "Iriga City Public Market, Tourism Office & Central Terminal",
+    "whoCanApply": "Market vendors, transport operators (bus/jeepney/UV/tricycle), hotel/restaurant/resort operators, and event organizers.",
+    "summary": "Inquire about Public Market stall adjudication and cash tickets, register tourism establishments under the Iriga City Tourism Code (Ordinance No. 2024-07), or coordinate transport bay operations at the Iriga City Central Terminal.",
+    "steps": [
+      "For Public Market Stalls: Visit the Office of the Market Supervisor ((054) 299 9927) to check stall availability and lease requirements under the Revised Revenue Code.",
+      "For Tourism Registration & Tinagba / Cultural Coordination: Contact the City Tourism Office ((054) 299 9914 / irigatourism@yahoo.com.ph) under Ordinance No. 2024-07.",
+      "For Central Terminal Operations: Coordinate with the City Terminal Office ((054) 299 1978 / iccterminal2004@gmail.com)."
+    ],
+    "requirements": [
+      "Valid ID, Barangay Clearance, and Mayor's Permit application",
+      "DOT/City Tourism registration form (for hotels, inns, resorts, and tour operators under Ordinance No. 2024-07)"
+    ],
+    "feeNote": "Governed by Ordinance No. 2020-02 (Revised Revenue Code) and Ordinance No. 2024-07 (Iriga City Tourism Code).",
+    "processingTimeNote": "1 to 3 working days for routine clearances and registration.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — Market, Tourism & Terminal Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-sp-ordinance-copies",
+    "title": "Certified True Copies of City Ordinances, Resolutions & CSO Accreditation",
+    "category": "Legal, Legislative & Public Records",
+    "officeId": "off-sp",
+    "officeName": "Sangguniang Panlungsod (Office of the SP Secretary)",
+    "officeHead": "Mrs. Yolanda De Lima (Acting Secretary to the Sanggunian)",
+    "officePhone": "(054) 299 9924",
+    "officeEmail": "spiriga@yahoo.com",
+    "officeLocation": "Sangguniang Panlungsod Building, Iriga City Hall Complex",
+    "whoCanApply": "Citizens, barangay officials, researchers, businesses, and Civil Society Organizations (CSOs / NGOs / POs).",
+    "summary": "Request certified true copies of enacted City Ordinances, Resolutions, and Sangguniang Panlungsod session minutes, or apply for Civil Society Organization (CSO) accreditation for Local Special Bodies.",
+    "steps": [
+      "Visit the Office of the Secretary to the Sangguniang Panlungsod or email spiriga@yahoo.com specifying the Ordinance/Resolution number, title, or year.",
+      "Pay the certification fee per page at the City Treasurer's Office.",
+      "Present the Official Receipt to receive the stamped Certified True Copy from the SP Secretary."
+    ],
+    "requirements": [
+      "Request slip or letter indicating the Ordinance/Resolution number or subject matter",
+      "Official Receipt from the City Treasurer's Office",
+      "For CSO Accreditation: SEC/CDA/DOLE Registration, List of Officers, Financial Statement, and Accomplishment Report"
+    ],
+    "feeNote": "Standard secretary certification fee per page under Ordinance No. 2020-02.",
+    "processingTimeNote": "Same day to 2 working days depending on archive retrieval.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — Sangguniang Panlungsod Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-mayor-clearances-legal",
+    "title": "Mayor's Clearance, Executive Endorsements & Free Legal Consultation",
+    "category": "Legal, Legislative & Public Records",
+    "officeId": "off-mayor",
+    "officeName": "City Mayor's Office & City Legal Office",
+    "officeHead": "Hon. Wilfredo Rex C. Oliva / Atty. Maharlika Ramon C. Oaferina II / Atty. Rico D. Borromeo",
+    "officePhone": "Mayor's Office: (054) 299 1989 | Legal: (054) 299 9902",
+    "officeEmail": "cityofiriga@yahoo.com / irigacitylegaloffice@gmail.com",
+    "officeLocation": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+    "whoCanApply": "Iriga City residents applying for employment/PNP/AFP/foreign travel clearances, community organizations requesting permits, and indigent citizens needing legal guidance.",
+    "summary": "Secure a Mayor's Clearance for employment or official requirements, request permits for public assemblies/events, or consult the City Legal Office regarding local ordinances and public legal queries.",
+    "steps": [
+      "For Mayor's Clearance: Secure your Barangay Clearance, Police/Court Clearance, and Official Receipt from the City Treasurer's Office, then submit to the City Mayor's Office / City Administrator's Office.",
+      "For Public Event / Use of Facilities: Submit a formal letter of request to the City Mayor's Office (cityofiriga@yahoo.com) and coordinate with the General Services Office (GSO) at (054) 299 9922.",
+      "For Legal Queries: Visit the City Legal Office ((054) 299 9902 / irigacitylegaloffice@gmail.com)."
+    ],
+    "requirements": [
+      "Barangay Clearance and Police/MCTC Clearance (for Mayor's Clearance)",
+      "Valid government ID and Official Receipt from City Treasurer's Office"
+    ],
+    "feeNote": "Standard clearance fee under Ordinance No. 2020-02; legal consultations for indigent constituents are free.",
+    "processingTimeNote": "Same day for Mayor's Clearance with complete documents.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — Mayor's Office & Legal Office Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "srv-youth-library-sports",
+    "title": "Public Library Access, Youth (LYDO/SK) Programs & Sports Center Reservations",
+    "category": "Youth, Education & Culture",
+    "officeId": "off-library",
+    "officeName": "City Public Library, LYDO & Sports Development Unit",
+    "officePhone": "Library: (054) 299 6411 | Sports: (054) 299 9908",
+    "officeEmail": "irigacitypubliclibrary@gmail.com / irigacitylydo@gmail.com / irigacitysportsofficial@gmail.com",
+    "officeLocation": "Iriga City Public Library, City Hall Complex & Sports Center",
+    "whoCanApply": "Students, researchers, Sangguniang Kabataan (SK) councils, youth organizations, and sports clubs in Iriga City.",
+    "summary": "Use free study, research, and reading resources at the Iriga City Public Library, register youth organizations with the Local Youth Development Office (LYDO), or coordinate athletic programs with the Sports Development Unit.",
+    "steps": [
+      "For Public Library: Visit the Iriga City Public Library ((054) 299 6411) and sign the visitor/student logbook to access reading, local history, and research materials.",
+      "For Youth Organization Registration (YORP): Email irigacitylydo@gmail.com or visit the LYDO desk at City Hall.",
+      "For Sports Programs & Venues: Contact the Sports Development Unit at (054) 299 9908 or irigacitysportsofficial@gmail.com."
+    ],
+    "requirements": [
+      "School ID or valid ID for library use",
+      "List of youth officers, constitution/by-laws, and SK/LYDO registration form for youth organizations"
+    ],
+    "feeNote": "Free access to the Iriga City Public Library and LYDO youth registration.",
+    "processingTimeNote": "Immediate walk-in access for library services.",
+    "charterPdfUrl": "https://iriga.gov.ph/wp-content/uploads/2022/08/CGO-IRIGA-CITIZENS-CHARTER-2022.pdf",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "LGU Iriga Official Website — Public Library, LYDO & Sports Directory",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  }
+]
+

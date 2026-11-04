@@ -1,0 +1,350 @@
+[
+  {
+    "id": 25,
+    "name": "OpenHalalan: Philippine National and Local Election Dataset",
+    "description": "The largest open-source dataset of Philippine national and local election results: every winner since 2001, and every vote count since 2016. Vote counts thin out before 2016 -- 2013 is reconstructed from Rappler's archive (~91% of municipalities, local races plus a national senate total) and 2010 covers national races only (president, vice president, senator across ~93% of municipalities, from the Ianmaps Election Bank); earlier cycles have no ballot-level source yet. Overseas votes are counted in nationwide totals but not mapped to a locality, and only exist in the data for 2022 (other cycles cover domestic localities only, so their nationwide totals run slightly under COMELEC's official canvass; local races are unaffected). Middle names are recovered, not native, after 2013 -- ballot feeds report only surname and first name, so 2016 onward is filled in from COMELEC's official List of Elected Candidates, reaching 87% (2016), 88% (2019), 80% (2022); 2025 has no published list yet and sits at 56%, matched from each person's earlier record. Four BARMM Special Geographic Area municipality outlines are drawn from 2020 interim boundaries and are one barangay out for four of them; their vote totals are unaffected.",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 14,
+      "name": "Leung, R., Alejandro, A., Acuna, R., Buot, J., Go, C., & Nable, J."
+    },
+    "sizeBytes": 62775560,
+    "license": "ODbL v1.0",
+    "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "latestVersionDate": "2026-07-15",
+    "resourceCount": 2,
+    "tags": [
+      "elections",
+      "comelec",
+      "national elections",
+      "local elections",
+      "vote counts",
+      "election winners",
+      "philippines",
+      "politics"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/25",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/25",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/25",
+      "sourceName": "BetterGov.ph Open Data Portal (OpenHalalan: Philippine National and Loc)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/25"
+    }
+  },
+  {
+    "id": 23,
+    "name": "Philippine Barangay Boundaries (Hierarchical GeoJSON)",
+    "description": "Curated hierarchical Philippine administrative boundary data as per-class GeoJSON files — barangays, municipalities, component cities, highly urbanized cities, independent component cities, provinces, regions, and special geographic areas — with every polygon annotated with its canonical PSGC code. Derived from PSA Philippine Standard Geographic Code snapshots (2023-10-24) and NAMRIA administrative-boundary shapefiles (v2023-11-06).",
+    "category": {
+      "id": 9,
+      "name": "Miscellaneous"
+    },
+    "publisher": {
+      "id": 13,
+      "name": "Manuel Balmeo"
+    },
+    "sizeBytes": 92352134,
+    "license": "MIT",
+    "licenseUrl": "https://github.com/bendlikeabamboo/barangay-boundaries-repository/blob/main/LICENSE",
+    "latestVersionDate": "2026-06-16",
+    "resourceCount": 16,
+    "tags": [
+      "geojson",
+      "barangay",
+      "boundaries",
+      "psgc",
+      "municipality",
+      "province",
+      "region",
+      "namria",
+      "psa",
+      "geospatial",
+      "administrative"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/23",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/23",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/23",
+      "sourceName": "BetterGov.ph Open Data Portal (Philippine Barangay Boundaries (Hierarch)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/23"
+    }
+  },
+  {
+    "id": 22,
+    "name": "Project NOAH Hazard Maps",
+    "description": "The Project NOAH (Nationwide Operational Assessment of Hazards) Hazard Maps is a comprehensive collection of geospatial datasets covering natural hazard assessments across the Philippines. The dataset includes three major hazard types: flood, landslide, and storm surge hazard maps.",
+    "category": {
+      "id": 12,
+      "name": "Weather and Climate"
+    },
+    "publisher": {
+      "id": 12,
+      "name": "Department of Science and Technology"
+    },
+    "sizeBytes": 5551470387,
+    "license": "ODC-ODbL",
+    "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "latestVersionDate": "2026-04-11",
+    "resourceCount": 1,
+    "tags": [
+      "hazard maps",
+      "flood",
+      "storm surge",
+      "debris flow",
+      "landslide"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/22",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/22",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/22",
+      "sourceName": "BetterGov.ph Open Data Portal (Project NOAH Hazard Maps)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/22"
+    }
+  },
+  {
+    "id": 24,
+    "name": "Philippine Legal Documents Library",
+    "description": "A consolidated corpus of 114,340 Philippine legal documents spanning 1900-2025, converted from Lawphil.net HTML into structured Markdown/Parquet. Covers four categories: Supreme Court jurisprudence (68,080 decisions), legislative statutes/Republic Acts (19,793), executive issuances (26,458), and the Philippine constitutions (9).",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 2,
+      "name": "BetterGov.PH"
+    },
+    "sizeBytes": 2069260376,
+    "license": "CC BY-NC 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "latestVersionDate": "2026-01-31",
+    "resourceCount": 5,
+    "tags": [
+      "legal",
+      "jurisprudence",
+      "statutes",
+      "republic acts",
+      "executive issuances",
+      "supreme court",
+      "legislation",
+      "constitution",
+      "philippines"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/24",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/24",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/24",
+      "sourceName": "BetterGov.ph Open Data Portal (Philippine Legal Documents Library)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/24"
+    }
+  },
+  {
+    "id": 20,
+    "name": "BIR Tax Collection Data",
+    "description": "Bureau of Internal Revenue (BIR) tax collection data by region and tax type, powering the BetterGov.PH Tax Collection Transparency Dashboard. Contains monthly and annual tax collection figures across different regions of the Philippines.",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 2,
+      "name": "BetterGov.PH"
+    },
+    "sizeBytes": 218951,
+    "license": "CC0 1.0 Universal",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "latestVersionDate": "2025-12-03",
+    "resourceCount": 7,
+    "tags": [
+      "bir",
+      "tax collection",
+      "revenue",
+      "government finance",
+      "transparency"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/20",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/20",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/20",
+      "sourceName": "BetterGov.ph Open Data Portal (BIR Tax Collection Data)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/20"
+    }
+  },
+  {
+    "id": 19,
+    "name": "DPWH Infrastructure Transparency Dataset",
+    "description": "A comprehensive collection of Philippine Department of Public Works and Highways (DPWH) infrastructure project data. The dataset\n  encompasses contract identification, project descriptions, budget tracking, progress monitoring, contractor details, temporal\n  information, funding sources, livestream capabilities, geospatial coordinates, and regional location data.",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 2,
+      "name": "BetterGov.PH"
+    },
+    "sizeBytes": 21811200,
+    "license": "CC0 1.0 Universal",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "latestVersionDate": "2025-11-29",
+    "resourceCount": 1,
+    "tags": [
+      "infrastructure",
+      "dpwh",
+      "transparency",
+      "public works",
+      "geospatial",
+      "contracts",
+      "government"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/19",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/19",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/19",
+      "sourceName": "BetterGov.ph Open Data Portal (DPWH Infrastructure Transparency Dataset)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/19"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Open PhilGEPS Data",
+    "description": "The data for BetterGov.PH Open PhilGEPS project, which is a comprehensive, open-source government procurement analytics dashboard for the Philippines Government Electronic Procurement System (PhilGEPS).",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 2,
+      "name": "BetterGov.PH"
+    },
+    "sizeBytes": 524672511,
+    "license": "CC0 1.0 Universal",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "latestVersionDate": "2025-11-13",
+    "resourceCount": 5,
+    "tags": [
+      "procurement",
+      "philgeps",
+      "contracts",
+      "analytics"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/5",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/5",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/5",
+      "sourceName": "BetterGov.ph Open Data Portal (Open PhilGEPS Data)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/5"
+    }
+  },
+  {
+    "id": 13,
+    "name": "National Government Outstanding Debt",
+    "description": "Comprehensive data on the Philippine National Government's outstanding debt from the Bureau of the Treasury (BTr). This dataset provides detailed monthly and annual breakdowns of government debt stock, including domestic and foreign debt obligations. Historical data spans from 1986 to present, offering insights into the evolution of national government debt levels.",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 6,
+      "name": "Bureau of the Treasury"
+    },
+    "sizeBytes": 5661142,
+    "license": "Public Domain",
+    "licenseUrl": null,
+    "latestVersionDate": "2025-11-07",
+    "resourceCount": 14,
+    "tags": [
+      "national debt",
+      "government debt",
+      "outstanding debt",
+      "debt stock",
+      "public debt",
+      "fiscal data",
+      "government obligations"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/13",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/13",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/13",
+      "sourceName": "BetterGov.ph Open Data Portal (National Government Outstanding Debt)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/13"
+    }
+  },
+  {
+    "id": 12,
+    "name": "Government Securities Statistics",
+    "description": "Comprehensive government securities data from the Bureau of the Treasury (BTr) covering outstanding government securities, issuances, and interest rates. This dataset provides detailed monthly and annual information on Philippine government bonds, treasury bills, and other debt instruments from 1983 to present, including outstanding amounts, new issuances, and market rates.",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 6,
+      "name": "Bureau of the Treasury"
+    },
+    "sizeBytes": 3022400,
+    "license": "Public Domain",
+    "licenseUrl": null,
+    "latestVersionDate": "2025-10-30",
+    "resourceCount": 12,
+    "tags": [
+      "government securities",
+      "bonds",
+      "treasury bills",
+      "debt instruments",
+      "interest rates",
+      "government debt",
+      "issuances",
+      "fixed income"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/12",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/12",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/12",
+      "sourceName": "BetterGov.ph Open Data Portal (Government Securities Statistics)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/12"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Raw Philippine Data",
+    "description": "Raw data about Philippine politicians, public officials, and legislative documents collected from various sources. The data is intended for research, analysis, and civic technology purposes.",
+    "category": {
+      "id": 7,
+      "name": "Government"
+    },
+    "publisher": {
+      "id": 2,
+      "name": "BetterGov.PH"
+    },
+    "sizeBytes": 4362239,
+    "license": "CC0 1.0 Universal",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "latestVersionDate": "2025-10-25",
+    "resourceCount": 2,
+    "tags": [
+      "politicians",
+      "officials",
+      "legislative",
+      "civic tech"
+    ],
+    "portalUrl": "https://data.bettergov.ph/datasets/6",
+    "apiUrl": "https://data.bettergov.ph/api/v1/datasets/6",
+    "citation": {
+      "sourceUrl": "https://data.bettergov.ph/datasets/6",
+      "sourceName": "BetterGov.ph Open Data Portal (Raw Philippine Data)",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://data.bettergov.ph/api/v1/datasets/6"
+    }
+  }
+]

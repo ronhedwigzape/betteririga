@@ -1,0 +1,84 @@
+{
+  "guidelines": [
+    "This Freedom Wall is an independent community board on BetterIriga.org where every Irigueño can leave an anonymous sticky note.",
+    "Sticky notes stay right here on this website and are never forwarded or emailed to City Hall.",
+    "Protect personal privacy (RA 10173 Data Privacy Act): never post private home addresses, personal mobile numbers, or confidential medical/financial records.",
+    "Be kind, constructive, and respectful — share your thoughts, barangay ideas, encouragement, or everyday stories from Iriga City."
+  ],
+  "canvas": {
+    "width": 6000,
+    "height": 6000,
+    "minScale": 0.25,
+    "maxScale": 2,
+    "defaultCenterX": 2500,
+    "defaultCenterY": 2500,
+    "maxMessageLength": 500
+  },
+  "stickyColors": [
+    {
+      "id": "yellow",
+      "label": "Yellow",
+      "cardClass": "bg-yellow-100 border-yellow-300 text-yellow-900",
+      "dotClass": "bg-yellow-400"
+    },
+    {
+      "id": "blue",
+      "label": "Blue",
+      "cardClass": "bg-blue-100 border-blue-300 text-blue-900",
+      "dotClass": "bg-blue-400"
+    },
+    {
+      "id": "green",
+      "label": "Green",
+      "cardClass": "bg-green-100 border-green-300 text-green-900",
+      "dotClass": "bg-green-400"
+    },
+    {
+      "id": "pink",
+      "label": "Pink",
+      "cardClass": "bg-pink-100 border-pink-300 text-pink-900",
+      "dotClass": "bg-pink-400"
+    },
+    {
+      "id": "purple",
+      "label": "Purple",
+      "cardClass": "bg-purple-100 border-purple-300 text-purple-900",
+      "dotClass": "bg-purple-400"
+    },
+    {
+      "id": "orange",
+      "label": "Orange",
+      "cardClass": "bg-orange-100 border-orange-300 text-orange-900",
+      "dotClass": "bg-orange-400"
+    }
+  ],
+  "uiCopy": {
+    "toolbarBadge": "Freedom Wall",
+    "toolbarHint": "scroll to zoom · drag to pan",
+    "resetViewLabel": "Reset view",
+    "addNoteButtonLabel": "Add Note",
+    "emptyStateTitle": "Be the first — tap Add Note",
+    "emptyStateSubtitle": "No sticky notes yet. Tap \"+ Add Note\" to place the first anonymous note on the Irigueño Freedom Wall.",
+    "anonymousFooterLabel": "Anonymous",
+    "modalTitle": "Post a Note",
+    "modalSubtitle": "Leave an anonymous sticky note on the community canvas.",
+    "messagePlaceholder": "Type your message here…",
+    "colorPickerLabel": "Color",
+    "previewLabel": "Preview — your note will look like this",
+    "cancelButtonLabel": "Cancel",
+    "submitButtonLabel": "Post Note",
+    "submittingButtonLabel": "Posting…",
+    "ctaSectionEyebrow": "Freedom Wall",
+    "ctaSectionTitle": "Share what's on your mind",
+    "ctaSectionSubtitle": "Leave an anonymous sticky note on our community Freedom Wall. Your thoughts, ideas, and stories matter — post one today.",
+    "ctaPrimaryButtonLabel": "Post a Note",
+    "ctaSecondaryButtonLabel": "Browse the Wall",
+    "ctaTrustNote": "100% anonymous · No account needed · Community moderated"
+  },
+  "seedNotes": [],
+  "citation": {
+    "sourceUrl": "https://www.betterlibmanan.org/freedom-wall",
+    "sourceName": "BetterIriga.org Community Freedom Wall (BetterGov.ph Sibling Platform)",
+    "retrievedAt": "2026-11-04"
+  }
+}

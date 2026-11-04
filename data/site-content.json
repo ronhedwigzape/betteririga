@@ -1,0 +1,452 @@
+{
+  "metadata": {
+    "siteUrl": "https://betteririga.org",
+    "siteName": "BetterIriga.org",
+    "defaultTitle": "BetterIriga.org | Public Guide & Civic Transparency for Iriga City",
+    "titleTemplate": "%s | BetterIriga.org",
+    "defaultDescription": "Independent, volunteer-run public guide for Iriga City, Camarines Sur (Region V – Bicol). Find City Hall services, elected officials, 36 barangay captains, budget summaries, local projects, ordinances, and 29 City Hall office hotlines.",
+    "openGraphTitle": "BetterIriga.org | Public Guide for Iriga City, Camarines Sur",
+    "openGraphDescription": "Plain-language public guide for Iriga City, Camarines Sur — services, officials, city budget, projects, ordinances, and 29 City Hall office contacts.",
+    "logoPath": "/logo.jpg",
+    "logoAlt": "BetterIriga.org Official Emblem",
+    "locale": "en_PH",
+    "pages": {
+      "home": {
+        "title": "BetterIriga.org | Public Guide & Civic Transparency for Iriga City",
+        "description": "Independent community guide for Iriga City, Camarines Sur. Find City Hall services, 24/7 hotlines, elected officials, 36 barangays, budget summaries, projects, ordinances, and the Freedom Wall."
+      },
+      "services": {
+        "title": "All Iriga City Services & Citizen's Charter Guide",
+        "description": "Browse step-by-step requirements for Iriga City Hall services across 29 offices — Birth/Marriage/Death Certificates, Business Permits, Real Property Tax, Cedula, Building Permits, Senior/PWD IDs, Health Permits, and PESO Jobs."
+      },
+      "officials": {
+        "title": "City Officials, Department Heads & 36 Barangays",
+        "description": "Plain-language guide to Iriga City's 2025–2028 elected leaders (Mayor Wilfredo Rex C. Oliva, Vice Mayor Edsel S. Dimaiwat, and 10 City Councilors), 17 department heads, and all 36 barangays."
+      },
+      "budget": {
+        "title": "City Budget, Public Funds & Audit Guide",
+        "description": "Plain-language guide to Iriga City's annual budget, National Tax Allotment (NTA) shares (2022–2025 reaching ₱913.50M), mandatory community funds, and public audit reports."
+      },
+      "projects": {
+        "title": "Projects, Public Works & Social Programs",
+        "description": "Plain-language guide to ongoing and completed infrastructure projects, public works, and social welfare programs in Iriga City."
+      },
+      "ordinances": {
+        "title": "City Laws, Ordinances & Resolutions",
+        "description": "Plain-language guide to Iriga City ordinances and resolutions, including the 2023–2032 Land Use Plan, Revenue Code, Tourism Code, Plastic Ban, and Mandatory CCTV Ordinance."
+      },
+      "legislative": {
+        "title": "Sangguniang Panlungsod & City Legislation",
+        "description": "Official legislative guide to the Sangguniang Panlungsod of Iriga City, presiding officer Vice Mayor Edsel Dimaiwat, city councilors, and enacted ordinances & resolutions."
+      },
+      "statistics": {
+        "title": "City Statistics & Key Data Indicators | BetterIriga.org",
+        "description": "Official population statistics, PSA demographics, barangay breakdowns, DBM revenue allocations, and DTI CMCI competitiveness rankings for Iriga City."
+      },
+      "contacts": {
+        "title": "City Hall Phonebook, 29 Offices & 24/7 Emergency Hotlines",
+        "description": "Tap-to-call phone numbers ((054) 299-xxxx), email addresses for all 29 Iriga City Hall offices, 24/7 CDRRMO emergency rescue numbers, and official Facebook pages."
+      },
+      "freedomWall": {
+        "title": "Community Freedom Wall | BetterIriga.org",
+        "description": "Leave an anonymous sticky note on the BetterIriga.org Community Freedom Wall. Share your thoughts, ideas, and stories with fellow Irigueños."
+      },
+      "about": {
+        "title": "About BetterIriga.org & Official Public Sources",
+        "description": "Learn how BetterIriga.org works, where our public records come from (City Hall, DBM, PSA, DILG, BetterGov.ph), and how we protect personal privacy under RA 11055."
+      },
+      "verification": {
+        "title": "Public Source Checklist & Accuracy Report",
+        "description": "See where every single record on BetterIriga.org comes from, when it was last checked, and which government documents are still awaiting online publication."
+      },
+      "openData": {
+        "title": "Open Civic Data, BetterGov.ph APIs & Public Datasets",
+        "description": "Explore open APIs, PSGC geographic datasets, BetterGov.ph public works feeds, and official REST endpoints powering BetterIriga.org."
+      }
+    }
+  },
+  "brand": {
+    "name": "BetterIriga",
+    "domainSuffix": ".org",
+    "fullDomain": "BetterIriga.org",
+    "regionBadge": "Camarines Sur • Region V (Bicol)",
+    "tagline": "Public Service & Transparency Guide for Iriga City",
+    "hotlineBarLabel": "Iriga 24/7 Emergency Hotlines:",
+    "cityQuickBadge": "Iriga City • ZIP 4431",
+    "disclaimerBanner": "Community Guide: BetterIriga.org is an independent, volunteer-run public guide under BetterGov.ph and is not an official City Hall website.",
+    "verifiedPillText": "100% Checked Against Official Sources",
+    "verifyLinkLabel": "How We Check Every Fact →",
+    "costToPeopleLabel": "Cost to the People of Iriga",
+    "costToPeopleValue": "₱0",
+    "volunteerEmail": "volunteer@betteririga.org",
+    "communityUrl": "https://bettergov.ph",
+    "logos": {
+      "lightMode": "/BetterIriga-Blue-Foreground-Transparent.png",
+      "darkMode": "/BetterIriga-White-Foreground-Transparent.png",
+      "badge": "/BetterIriga-Badge-BlueAndWhite-Transparent.png",
+      "alt": "BetterIriga.org Official Emblem"
+    }
+  },
+  "volunteerModal": {
+    "title": "Be Part of Something Greater",
+    "subtitle": "Iriga City, Camarines Sur deserves a clear, honest, and easy-to-use public guide. Help us keep it growing for every Irigueño.",
+    "lead": "We welcome fellow Irigueños and Bicolanos who want to help their community through their skills:",
+    "roles": [
+      "Community Writers",
+      "Visual & Print Guides",
+      "Public Records Research",
+      "Bicol / Rinconada Translation",
+      "Barangay Outreach"
+    ],
+    "primaryCtaLabel": "I Want to Volunteer",
+    "secondaryCtaLabel": "Visit Freedom Wall",
+    "skipLabel": "Maybe Later"
+  },
+  "navigation": [
+    { "href": "/", "label": "Home", "iconKey": "home" },
+    { "href": "/services", "label": "Services", "iconKey": "services" },
+    { "href": "/officials", "label": "Officials", "iconKey": "officials" },
+    { "href": "/budget", "label": "Budget", "iconKey": "budget" },
+    { "href": "/projects", "label": "Projects", "iconKey": "projects" },
+    { "href": "/legislative", "label": "Legislative", "iconKey": "legislative" },
+    { "href": "/statistics", "label": "Statistics", "iconKey": "statistics" },
+    { "href": "/contacts", "label": "Contacts", "iconKey": "contacts" },
+    { "href": "/freedom-wall", "label": "Wall", "iconKey": "freedomWall" },
+    { "href": "/verification", "label": "Verify", "iconKey": "verification" },
+    { "href": "/about", "label": "About", "iconKey": "about" }
+  ],
+  "directoryControls": {
+    "serviceCategories": [
+      "all",
+      "Certificates & Civil Registry",
+      "Business, Trade & Market",
+      "Taxes, Assessment & Treasury",
+      "Infrastructure, Zoning & Permits",
+      "Social Welfare, Senior & PWD",
+      "Health, Safety & Emergency",
+      "Agriculture, Jobs & Livelihood",
+      "Legal, Legislative & Public Records",
+      "Youth, Education & Culture"
+    ],
+    "officialTabs": [
+      {
+        "id": "elected-2025",
+        "label": "2025–2028 Elected Leaders",
+        "countHint": "13 Officials"
+      },
+      {
+        "id": "appointed",
+        "label": "City Hall Department Heads",
+        "countHint": "17 Heads"
+      },
+      {
+        "id": "barangays",
+        "label": "36 Barangays & Captains",
+        "countHint": "36 Barangays"
+      },
+      {
+        "id": "elected-2022",
+        "label": "2022–2025 Previous Term Notes",
+        "countHint": "13 Officials"
+      }
+    ],
+    "barangayClassifications": [
+      "all",
+      "Urban / Poblacion & Environs",
+      "Rural / Upland & Agro-Ecological"
+    ],
+    "projectSourceTabs": [
+      {
+        "id": "all",
+        "label": "All Tracked Works"
+      },
+      {
+        "id": "lgu-iriga",
+        "label": "City Hall & Local Programs"
+      },
+      {
+        "id": "bettergov",
+        "label": "DPWH & 5th District Works"
+      }
+    ],
+    "projectStatuses": [
+      "all",
+      "Ongoing",
+      "Completed",
+      "Planning"
+    ],
+    "projectCategories": [
+      "all",
+      "Infrastructure",
+      "Social Program",
+      "Health & Rehabilitation"
+    ],
+    "ordinanceKinds": [
+      "all",
+      "Ordinance",
+      "Resolution"
+    ],
+    "ordinanceTopics": [
+      "all",
+      "Land Use & Zoning",
+      "Revenue & Taxation",
+      "Tourism & Culture",
+      "Environment & Agriculture",
+      "Public Safety",
+      "Business & Commerce"
+    ],
+    "contactCategories": [
+      "all",
+      "Executive & Legislative",
+      "Finance & Administration",
+      "Infrastructure & Planning",
+      "Public Safety & Operations",
+      "Health, Social Welfare & Sectors",
+      "Economic, Agriculture & Tourism"
+    ],
+    "validCivicSections": [
+      { "id": "site-content", "label": "Site Content & Metadata", "path": "/api/civic-data/site-content" },
+      { "id": "city-profile", "label": "Iriga City Profile & Geography", "path": "/api/civic-data/city-profile" },
+      { "id": "services", "label": "City Hall Services Directory", "path": "/api/civic-data/services" },
+      { "id": "officials", "label": "Elected & Appointed Officials", "path": "/api/civic-data/officials" },
+      { "id": "barangays", "label": "36 Barangays Directory", "path": "/api/civic-data/barangays" },
+      { "id": "budget", "label": "National Tax Allotments & Budget Rules", "path": "/api/civic-data/budget" },
+      { "id": "projects", "label": "Local Infrastructure & Social Programs", "path": "/api/civic-data/projects" },
+      { "id": "bettergov", "label": "BetterGov.ph DPWH 5th District Tracker", "path": "/api/civic-data/bettergov" },
+      { "id": "ordinances", "label": "City Ordinances & Resolutions", "path": "/api/civic-data/ordinances" },
+      { "id": "contacts", "label": "City Hall Offices & Phonebook", "path": "/api/civic-data/contacts" },
+      { "id": "freedom-wall", "label": "Freedom Wall Config & Guidelines", "path": "/api/civic-data/freedom-wall" },
+      { "id": "sources", "label": "Primary Data Sources & Citations", "path": "/api/civic-data/sources" }
+    ],
+    "sortOptions": {
+      "projects": [
+        { "id": "default", "label": "Standard Order" },
+        { "id": "date-desc", "label": "Newest Duration / Period First" },
+        { "id": "date-asc", "label": "Oldest Duration / Period First" },
+        { "id": "amount-desc", "label": "Highest Budget First" },
+        { "id": "amount-asc", "label": "Lowest Budget First" },
+        { "id": "title-asc", "label": "Title (A to Z)" }
+      ],
+      "ordinances": [
+        { "id": "year-desc", "label": "Newest Year First" },
+        { "id": "year-asc", "label": "Oldest Year First" },
+        { "id": "number-asc", "label": "Number (Ascending)" }
+      ],
+      "services": [
+        { "id": "title-asc", "label": "Service Name (A to Z)" },
+        { "id": "category-asc", "label": "Category" }
+      ],
+      "contacts": [
+        { "id": "name-asc", "label": "Office Name (A to Z)" },
+        { "id": "category-asc", "label": "Category" }
+      ]
+    },
+    "carriers": {
+      "smart": {
+        "name": "Smart",
+        "fullName": "Smart Communications",
+        "prefixes": ["smart", "0921", "0928", "0918", "0919", "0998"],
+        "logo": "/carriers/smart.png",
+        "icon": "/carriers/smart-icon.png"
+      },
+      "globe": {
+        "name": "Globe",
+        "fullName": "Globe Telecom",
+        "prefixes": ["globe", "0956", "0917", "0927", "0915", "0916"],
+        "logo": "/carriers/globe.png",
+        "icon": "/carriers/globe-icon.png"
+      },
+      "landline": {
+        "name": "Landline",
+        "fullName": "Landline / PLDT",
+        "prefixes": ["054", "landline", "pldt", "telephone"],
+        "logo": "",
+        "icon": ""
+      }
+    }
+  },
+  "searchFilters": [
+    { "label": "All Topics", "section": "all" },
+    { "label": "Services", "section": "services" },
+    { "label": "Officials", "section": "officials" },
+    { "label": "Budget & Funds", "section": "budget" },
+    { "label": "Projects", "section": "projects" },
+    { "label": "BetterGov.ph Records", "section": "bettergov" },
+    { "label": "Ordinances", "section": "ordinances" },
+    { "label": "Offices & Hotlines", "section": "contacts" },
+    { "label": "36 Barangays", "section": "barangays" }
+  ],
+  "home": {
+    "heroBadgePrefix": "Public Guide for Iriga City Residents",
+    "heroTitleHighlight": "Iriga City",
+    "heroTitleMain": "Clear, Honest Public Information for Every Irigueño",
+    "heroSubtitle": "Find City Hall services, Citizen's Charter steps, 24/7 emergency hotlines, your elected leaders, 36 barangay captains, city ordinances, public works projects, budget summaries, and the Community Freedom Wall — written in plain, everyday language and backed by official records.",
+    "heroMedia": {
+      "videoMp4": "/hero-background.mp4",
+      "videoWebm": "/hero-background.webm",
+      "poster": "/hero-video-poster.jpg",
+      "alt": "Iriga City aerial view of Ilian Hill and Mount Asog by MADAYAN",
+      "credit": "Aerial Footage: MADAYAN (YouTube)",
+      "creditUrl": "https://www.youtube.com/watch?v=wF_dpVQhMEE"
+    },
+    "civicPillars": [
+      "100% Traced to Official Primary Sources",
+      "Zero Guesswork & Full Fiscal Transparency",
+      "Citizen's Charter & Sangguniang Panlungsod Laws",
+      "24/7 Hotlines & Community Freedom Wall"
+    ],
+    "searchPlaceholder": "What are you looking for? (e.g., Birth Certificate, Business Permit, Mayor's Office phone, CDRRMO hotline, Tourism Code...)",
+    "popularSearches": [
+      "Birth Certificate",
+      "Business Permit",
+      "Real Property Tax",
+      "Senior Citizen ID",
+      "Mayor Rex Oliva",
+      "CDRRMO Emergency Hotline",
+      "2025 City Budget",
+      "Tourism Code"
+    ],
+    "pillarsHeading": "What Would You Like to Do Today?",
+    "pillarsSubheading": "Choose a topic below to check Iriga City Hall service steps, look up verified public records, or leave a sticky note on our community wall.",
+    "pillars": [
+      {
+        "id": "services",
+        "href": "/services",
+        "badge": "19 Citizen's Charter Services • All Offices",
+        "title": "1. What City Hall Service Do You Need?",
+        "description": "Step-by-step plain-language guides for Birth/Marriage/Death Certificates, Business Permits, Real Property Tax, Cedula, Building Permits, Senior/PWD/Solo Parent IDs, Health Permits, and PESO Jobs.",
+        "cta": "Browse All Iriga City Services"
+      },
+      {
+        "id": "officials",
+        "href": "/officials",
+        "badge": "12 Elected • 17 Dept Heads • 36 Barangays",
+        "title": "2. Who Leads Our City & Barangays?",
+        "description": "Meet City Mayor Wilfredo Rex C. Oliva, Vice Mayor Edsel S. Dimaiwat, the 10 City Councilors (2025–2028), 17 City Hall Department Heads, and all 36 Barangay Captains.",
+        "cta": "View City Leaders & 36 Barangays"
+      },
+      {
+        "id": "budget",
+        "href": "/budget",
+        "badge": "₱913.50 Million 2025 National Allotment",
+        "title": "3. How Much Is Iriga City's Budget?",
+        "description": "See how much funding Iriga City receives from the national government (₱913.50M in 2025), how the law requires it to be spent on development and disaster readiness, and which reports are available.",
+        "cta": "Understand the City Budget"
+      },
+      {
+        "id": "projects",
+        "href": "/projects",
+        "badge": "City Hall & BetterGov.ph Public Works",
+        "title": "4. What Projects & Programs Are Happening?",
+        "description": "Track ongoing and completed roads, buildings, hospital plans, 5th District public works (from BetterGov.ph), senior citizen pensions, and Agta community programs.",
+        "cta": "Browse Projects & Social Programs"
+      },
+      {
+        "id": "ordinances",
+        "href": "/ordinances",
+        "badge": "11 Verified Ordinances & Resolutions",
+        "title": "5. What Are Iriga City's Local Laws?",
+        "description": "Read plain-language summaries and download official copies of Iriga City ordinances — including the plastic bag ban, mandatory business CCTV rules, revenue code, and tourism code.",
+        "cta": "Read City Laws & Ordinances"
+      },
+      {
+        "id": "contacts",
+        "href": "/contacts",
+        "badge": "29 City Hall Offices • 24/7 Rescue Lines",
+        "title": "6. How Do I Contact a City Office or Hotline?",
+        "description": "Get tap-to-call landline numbers ((054) 299-xxxx), email addresses for all 29 City Hall offices, 24/7 CDRRMO rescue numbers, and official Facebook links.",
+        "cta": "Open Phone & Office Directory"
+      },
+      {
+        "id": "freedom-wall",
+        "href": "/freedom-wall",
+        "badge": "Anonymous Sticky Notes • Community Board",
+        "title": "7. Leave a Sticky Note on the Freedom Wall",
+        "description": "Share what's on your mind — leave an anonymous sticky note on our interactive community canvas. Your thoughts, ideas, and stories stay right here on BetterIriga.org.",
+        "cta": "Open the Freedom Wall"
+      },
+      {
+        "id": "verification",
+        "href": "/verification",
+        "badge": "100% Checked • Official Source Checklist",
+        "title": "8. How Do I Know This Information Is Accurate?",
+        "description": "Visit our dedicated Source Checklist page to see where every single number comes from, when it was last checked, and why unverified items are marked openly.",
+        "cta": "Open Source Checklist"
+      }
+    ],
+    "betterGovHighlightTitle": "Backed by Official City Records & BetterGov.ph Public Data",
+    "betterGovHighlightSubtitle": "Alongside Iriga City Hall's official website and national agencies (DBM, PSA, DILG), BetterIriga brings together public works and road projects tracked by BetterGov.ph for Iriga City and Camarines Sur's 5th District (Rinconada)."
+  },
+  "pages": {
+    "services": {
+      "eyebrow": "Iriga City Citizen's Charter & Public Service Guide",
+      "title": "All Iriga City Government Services in Plain Language",
+      "subtitle": "Need a Birth Certificate, Business Permit, Real Property Tax receipt, Senior Citizen or PWD ID, Building Permit, Medical Certificate, or Job Referral? Browse all verified services across Iriga City Hall's 29 offices below."
+    },
+    "officials": {
+      "eyebrow": "Iriga City Leadership & Barangay Guide",
+      "title": "City Officials, Department Heads & 36 Barangays",
+      "subtitle": "Here you can find the people serving Iriga City — from the Mayor, Vice Mayor, and 10 City Councilors elected for 2025–2028, to the heads of City Hall departments and the Punong Barangay (Captain) of each of our 36 barangays."
+    },
+    "budget": {
+      "eyebrow": "Plain-Language City Budget Guide",
+      "title": "Where Does Iriga City's Public Money Come From?",
+      "subtitle": "Every year, Iriga City receives its National Tax Allotment (NTA) share from national taxes collected across the Philippines, as reported by the Department of Budget and Management (DBM) and tracked by BetterGov.ph."
+    },
+    "projects": {
+      "eyebrow": "Public Works, Roads & Social Programs",
+      "title": "Projects & Programs Across Iriga City",
+      "subtitle": "Explore roads, multi-purpose buildings, commercial hubs, and social welfare programs in Iriga City — combining official City Hall updates with Camarines Sur 5th District public works tracked by BetterGov.ph."
+    },
+    "ordinances": {
+      "eyebrow": "Sangguniang Panlungsod Local Laws",
+      "title": "City Ordinances & Resolutions in Plain Language",
+      "subtitle": "An Ordinance is a local law passed by the City Council, while a Resolution expresses an official policy or approval. Browse verified measures below and download their official PDF copies."
+    },
+    "legislative": {
+      "eyebrow": "City Council & Local Legislation Guide",
+      "title": "Sangguniang Panlungsod & City Ordinances",
+      "subtitle": "Meet the presiding officer Vice Mayor Edsel Dimaiwat, elected city councilors, and browse verified local ordinances and resolutions with direct citations."
+    },
+    "statistics": {
+      "eyebrow": "City Demographics & Competitiveness Index",
+      "title": "Iriga City Statistics & Key Indicators",
+      "subtitle": "Explore official population demographics from PSA, city revenue allocations from DBM, economic indicators, and DTI CMCI competitiveness rankings."
+    },
+    "contacts": {
+      "eyebrow": "City Hall Phonebook & 24/7 Emergency Directory",
+      "title": "Offices, Hotlines & Official Social Pages",
+      "subtitle": "Need to call an office at Iriga City Hall or reach emergency responders? Tap any phone number or email below to connect directly."
+    },
+    "freedomWall": {
+      "eyebrow": "Interactive Community Sticky-Note Board",
+      "title": "Irigueño Freedom Wall",
+      "subtitle": "Leave an anonymous sticky note on our community canvas. Pan and zoom around the board, read notes from fellow Irigueños, or tap '+ Add Note' to share what's on your mind."
+    },
+    "about": {
+      "eyebrow": "About This Community Project",
+      "title": "Built for Irigueños, Backed by Official Sources",
+      "subtitle": "BetterIriga.org is a volunteer-run public information portal under BetterGov.ph, alongside sibling platforms BetterLibmanan.org, BetterSolano.org, BetterOrmoc.org, BetterLasPinas.org, and BetterBacolod.org. We never guess or invent data."
+    },
+    "verification": {
+      "eyebrow": "Official Source Checklist & Accuracy Report",
+      "title": "How We Check Every Fact on BetterIriga.org",
+      "subtitle": "This dedicated page shows where every single public record on BetterIriga.org comes from, when it was last checked, and which government documents are still awaiting online publication."
+    },
+    "openData": {
+      "eyebrow": "Public REST Endpoints & BetterGov.ph Civic APIs",
+      "title": "Open Civic Data Directory & Developer APIs",
+      "subtitle": "BetterIriga republishes 100% verified civic data as public REST endpoints, integrated with BetterGov.ph budget APIs and the Philippine Standard Geographic Code (PSGC). Free for citizens, researchers, and developers."
+    }
+  },
+  "siblingPortals": [
+    { "name": "BetterGov.ph", "url": "https://bettergov.ph" },
+    { "name": "BetterLibmanan.org", "url": "https://www.betterlibmanan.org" },
+    { "name": "BetterSolano.org", "url": "https://bettersolano.org" },
+    { "name": "Transparency.BetterGov.ph", "url": "https://transparency.bettergov.ph" },
+    { "name": "Budget.BetterGov.ph", "url": "https://budget.bettergov.ph" },
+    { "name": "BetterOrmoc.org", "url": "https://betterormoc.org" },
+    { "name": "BetterLasPinas.org", "url": "https://betterlaspinas.org" },
+    { "name": "BetterBacolod.org", "url": "https://betterbacolod.org" }
+  ]
+}

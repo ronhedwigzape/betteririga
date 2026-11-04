@@ -1,0 +1,607 @@
+{
+  "offices": [
+    {
+      "id": "off-mayor",
+      "name": "City Mayor's Office",
+      "category": "Executive & Legislative",
+      "departmentHead": "Hon. Wilfredo Rex C. Oliva (City Mayor)",
+      "landline": "(054) 299 1989",
+      "email": "cityofiriga@yahoo.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-sp",
+      "name": "Sangguniang Panlungsod",
+      "category": "Executive & Legislative",
+      "departmentHead": "Hon. Edsel S. Dimaiwat (Vice Mayor) / Mrs. Yolanda De Lima (Acting SP Secretary)",
+      "landline": "(054) 299 9924",
+      "email": "spiriga@yahoo.com",
+      "location": "Sangguniang Panlungsod Building, Iriga City Hall Complex",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-admin",
+      "name": "City Administrator's Office",
+      "category": "Executive & Legislative",
+      "departmentHead": "Atty. Maharlika Ramon C. Oaferina II",
+      "landline": "(054) 299 1989",
+      "email": "cityofiriga@yahoo.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-legal",
+      "name": "City Legal Office",
+      "category": "Executive & Legislative",
+      "departmentHead": "Atty. Rico D. Borromeo",
+      "landline": "(054) 299 9902",
+      "email": "irigacitylegaloffice@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-pio",
+      "name": "Public Information Office (PIO)",
+      "category": "Executive & Legislative",
+      "landline": "(054) 299 9903",
+      "email": "irigacitypio1@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-accounting",
+      "name": "City Accountant's Office",
+      "category": "Finance & Administration",
+      "departmentHead": "Mrs. Beverly B. Espiritu",
+      "landline": "(054) 299 9919",
+      "email": "acctngiriga2991954@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-assessor",
+      "name": "City Assessor's Office",
+      "category": "Finance & Administration",
+      "departmentHead": "Engr. Jonas T. Florece",
+      "landline": "(054) 299 9920",
+      "email": "iriga.assessor@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-budget",
+      "name": "City Budget Office",
+      "category": "Finance & Administration",
+      "departmentHead": "Mrs. Elena Maria V. Portea (Acting)",
+      "landline": "(054) 299 9925",
+      "email": "citybudgetoffice.irigacity.gov@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-treasurer",
+      "name": "City Treasurer's Office",
+      "category": "Finance & Administration",
+      "departmentHead": "Mrs. Segundina V. Egipto (Acting)",
+      "landline": "(054) 299 9915",
+      "email": "cto.cityofiriga@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-civil-registrar",
+      "name": "City Civil Registrar's Office",
+      "category": "Finance & Administration",
+      "departmentHead": "Mrs. Ma. Nancy R. Occiano",
+      "landline": "(054) 299 9921",
+      "email": "localcivilregistraririgacity@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-gso",
+      "name": "City General Services Office (GSO)",
+      "category": "Finance & Administration",
+      "departmentHead": "Mrs. Lourdes I. Badiola (Acting)",
+      "landline": "(054) 299 9922",
+      "email": "lguirigagso@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-hrmo",
+      "name": "City Human Resource Management Office (HRMO)",
+      "category": "Finance & Administration",
+      "departmentHead": "Dr. Nenet B. Beriña",
+      "landline": "(054) 299 9917",
+      "email": "chrmoiriga@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-architect",
+      "name": "City Architect's Office",
+      "category": "Infrastructure & Planning",
+      "departmentHead": "Arch. Romano R. Alvaro",
+      "landline": "(054) 299 5253",
+      "email": "cityarchitect_irigacity@yahoo.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-engineer",
+      "name": "City Engineer's Office",
+      "category": "Infrastructure & Planning",
+      "departmentHead": "Engr. Eddie M. Belmonte (Acting)",
+      "landline": "(054) 299 9911",
+      "email": "Officeofthecityengineer@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-motorpool",
+      "name": "City Engineer's Office – Motorpool Division",
+      "category": "Infrastructure & Planning",
+      "landline": "(054) 299 9909",
+      "email": "Officeofthecityengineer@gmail.com",
+      "location": "Motorpool Compound, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-cpdc",
+      "name": "City Planning and Development Coordinator's Office (OCPDC)",
+      "category": "Infrastructure & Planning",
+      "departmentHead": "Engr. Cynthia D. Audal (OIC)",
+      "landline": "(054) 299 9923",
+      "email": "ocpdcirigaofficial@gmail.com",
+      "location": "Iriga City Hall, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-cdrrmo",
+      "name": "City Disaster Risk Reduction and Management Office (CDRRMO)",
+      "category": "Public Safety & Operations",
+      "landline": "(054) 299 9918",
+      "email": "irigacitydrrmo@gmail.com",
+      "location": "CDRRMO Emergency Operations Center, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-csu",
+      "name": "Civil Security Unit (CSU)",
+      "category": "Public Safety & Operations",
+      "landline": "(054) 299 9904",
+      "location": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+      "gaps": [
+        "Official email address left blank on iriga.gov.ph/contact-us-2/"
+      ],
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-terminal",
+      "name": "City Terminal",
+      "category": "Public Safety & Operations",
+      "landline": "(054) 299 1978",
+      "email": "iccterminal2004@gmail.com",
+      "location": "Iriga City Central Terminal",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-health",
+      "name": "City Health Office (CHO)",
+      "category": "Health, Social Welfare & Sectors",
+      "departmentHead": "Dr. Ronald G. Pereña",
+      "landline": "(054) 299 9912",
+      "email": "choiriga@gmail.com",
+      "location": "Iriga City Health Complex",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-cswdo",
+      "name": "City Social Welfare and Development Office (CSWDO)",
+      "category": "Health, Social Welfare & Sectors",
+      "departmentHead": "Mrs. Maridel C. Verrosa",
+      "landline": "(054) 299 9913",
+      "email": "ilovecswdiriga@gmail.com",
+      "location": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-pdao",
+      "name": "Persons with Disability Affairs Office (PDAO)",
+      "category": "Health, Social Welfare & Sectors",
+      "landline": "(054) 299 9906",
+      "email": "pdaoiriga17@gmail.com",
+      "location": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-osca",
+      "name": "Senior Citizens Affairs Office (OSCA)",
+      "category": "Health, Social Welfare & Sectors",
+      "landline": "(054) 299 6036",
+      "email": "seniorcitizeniriga@gmail.com",
+      "location": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-lydo",
+      "name": "Local Youth Development Office (LYDO)",
+      "category": "Health, Social Welfare & Sectors",
+      "email": "irigacitylydo@gmail.com",
+      "location": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+      "gaps": [
+        "Office landline number left blank on iriga.gov.ph/contact-us-2/"
+      ],
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-library",
+      "name": "City Public Library",
+      "category": "Health, Social Welfare & Sectors",
+      "landline": "(054) 299 6411",
+      "email": "irigacitypubliclibrary@gmail.com",
+      "location": "Iriga City Public Library",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-sports",
+      "name": "Sports Development Unit",
+      "category": "Health, Social Welfare & Sectors",
+      "landline": "(054) 299 9908",
+      "email": "irigacitysportsofficial@gmail.com",
+      "location": "Iriga City Sports Center",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-agriculture",
+      "name": "City Agriculture Office",
+      "category": "Economic, Agriculture & Tourism",
+      "departmentHead": "Engr. Janice B. Orciga",
+      "landline": "(054) 299 9916",
+      "email": "irigacity.agriculture@gmail.com",
+      "location": "Iriga City Hall Complex, Sta. Cruz Sur, Iriga City",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-vet",
+      "name": "City Veterinary Office & City Abattoir (Slaughterhouse)",
+      "category": "Economic, Agriculture & Tourism",
+      "departmentHead": "Dr. Virtudes N. Rayel (Acting)",
+      "landline": "(054) 299 9926 / (054) 299 9910",
+      "email": "cityvetiriga@gmail.com",
+      "location": "Iriga City Hall / City Slaughterhouse",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "off-econ-tourism-market-peso",
+      "name": "LEDIPO, Tourism, PESO & Public Market Offices",
+      "category": "Economic, Agriculture & Tourism",
+      "landline": "LEDIPO: (054) 299 9905 | PESO: (054) 299 9907 | Tourism: (054) 299 9914 | Market: (054) 299 9927",
+      "email": "businessfriendlyiriga@gmail.com / irigapeso@gmail.com / irigatourism@yahoo.com.ph",
+      "location": "Iriga City Hall & Public Market Complex",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    }
+  ],
+  "emergencyHotlines": [
+    {
+      "id": "hotline-cdrrmo-landline",
+      "agency": "Iriga CDRRMO Emergency Operations Center",
+      "label": "CDRRMO Landline",
+      "number": "(054) 299 9918",
+      "telHref": "tel:+63542999918",
+      "networkOrType": "Landline (054)",
+      "priority": "primary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "hotline-cdrrmo-smart-1",
+      "agency": "Iriga CDRRMO Emergency Operations Center",
+      "label": "CDRRMO Mobile (Smart 1)",
+      "number": "0921 636 4018",
+      "telHref": "tel:+639216364018",
+      "networkOrType": "Smart Mobile",
+      "priority": "primary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/",
+        "sourceName": "Iriga City CDRRMO Emergency Operations Center Advisories",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "hotline-cdrrmo-smart-2",
+      "agency": "Iriga CDRRMO Emergency Operations Center",
+      "label": "CDRRMO Mobile (Smart 2)",
+      "number": "0921 903 3933",
+      "telHref": "tel:+639219033933",
+      "networkOrType": "Smart Mobile",
+      "priority": "primary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/",
+        "sourceName": "Iriga City CDRRMO Emergency Operations Center Advisories",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "hotline-cdrrmo-globe",
+      "agency": "Iriga CDRRMO Emergency Operations Center",
+      "label": "CDRRMO Mobile (Globe)",
+      "number": "0956 172 9656",
+      "telHref": "tel:+639561729656",
+      "networkOrType": "Globe Mobile",
+      "priority": "primary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/",
+        "sourceName": "Iriga City CDRRMO Emergency Operations Center Advisories",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "hotline-mayor-office",
+      "agency": "Office of the City Mayor",
+      "label": "Mayor's Office",
+      "number": "(054) 299 1989",
+      "telHref": "tel:+63542991989",
+      "networkOrType": "Landline (054)",
+      "priority": "secondary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "hotline-cho",
+      "agency": "City Health Office (CHO)",
+      "label": "City Health",
+      "number": "(054) 299 9912",
+      "telHref": "tel:+63542999912",
+      "networkOrType": "Landline (054)",
+      "priority": "secondary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "hotline-cswdo",
+      "agency": "City Social Welfare & Development Office",
+      "label": "CSWDO",
+      "number": "(054) 299 9913",
+      "telHref": "tel:+63542999913",
+      "networkOrType": "Landline (054)",
+      "priority": "secondary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "hotline-csu",
+      "agency": "Civil Security Unit (CSU)",
+      "label": "Civil Security",
+      "number": "(054) 299 9904",
+      "telHref": "tel:+63542999904",
+      "networkOrType": "Landline (054)",
+      "priority": "secondary",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "hotline-national-911",
+      "agency": "National Emergency Hotline (PNP / BFP / Rescue)",
+      "label": "Emergency 911",
+      "number": "911",
+      "telHref": "tel:911",
+      "networkOrType": "National Emergency",
+      "priority": "primary",
+      "citation": {
+        "sourceUrl": "https://dilg.gov.ph/",
+        "sourceName": "National Emergency Hotline 911 (DILG / PNP / BFP)",
+        "retrievedAt": "2026-11-04"
+      }
+    }
+  ],
+  "officialChannels": [
+    {
+      "id": "chan-website",
+      "name": "City Government of Iriga Official Website",
+      "platform": "Official Website",
+      "url": "https://iriga.gov.ph",
+      "handleOrDomain": "iriga.gov.ph",
+      "verifiedNote": "Primary official website of the City Government of Iriga for news, advisories, ordinances, and directory updates.",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+        "sourceName": "LGU Iriga Official Website — Directory of City Government Offices",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+      }
+    },
+    {
+      "id": "chan-facebook",
+      "name": "Lungsod ng Iriga | Iriga City Official Facebook Page",
+      "platform": "Facebook Page",
+      "url": "https://www.facebook.com/irigacitygovt",
+      "handleOrDomain": "@irigacitygovt",
+      "verifiedNote": "Official social media page operated by the Iriga City Public Information Office (PIO) for real-time advisories, executive orders, and public service updates.",
+      "citation": {
+        "sourceUrl": "https://www.facebook.com/irigacitygovt",
+        "sourceName": "Lungsod ng Iriga | Iriga City Official Facebook Page",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "chan-bettergov",
+      "name": "BetterGov.ph Civic Transparency Ecosystem",
+      "platform": "National Transparency Portal",
+      "url": "https://bettergov.ph",
+      "handleOrDomain": "bettergov.ph",
+      "verifiedNote": "Community-led open-source civic tech ecosystem inspiring BetterIriga.org alongside BetterSolano.org, BetterOrmoc.org, BetterLasPinas.org, and BetterBacolod.org.",
+      "citation": {
+        "sourceUrl": "https://transparency.bettergov.ph/",
+        "sourceName": "BetterGov.ph Transparency Portal & DPWH Camarines Sur 5th DEO Records",
+        "retrievedAt": "2026-11-04"
+      }
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "nationalTaxAllotments": [
+    {
+      "id": "nta-fy-2025",
+      "fiscalYear": 2025,
+      "amountPhp": 913500000,
+      "legalBasis": "DBM Local Budget Memorandum No. 90 / Comparison of Allocation to LGUs (FYs 2023–2025)",
+      "description": "Programmed National Tax Allotment (NTA) share for the City Government of Iriga for Fiscal Year 2025.",
+      "yoyChangePct": 18.33,
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "nta-fy-2024",
+      "fiscalYear": 2024,
+      "amountPhp": 772010000,
+      "legalBasis": "DBM Local Budget Memorandum FY 2024 NTA Allocation Tables",
+      "description": "National Tax Allotment (NTA) share allocated to the City of Iriga for Fiscal Year 2024.",
+      "yoyChangePct": 6.2,
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "nta-fy-2023",
+      "fiscalYear": 2023,
+      "amountPhp": 726910000,
+      "legalBasis": "DBM Comparison of Allocation to Local Government Units (FY 2023)",
+      "description": "National Tax Allotment (NTA) share for Iriga City following tax-collection base adjustments.",
+      "yoyChangePct": -14.86,
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "nta-fy-2022",
+      "fiscalYear": 2022,
+      "amountPhp": 853800000,
+      "legalBasis": "DBM FY 2022 Local Budget Memorandum (Initial Post-Mandanas-Garcia Ruling Implementation)",
+      "description": "First-year post-Mandanas-Garcia Supreme Court ruling NTA share for the City Government of Iriga.",
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    }
+  ],
+  "statutoryAllocationRules": [
+    {
+      "id": "stat-20pct-df",
+      "name": "20% Local Development Fund (LDF)",
+      "statutoryShare": "Minimum 20% of Annual NTA",
+      "legalBasis": "Section 287, Republic Act No. 7160 (Local Government Code of 1991)",
+      "estimatedFy2025Php": 182700000,
+      "purpose": "Mandated minimum allocation from the National Tax Allotment for local socio-economic, environmental, and infrastructure development projects.",
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "stat-5pct-ldrrmf",
+      "name": "5% Local Disaster Risk Reduction and Management Fund (LDRRMF)",
+      "statutoryShare": "Minimum 5% of Estimated Regular Sources",
+      "legalBasis": "Section 21, Republic Act No. 10121 (Philippine DRRM Act of 2010)",
+      "estimatedFy2025Php": 45675000,
+      "purpose": "Supports disaster prevention, mitigation, preparedness, response, rehabilitation, and the 30% Quick Response Fund (QRF) managed with CDRRMO.",
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "stat-5pct-gad",
+      "name": "5% Gender and Development (GAD) Budget",
+      "statutoryShare": "Minimum 5% of Total Annual Budget",
+      "legalBasis": "Republic Act No. 9710 (Magna Carta of Women) & PCW-DILG-DBM-NEDA JMC",
+      "estimatedFy2025Php": 45675000,
+      "purpose": "Programs, projects, and activities addressing gender issues, women's economic empowerment, and protection services.",
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "stat-1pct-sc-pwd",
+      "name": "1% Senior Citizens & Persons with Disabilities Allocation",
+      "statutoryShare": "1% of Annual Budget Reference",
+      "legalBasis": "RA 9994 (Expanded Senior Citizens Act) & RA 7277 / DBM-DSWD Guidelines",
+      "estimatedFy2025Php": 9135000,
+      "purpose": "Supports programs coordinated with the Senior Citizens Affairs Office (OSCA), PDAO, and CSWDO.",
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    }
+  ],
+  "budgetDisclosures": [
+    {
+      "id": "disc-dbm-nta-2022-2025",
+      "documentTitle": "DBM National Tax Allotment (NTA) Shares for Iriga City (FY 2022–2025)",
+      "responsibleAgency": "Department of Budget and Management (DBM)",
+      "period": "FY 2022 – FY 2025",
+      "status": "verified",
+      "summary": "Verified annual NTA shares: ₱853.80M (2022), ₱726.91M (2023), ₱772.01M (2024), and ₱913.50M (2025).",
+      "gapReason": "Verified from DBM Local Budget Memoranda.",
+      "citation": {
+        "sourceUrl": "https://www.dbm.gov.ph/",
+        "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series (NTA Allocations)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "disc-lgu-transparency-page",
+      "documentTitle": "LGU Iriga Full Disclosure Webpage (iriga.gov.ph/transparency/)",
+      "responsibleAgency": "City Government of Iriga",
+      "period": "Archived Capture 2023–2026",
+      "status": "gap",
+      "summary": "The official LGU transparency page URL exists in site navigation but contains placeholder text instead of financial tables.",
+      "gapReason": "The transparency page link on City Hall's website currently shows sample placeholder text instead of uploaded financial tables.",
+      "citation": {
+        "sourceUrl": "https://iriga.gov.ph/transparency/",
+        "sourceName": "LGU Iriga Official Website — Transparency Page",
+        "retrievedAt": "2026-11-04",
+        "archiveUrl": "https://web.archive.org/web/20230201181305/https://iriga.gov.ph/transparency/"
+      }
+    },
+    {
+      "id": "disc-dilg-fdpp-iriga",
+      "documentTitle": "DILG Full Disclosure Policy Portal (FDPP) — Annual Budget, Statement of Cash Flows & APP",
+      "responsibleAgency": "DILG / City Budget Office & City Accounting Office",
+      "period": "FY 2024 – FY 2026",
+      "status": "gap",
+      "summary": "Detailed Personal Services (PS), MOOE, Capital Outlay (CO), and Quarterly Cash Flow PDFs hosted on fdpp.dilg.gov.ph.",
+      "gapReason": "Requires downloading each quarterly PDF report individually from the DILG portal; detailed line-item figures will be added once certified PDFs are contributed.",
+      "citation": {
+        "sourceUrl": "https://fdpp.dilg.gov.ph/fdpp/report",
+        "sourceName": "DILG Full Disclosure Policy Portal (FDPP)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "disc-coa-aar-iriga",
+      "documentTitle": "COA Annual Audit Report (AAR) on the City of Iriga",
+      "responsibleAgency": "Commission on Audit (COA) — Region V",
+      "period": "CY 2023 – CY 2025",
+      "status": "gap",
+      "summary": "Audited Statement of Financial Position, Financial Performance, and Audit Observations for the City Government of Iriga.",
+      "gapReason": "Published by the Commission on Audit as downloadable zipped PDF files; awaiting volunteer upload and page-by-page verification.",
+      "citation": {
+        "sourceUrl": "https://www.coa.gov.ph/",
+        "sourceName": "Commission on Audit (COA) — Annual Audit Reports (LGUs Region V)",
+        "retrievedAt": "2026-11-04"
+      }
+    },
+    {
+      "id": "disc-blgf-sre-iriga",
+      "documentTitle": "BLGF Statement of Receipts and Expenditures (SRE) — Locally Sourced Revenues",
+      "responsibleAgency": "Bureau of Local Government Finance (BLGF) / City Treasurer's Office",
+      "period": "FY 2023 – FY 2025",
+      "status": "gap",
+      "summary": "Breakdown of Real Property Tax (RPT), Business Tax, Fees & Charges vs. External Sources (NTA).",
+      "gapReason": "Detailed local tax collection spreadsheets from the Bureau of Local Government Finance are awaiting manual download and verification.",
+      "citation": {
+        "sourceUrl": "https://blgf.gov.ph/",
+        "sourceName": "Bureau of Local Government Finance (BLGF)",
+        "retrievedAt": "2026-11-04"
+      }
+    }
+  ]
+}

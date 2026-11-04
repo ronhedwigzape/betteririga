@@ -1,0 +1,181 @@
+[
+  {
+    "id": "src-iriga-gov-ph",
+    "name": "City Government of Iriga Official Website",
+    "ownerAgency": "City Government of Iriga",
+    "url": "https://iriga.gov.ph",
+    "format": "Official Website & Public Documents",
+    "accessType": "Online & Saved Archive",
+    "status": "archived-fallback",
+    "irigaCoverage": "Officials, 29 City Hall Offices, 36 Barangays, Ordinances (1993–2025), Citizen's Charter (2022 PDF), Mayor's Profile, News & Projects.",
+    "notes": "Verified directly against City Hall's official pages and preserved public snapshots on the Internet Archive.",
+    "citation": {
+      "sourceUrl": "https://iriga.gov.ph/contact-us-2/",
+      "sourceName": "City Government of Iriga — Directory of City Hall Offices",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20260501062448/https://iriga.gov.ph/contact-us-2/"
+    }
+  },
+  {
+    "id": "src-iriga-facebook",
+    "name": "Lungsod ng Iriga Official Facebook Page",
+    "ownerAgency": "Iriga City Public Information Office (PIO)",
+    "url": "https://www.facebook.com/irigacitygovt",
+    "format": "Public Advisories & Announcements",
+    "accessType": "Direct Public Access",
+    "status": "active",
+    "irigaCoverage": "Real-time weather and emergency advisories, ceremony announcements, executive orders, and social welfare payout schedules.",
+    "notes": "Publicly viewable on Facebook (`Lungsod ng Iriga | Iriga City`) and embedded on our homepage for residents.",
+    "citation": {
+      "sourceUrl": "https://www.facebook.com/irigacitygovt",
+      "sourceName": "Lungsod ng Iriga Official Facebook Page",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "src-psgc-api",
+    "name": "Philippine Standard Geographic Directory (PSGC)",
+    "ownerAgency": "Philippine Statistics Authority (PSA)",
+    "url": "https://psgc.gitlab.io/api/cities/051716000/",
+    "format": "Official Barangay & City Directory",
+    "accessType": "Direct Public Access",
+    "status": "active",
+    "irigaCoverage": "Official list of all 36 Barangays in the City of Iriga, Camarines Sur (Region V – Bicol).",
+    "notes": "Public geographic directory confirming Iriga City's 36 urban and rural barangays.",
+    "citation": {
+      "sourceUrl": "https://psgc.gitlab.io/api/cities/051716000/",
+      "sourceName": "Philippine Statistics Authority (PSA) — Official Geographic Directory & 2024 Census",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20230201200857/https://iriga.gov.ph/demographics/"
+    }
+  },
+  {
+    "id": "src-psa-popcen",
+    "name": "PSA 2024 & 2020 Census of Population",
+    "ownerAgency": "Philippine Statistics Authority (PSA)",
+    "url": "https://psa.gov.ph",
+    "format": "Official Census Releases",
+    "accessType": "Published Document / PDF",
+    "status": "active",
+    "irigaCoverage": "Iriga City population: 115,306 (2024 Census), 114,457 (2020 Census), 111,757 (2015 Census).",
+    "notes": "Provides the official population figures used by the national government to calculate Iriga City's annual funding share.",
+    "citation": {
+      "sourceUrl": "https://psgc.gitlab.io/api/cities/051716000/",
+      "sourceName": "Philippine Statistics Authority (PSA) — Official Geographic Directory & 2024 Census",
+      "retrievedAt": "2026-11-04",
+      "archiveUrl": "https://web.archive.org/web/20230201200857/https://iriga.gov.ph/demographics/"
+    }
+  },
+  {
+    "id": "src-dbm-nta",
+    "name": "Department of Budget and Management (DBM) — Local Budget Memoranda",
+    "ownerAgency": "Department of Budget and Management (DBM)",
+    "url": "https://www.dbm.gov.ph",
+    "format": "Official National Budget Releases",
+    "accessType": "Published Document / PDF",
+    "status": "active",
+    "irigaCoverage": "National Tax Allotment (NTA) for Iriga City: ₱853.80M (2022), ₱726.91M (2023), ₱772.01M (2024), ₱913.50M (2025).",
+    "notes": "Primary official source for Iriga City's annual funding share from the national government.",
+    "citation": {
+      "sourceUrl": "https://www.dbm.gov.ph/",
+      "sourceName": "Department of Budget and Management (DBM) — Local Budget Memoranda Nos. 90 & 92 Series",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "src-bettergov-transparency",
+    "name": "BetterGov.ph Open Budget & Public Works Portal",
+    "ownerAgency": "BetterGov.ph Civic Community",
+    "url": "https://transparency.bettergov.ph",
+    "format": "Public Works & Budget Tracker",
+    "accessType": "Direct Public Access",
+    "status": "active",
+    "irigaCoverage": "Camarines Sur 5th District public works and road contracts in Iriga City (such as the Barangay San Roque Multi-Purpose Building ₱47.84M).",
+    "notes": "Open community transparency portal tracking national budget items and public works across the Philippines.",
+    "citation": {
+      "sourceUrl": "https://transparency.bettergov.ph/",
+      "sourceName": "BetterGov.ph Transparency Portal & Camarines Sur 5th District Records",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "src-dilg-fdpp",
+    "name": "DILG Full Disclosure Policy Portal (FDPP)",
+    "ownerAgency": "Department of the Interior and Local Government (DILG)",
+    "url": "https://fdpp.dilg.gov.ph/fdpp/report",
+    "format": "Published Financial Reports",
+    "accessType": "Published Document / PDF",
+    "status": "manual-extraction-needed",
+    "irigaCoverage": "Annual Budget, Statement of Cash Flows, Annual Procurement Plan (APP), and Bid Results for Region V – Camarines Sur – Iriga City.",
+    "notes": "Official DILG portal where local governments upload quarterly and annual financial documents.",
+    "citation": {
+      "sourceUrl": "https://fdpp.dilg.gov.ph/fdpp/report",
+      "sourceName": "DILG Full Disclosure Policy Portal",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "src-coa-aar",
+    "name": "Commission on Audit (COA) — Annual Audit Reports",
+    "ownerAgency": "Commission on Audit (COA)",
+    "url": "https://www.coa.gov.ph",
+    "format": "Official Audit Reports (PDF)",
+    "accessType": "Published Document / PDF",
+    "status": "manual-extraction-needed",
+    "irigaCoverage": "Annual Audit Reports (AARs) for the City Government of Iriga and Iriga City Water District (ICWD).",
+    "notes": "Published annually on the Commission on Audit website as downloadable PDF files.",
+    "citation": {
+      "sourceUrl": "https://www.coa.gov.ph/",
+      "sourceName": "Commission on Audit (COA)",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "src-blgf",
+    "name": "Bureau of Local Government Finance (BLGF)",
+    "ownerAgency": "Department of Finance — BLGF",
+    "url": "https://blgf.gov.ph",
+    "format": "Local Revenue & Tax Reports",
+    "accessType": "Published Document / PDF",
+    "status": "manual-extraction-needed",
+    "irigaCoverage": "Statement of Receipts and Expenditures (SRE) and Real Property Tax (RPT) reports for Iriga City.",
+    "notes": "Tracks local tax collections and income classifications of Philippine cities and municipalities.",
+    "citation": {
+      "sourceUrl": "https://blgf.gov.ph/",
+      "sourceName": "Bureau of Local Government Finance (BLGF)",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "philsys",
+    "name": "PhilSys Local Records (Philippine Identification System)",
+    "ownerAgency": "Philippine Statistics Authority (PSA)",
+    "url": "https://philsys.gov.ph",
+    "format": "Confidential National ID Registry",
+    "accessType": "Protected by Privacy Law",
+    "status": "restricted-by-law",
+    "irigaCoverage": "None — Protected by Philippine Privacy Law.",
+    "notes": "Republic Act No. 11055 (Philippine Identification System Act), Sections 17–18 strictly protect personal National ID records from public release. BetterIriga uses public PSA Census population totals instead.",
+    "citation": {
+      "sourceUrl": "https://philsys.gov.ph/",
+      "sourceName": "PhilSys Act (Republic Act No. 11055) — PSA Privacy Mandate",
+      "retrievedAt": "2026-11-04"
+    }
+  },
+  {
+    "id": "src-madayan-aerial",
+    "name": "Iriga City Aerial View Video by MADAYAN",
+    "ownerAgency": "MADAYAN (YouTube Creator)",
+    "url": "https://www.youtube.com/watch?v=wF_dpVQhMEE",
+    "format": "Aerial Drone Video (Public Attribution)",
+    "accessType": "Direct Public Access",
+    "status": "active",
+    "irigaCoverage": "Cinematic aerial footage of Ilian Hill, the 'IRIGA CITY' landmark sign, Mount Asog, and downtown Iriga City.",
+    "notes": "Authentic aerial drone cinematography by MADAYAN credited on the BetterIriga.org landing hero.",
+    "citation": {
+      "sourceUrl": "https://www.youtube.com/watch?v=wF_dpVQhMEE",
+      "sourceName": "MADAYAN — IRIGA CITY AERIAL VIEW (YouTube)",
+      "retrievedAt": "2026-11-04"
+    }
+  }
+]

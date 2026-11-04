@@ -1,0 +1,318 @@
+{
+  "demographics": {
+    "totalPopulation2020": 114457,
+    "totalPopulation2015": 111757,
+    "totalPopulation2010": 105919,
+    "annualGrowthRatePct": 0.51,
+    "landAreaKm2": 137.35,
+    "densityPerKm2": 833.3,
+    "totalHouseholds": 26410,
+    "barangayCount": 36,
+    "urbanBarangayCount": 9,
+    "ruralBarangayCount": 27
+  },
+  "fiscalOverview": {
+    "latestNtaYear": 2025,
+    "latestNtaAmountPhp": 913500000,
+    "developmentFundPhp": 182700000,
+    "calamityFundPhp": 45675000,
+    "gadFundPhp": 45675000,
+    "youthSkFundPhp": 91350000
+  },
+  "competitivenessCmci": {
+    "category": "Component Cities Category (Camarines Sur, Region V)",
+    "pillars": [
+      {
+        "name": "Economic Dynamism",
+        "scoreOrRank": "Tracked Indicator",
+        "description": "Measures local economic activity, commercial registrations, financial institutions, and agricultural-commercial market vibrancy in Iriga City.",
+        "highlights": [
+          "Commercial trading center for Rinconada district",
+          "Over 3,850 registered business enterprises",
+          "Thriving agro-industrial and agro-tourism hubs"
+        ]
+      },
+      {
+        "name": "Government Efficiency",
+        "scoreOrRank": "Tracked Indicator",
+        "description": "Evaluates transparency in local public management, compliance with national directives, regulatory ease, and Citizen's Charter execution.",
+        "highlights": [
+          "Full disclosure of budget documents under DILG FDP",
+          "Streamlined Business Permits and Licensing Office (BPLO)",
+          "14 Citizen's Charter front-line service guides published"
+        ]
+      },
+      {
+        "name": "Infrastructure",
+        "scoreOrRank": "Tracked Indicator",
+        "description": "Assesses road network connectivity, flood mitigation, health facilities, education centers, and basic utility access.",
+        "highlights": [
+          "Camarines Sur 5th District bypass roads and missing links",
+          "Iriga City Public Hospital and rural health units",
+          "City commercial center and integrated transport terminals"
+        ]
+      },
+      {
+        "name": "Resiliency",
+        "scoreOrRank": "Tracked Indicator",
+        "description": "Examines disaster risk reduction preparedness, climate change adaptation, and emergency medical services.",
+        "highlights": [
+          "24/7 Iriga CDRRMO Emergency Operations Command Center",
+          "Mount Iriga hazard mapping and drainage master planning",
+          "Pre-positioned evacuation centers in high-risk barangays"
+        ]
+      },
+      {
+        "name": "Innovation",
+        "scoreOrRank": "Tracked Indicator",
+        "description": "Measures digital governance adoption, online payment integrations, ICT literacy, and community transparency tools.",
+        "highlights": [
+          "Civic open data integrations under BetterGov.ph",
+          "Digital business permit processing",
+          "Online public information and emergency hotline systems"
+        ]
+      }
+    ]
+  },
+  "economicAndSocial": {
+    "povertyIncidencePct": 18.2,
+    "registeredBusinesses": 3850,
+    "seniorPensionBeneficiaries": 10240,
+    "publicMarketsAndHubs": 4
+  },
+  "barangayPopulations": [
+    {
+      "name": "San Nicolas",
+      "population": 11665,
+      "classification": "Urban",
+      "pctOfCity": 10.19
+    },
+    {
+      "name": "San Isidro",
+      "population": 9538,
+      "classification": "Urban",
+      "pctOfCity": 8.33
+    },
+    {
+      "name": "San Agustin",
+      "population": 6805,
+      "classification": "Rural",
+      "pctOfCity": 5.95
+    },
+    {
+      "name": "Sto. Domingo",
+      "population": 6584,
+      "classification": "Urban",
+      "pctOfCity": 5.75
+    },
+    {
+      "name": "San Francisco",
+      "population": 6438,
+      "classification": "Urban",
+      "pctOfCity": 5.62
+    },
+    {
+      "name": "San Juan",
+      "population": 4473,
+      "classification": "Urban",
+      "pctOfCity": 3.91
+    },
+    {
+      "name": "Perpetual Help",
+      "population": 4390,
+      "classification": "Rural",
+      "pctOfCity": 3.84
+    },
+    {
+      "name": "San Antonio",
+      "population": 4074,
+      "classification": "Rural",
+      "pctOfCity": 3.56
+    },
+    {
+      "name": "Sto. Niño",
+      "population": 3685,
+      "classification": "Rural",
+      "pctOfCity": 3.22
+    },
+    {
+      "name": "Salvacion",
+      "population": 3624,
+      "classification": "Rural",
+      "pctOfCity": 3.17
+    },
+    {
+      "name": "Sta. Maria",
+      "population": 3326,
+      "classification": "Rural",
+      "pctOfCity": 2.91
+    },
+    {
+      "name": "San Miguel",
+      "population": 3314,
+      "classification": "Urban",
+      "pctOfCity": 2.9
+    },
+    {
+      "name": "La Purisima",
+      "population": 3174,
+      "classification": "Rural",
+      "pctOfCity": 2.77
+    },
+    {
+      "name": "San Jose",
+      "population": 3123,
+      "classification": "Urban",
+      "pctOfCity": 2.73
+    },
+    {
+      "name": "Sta. Teresita",
+      "population": 3083,
+      "classification": "Rural",
+      "pctOfCity": 2.69
+    },
+    {
+      "name": "Sta. Cruz Sur",
+      "population": 3064,
+      "classification": "Rural",
+      "pctOfCity": 2.68
+    },
+    {
+      "name": "Santiago",
+      "population": 2909,
+      "classification": "Rural",
+      "pctOfCity": 2.54
+    },
+    {
+      "name": "San Vicente Sur",
+      "population": 2761,
+      "classification": "Rural",
+      "pctOfCity": 2.41
+    },
+    {
+      "name": "Francia",
+      "population": 2632,
+      "classification": "Urban",
+      "pctOfCity": 2.3
+    },
+    {
+      "name": "La Medalla",
+      "population": 2564,
+      "classification": "Rural",
+      "pctOfCity": 2.24
+    },
+    {
+      "name": "Sta. Elena",
+      "population": 2529,
+      "classification": "Rural",
+      "pctOfCity": 2.21
+    },
+    {
+      "name": "San Roque",
+      "population": 2342,
+      "classification": "Urban",
+      "pctOfCity": 2.05
+    },
+    {
+      "name": "San Pedro",
+      "population": 2217,
+      "classification": "Rural",
+      "pctOfCity": 1.94
+    },
+    {
+      "name": "La Trinidad",
+      "population": 2108,
+      "classification": "Rural",
+      "pctOfCity": 1.84
+    },
+    {
+      "name": "Sagrada",
+      "population": 2051,
+      "classification": "Rural",
+      "pctOfCity": 1.79
+    },
+    {
+      "name": "Del Rosario",
+      "population": 2029,
+      "classification": "Rural",
+      "pctOfCity": 1.77
+    },
+    {
+      "name": "San Ramon",
+      "population": 1790,
+      "classification": "Rural",
+      "pctOfCity": 1.56
+    },
+    {
+      "name": "La Anunciacion",
+      "population": 1647,
+      "classification": "Rural",
+      "pctOfCity": 1.44
+    },
+    {
+      "name": "Cristo Rey",
+      "population": 1214,
+      "classification": "Rural",
+      "pctOfCity": 1.06
+    },
+    {
+      "name": "Niño Jesus",
+      "population": 897,
+      "classification": "Rural",
+      "pctOfCity": 0.78
+    },
+    {
+      "name": "San Vicente Norte",
+      "population": 850,
+      "classification": "Rural",
+      "pctOfCity": 0.74
+    },
+    {
+      "name": "Antipolo",
+      "population": 812,
+      "classification": "Rural",
+      "pctOfCity": 0.71
+    },
+    {
+      "name": "San Rafael",
+      "population": 745,
+      "classification": "Rural",
+      "pctOfCity": 0.65
+    },
+    {
+      "name": "Sta. Cruz Norte",
+      "population": 692,
+      "classification": "Rural",
+      "pctOfCity": 0.6
+    },
+    {
+      "name": "Sta. Isabel",
+      "population": 686,
+      "classification": "Rural",
+      "pctOfCity": 0.6
+    },
+    {
+      "name": "San Andres",
+      "population": 622,
+      "classification": "Rural",
+      "pctOfCity": 0.54
+    }
+  ],
+  "citations": [
+    {
+      "sourceUrl": "https://psa.gov.ph/content/2020-census-population-and-housing-2020-cph-population-counts-declared-official-president",
+      "sourceName": "Philippine Statistics Authority (PSA) 2020 Census of Population and Housing (Iriga City)",
+      "retrievedAt": "2026-11-04"
+    },
+    {
+      "sourceUrl": "https://www.dbm.gov.ph/index.php/local-budget-memorandum-no-89",
+      "sourceName": "Department of Budget and Management (DBM) Local Budget Memorandum No. 89 & 91 (FY 2022–2025 NTA Series)",
+      "retrievedAt": "2026-11-04"
+    },
+    {
+      "sourceUrl": "https://cmci.dti.gov.ph/",
+      "sourceName": "DTI Cities and Municipalities Competitiveness Index (CMCI Portal) — Component Cities",
+      "retrievedAt": "2026-11-04"
+    }
+  ]
+}
