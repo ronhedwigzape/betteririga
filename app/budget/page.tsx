@@ -651,21 +651,22 @@ export default function BudgetPage() {
                 Philippine Budget Data API Integration
               </h2>
               <p className="mt-1 text-xs text-slate-300">
-                Read-only public REST API and Model Context Protocol (MCP) server for AI assistants and developers.
+                Read-only public REST API, OpenAPI 3.1 Specification, and Model Context Protocol (MCP) server for AI assistants and developers.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <Button asChild variant="secondary" className="rounded-xl text-xs font-bold">
+              <Button asChild variant="secondary" className="rounded-xl text-xs font-bold shadow-xs">
                 <a href={nationalBudget.meta.docsUrl} target="_blank" rel="noopener noreferrer">
                   <span>API Documentation</span>
                   <ExternalLink className="size-3.5 ml-1.5" />
                 </a>
               </Button>
-              <Button asChild variant="outline" className="rounded-xl text-xs font-bold border-white/20 text-white hover:bg-white/10">
+              <Button asChild variant="secondary" className="rounded-xl text-xs font-bold bg-slate-800 text-slate-100 hover:bg-slate-700 hover:text-white border border-slate-700 shadow-xs">
                 <a href={nationalBudget.meta.openapiUrl} target="_blank" rel="noopener noreferrer">
-                  <Code2 className="size-3.5 mr-1.5" />
-                  <span>OpenAPI Spec</span>
+                  <Code2 className="size-3.5 mr-1.5 text-blue-400" />
+                  <span className="text-white font-bold">OpenAPI Spec</span>
+                  <ExternalLink className="size-3 ml-1 text-slate-400" />
                 </a>
               </Button>
             </div>
@@ -675,16 +676,19 @@ export default function BudgetPage() {
             {/* cURL commands */}
             <div className="rounded-2xl border border-white/10 bg-black/40 p-4 space-y-2">
               <span className="text-xs font-mono font-bold text-emerald-400">
-                {"// Test REST Endpoints via cURL"}
+                {"// Test REST Endpoints & OpenAPI Spec via cURL"}
               </span>
               <pre className="overflow-x-auto font-mono text-xs text-slate-200 p-2 rounded-lg bg-black/50 leading-relaxed">
-{`# National GAA totals (2020–2026)
+{`# OpenAPI 3.1 Spec (JSON Schema):
+curl https://budget.bettergov.ph/api/v1/openapi.json
+
+# National GAA totals (2020–2026):
 curl https://budget.bettergov.ph/api/v1/gaa
 
-# Proposed NEP 2027 by department
+# Proposed NEP 2027 by department:
 curl https://budget.bettergov.ph/api/v1/nep/2027
 
-# CamSur 5th District & DEO multi-year ledger
+# CamSur 5th District & DEO multi-year ledger:
 curl https://budget.bettergov.ph/api/v1/hgab/2027/districts/leg:camarines-sur:5th`}
               </pre>
             </div>
@@ -708,9 +712,19 @@ claude mcp add --transport http ph-budget https://budget.bettergov.ph/mcp
             </div>
           </div>
 
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
-            <span>Free for public and civic use under fair-use conditions. Edge-cached globally.</span>
-            <span className="font-mono text-emerald-400">Transport: Streamable HTTP (JSON-RPC)</span>
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300 border-t border-white/10">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-semibold text-white">OpenAPI Spec URL:</span>
+              <a
+                href={nationalBudget.meta.openapiUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-emerald-400 underline hover:text-emerald-300 break-all"
+              >
+                {nationalBudget.meta.openapiUrl}
+              </a>
+            </div>
+            <span className="font-mono text-slate-400">Transport: Streamable HTTP (JSON-RPC)</span>
           </div>
         </Card>
       </Reveal>

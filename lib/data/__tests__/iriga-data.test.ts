@@ -1146,5 +1146,13 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       !homePageContent.includes("<Reveal><HeroVideoBackground"),
       "HeroVideoBackground must not be wrapped in Reveal transition"
     )
+
+    // 7. OpenAPI Spec visible in text in budget page
+    assert.ok(
+      budgetPageContent.includes("OpenAPI Spec") &&
+      budgetPageContent.includes("https://budget.bettergov.ph/api/v1/openapi.json") &&
+      budgetPageContent.includes("OpenAPI 3.1 Spec"),
+      "budget/page.tsx must visibly render OpenAPI Spec text and endpoint URL in developer card"
+    )
   })
 })
