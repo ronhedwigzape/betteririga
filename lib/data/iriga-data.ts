@@ -59,6 +59,7 @@ import {
   type SiteContent,
   type SiteMetadataConfig,
   type StatutoryAllocationRule,
+  type TransparencyPortal,
 } from "@/lib/data/schemas"
 
 export * from "@/lib/data/schemas"
@@ -1080,4 +1081,8 @@ export function getCivicPillars(): string[] {
       "24/7 Hotlines & Community Freedom Wall",
     ]
   )
+}
+
+export function getTransparencyPortals(): TransparencyPortal[] {
+  return defaultRepository.getSnapshot().siteContent.transparencyPortals ?? []
 }

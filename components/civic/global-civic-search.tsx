@@ -9,6 +9,7 @@ import {
   Sparkles,
   ShieldCheck,
   AlertTriangle,
+  RotateCcw,
 } from "lucide-react"
 import { searchCivicRecords } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -39,6 +40,7 @@ export function GlobalCivicSearch() {
 
   const resultsRef = React.useRef<HTMLDivElement | null>(null)
   const inputRef = React.useRef<HTMLInputElement | null>(null)
+  const [isResetting, setIsResetting] = React.useState(false)
 
   const homeCopy = snapshot.siteContent.home
 
@@ -55,9 +57,11 @@ export function GlobalCivicSearch() {
   const displayedResults = hasActiveSearch ? results.slice(0, 12) : []
 
   // Smoothly scrolls enough to show the contents of the suggestion/search at any breakpoint
+  // Only scrolls if there is actual content/data rendered in resultsRef
   const scrollToResults = React.useCallback(() => {
     requestAnimationFrame(() => {
       setTimeout(() => {
+        // If there is no content/data card mounted, never scroll
         if (!resultsRef.current) return
         const rect = resultsRef.current.getBoundingClientRect()
         // Account for persistent 3-tier sticky header (approx 84px) with breathing room
@@ -74,16 +78,29 @@ export function GlobalCivicSearch() {
     })
   }, [])
 
+  const handleQueryChange = (val: string) => {
+    if (isResetting) setIsResetting(false)
+    setQuery(val)
+  }
+
   const handleSuggestionClick = (sample: string) => {
+    if (isResetting) setIsResetting(false)
     setQuery(sample)
-    scrollToResults()
+    const matching = searchCivicRecords(sample, section, verificationFilter)
+    // Only scroll if there is data/content
+    if (matching.length > 0) {
+      scrollToResults()
+    }
   }
 
   const handleSectionClick = (
     sect: (typeof quickFilters)[number]["section"]
   ) => {
+    if (isResetting) setIsResetting(false)
     setSection(sect)
-    if (sect !== "all" || query.trim().length > 0) {
+    const matching = searchCivicRecords(query, sect, verificationFilter)
+    // Only scroll if there is data/content and active search
+    if (matching.length > 0 && (sect !== "all" || query.trim().length > 0)) {
       scrollToResults()
     }
   }
@@ -91,15 +108,41 @@ export function GlobalCivicSearch() {
   const handleVerificationClick = (
     filter: "all" | "verified-only" | "open-gaps"
   ) => {
+    if (isResetting) setIsResetting(false)
     setVerificationFilter(filter)
-    scrollToResults()
+    const matching = searchCivicRecords(query, section, filter)
+    // Only scroll if there is data/content
+    if (matching.length > 0 && (query.trim().length > 0 || section !== "all" || filter !== "all")) {
+      scrollToResults()
+    }
+  }
+
+  const handleClearQuery = () => {
+    if (section === "all" && verificationFilter === "all") {
+      // Query is the only active filter; animate exit gracefully
+      if (isResetting) return
+      setIsResetting(true)
+      setTimeout(() => {
+        setQuery("")
+        setIsResetting(false)
+        inputRef.current?.focus()
+      }, 200)
+    } else {
+      setQuery("")
+      inputRef.current?.focus()
+    }
   }
 
   const handleReset = () => {
-    setQuery("")
-    setSection("all")
-    setVerificationFilter("all")
-    inputRef.current?.focus()
+    if (isResetting) return
+    setIsResetting(true)
+    setTimeout(() => {
+      setQuery("")
+      setSection("all")
+      setVerificationFilter("all")
+      setIsResetting(false)
+      inputRef.current?.focus()
+    }, 200)
   }
 
   return (
@@ -117,7 +160,7 @@ export function GlobalCivicSearch() {
                 ref={inputRef}
                 type="search"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => handleQueryChange(e.target.value)}
                 placeholder={homeCopy.searchPlaceholder}
                 aria-label="Search all verified Iriga civic records"
                 className="h-12 w-full rounded-xl bg-background/90 pr-10 pl-10 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-200 focus-visible:border-blue-600 focus-visible:ring-blue-500/20"
@@ -128,9 +171,9 @@ export function GlobalCivicSearch() {
                     type="button"
                     variant="ghost"
                     size="icon-xs"
-                    onClick={() => setQuery("")}
+                    onClick={handleClearQuery}
                     aria-label="Clear search query"
-                    className="rounded-full text-muted-foreground hover:bg-muted hover:text-foreground active:scale-90"
+                    className="rounded-full text-muted-foreground hover:bg-muted hover:text-foreground active:scale-90 transition-all duration-200 animate-in fade-in-0 zoom-in-75"
                   >
                     <X className="size-3.5" />
                   </Button>
@@ -246,23 +289,28 @@ export function GlobalCivicSearch() {
         </CardContent>
       </Card>
 
-      {/* Suggestion Contents Results Card (100% shadcn UI & Smooth Entrance Animation) */}
+      {/* Suggestion Contents Results Card (100% shadcn UI & Smooth Entrance/Exit Animations) */}
       {displayedResults.length > 0 ? (
         <Card
           ref={resultsRef}
-          className="w-full border-border/80 bg-card/95 shadow-lg backdrop-blur-md animate-in fade-in-50 slide-in-from-top-2 duration-300"
+          className={cn(
+            "w-full border-border/80 bg-card/95 shadow-lg backdrop-blur-md transition-all duration-200",
+            isResetting
+              ? "animate-out fade-out-0 zoom-out-95 slide-out-to-top-2 duration-200 fill-mode-forwards opacity-0 pointer-events-none"
+              : "animate-in fade-in-50 slide-in-from-top-2 duration-300"
+          )}
         >
           <CardHeader className="flex flex-row items-center justify-between border-b pb-3.5">
             <div className="space-y-0.5">
               <CardTitle className="flex flex-wrap items-center gap-2 text-sm font-semibold">
                 <span>Verified Civic Records</span>
                 {query ? (
-                  <Badge variant="secondary" className="font-normal text-xs">
+                  <Badge variant="secondary" className="font-normal text-xs transition-all duration-200">
                     &ldquo;{query}&rdquo;
                   </Badge>
                 ) : null}
               </CardTitle>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-xs transition-opacity duration-200">
                 Showing <strong>{displayedResults.length}</strong> of{" "}
                 <strong>{results.length}</strong> matching public records
               </CardDescription>
@@ -272,9 +320,11 @@ export function GlobalCivicSearch() {
               variant="ghost"
               size="sm"
               onClick={handleReset}
-              className="h-8 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 active:scale-95"
+              disabled={isResetting}
+              className="group h-8 gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 active:scale-95 transition-all duration-200"
             >
-              Reset search
+              <RotateCcw className={cn("size-3.5 transition-transform duration-300", isResetting && "-rotate-180")} />
+              <span>Reset search</span>
             </Button>
           </CardHeader>
           <CardContent className="pt-4">
@@ -322,8 +372,12 @@ export function GlobalCivicSearch() {
         </Card>
       ) : query.trim().length > 0 ? (
         <Card
-          ref={resultsRef}
-          className="border-dashed border-border bg-card/60 p-6 text-center animate-in fade-in-50 duration-200"
+          className={cn(
+            "border-dashed border-border bg-card/60 p-6 text-center transition-all duration-200",
+            isResetting
+              ? "animate-out fade-out-0 zoom-out-95 duration-200 fill-mode-forwards opacity-0 pointer-events-none"
+              : "animate-in fade-in-50 duration-200"
+          )}
         >
           <CardContent className="space-y-1.5 p-0 text-xs text-muted-foreground">
             <p>

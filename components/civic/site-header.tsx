@@ -28,6 +28,7 @@ import {
   Calendar,
   Clock,
   Coins,
+  ChevronDown,
 } from "lucide-react"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { Button } from "@/components/ui/button"
@@ -38,6 +39,13 @@ import {
 } from "@/components/ui/tooltip"
 import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
 import { CarrierIconOnly } from "@/components/civic/telecom-and-channel-icons"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
 import {
   Dialog,
   DialogTrigger,
@@ -175,6 +183,7 @@ export function SiteHeader() {
   const snapshot = useCivicStore((state) => state.snapshot)
   const brand = snapshot.siteContent.brand
   const navItems = snapshot.siteContent.navigation
+  const transparencyPortals = snapshot.siteContent.transparencyPortals ?? []
   const primaryHotlines = snapshot.emergencyHotlines.slice(0, 6)
   const weatherBaseline = snapshot.cityProfile.weatherBaseline
   const geo = snapshot.cityProfile.geo
@@ -310,6 +319,61 @@ export function SiteHeader() {
                 </Link>
               )
             })}
+
+            {/* Transparency Portals Dropdown (100% shadcn UI) */}
+            {transparencyPortals.length > 0 ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="group flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-foreground/80 outline-hidden transition-all hover:bg-muted hover:text-foreground data-[state=open]:bg-muted data-[state=open]:text-foreground xl:px-2.5"
+                    aria-label="Transparency Portals"
+                  >
+                    <span>Transparency</span>
+                    <ChevronDown className="size-3 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={6}
+                  className="w-80 rounded-xl border border-border/80 bg-popover/98 p-1.5 shadow-xl backdrop-blur-md"
+                >
+                  <div className="px-2.5 py-1.5 text-xs font-bold text-foreground">
+                    Transparency Portals
+                  </div>
+                  <div className="px-2.5 pb-1.5 text-[11px] text-muted-foreground leading-snug">
+                    Official portals tracking local budgets, public works & civic data.
+                  </div>
+                  <DropdownMenuSeparator className="my-1" />
+                  {transparencyPortals.map((portal) => (
+                    <DropdownMenuItem
+                      key={portal.href}
+                      asChild
+                      className="cursor-pointer rounded-lg p-2 focus:bg-muted focus:text-foreground"
+                    >
+                      <a
+                        href={portal.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col gap-0.5"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-semibold text-xs text-foreground">
+                            {portal.label}
+                          </span>
+                          <ExternalLink className="size-3 shrink-0 text-muted-foreground" />
+                        </div>
+                        {portal.description ? (
+                          <span className="text-[11px] text-muted-foreground line-clamp-1 font-normal">
+                            {portal.description}
+                          </span>
+                        ) : null}
+                      </a>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -366,6 +430,42 @@ export function SiteHeader() {
                 )
               })}
             </nav>
+
+            {/* Mobile Transparency Portals Section */}
+            {transparencyPortals.length > 0 ? (
+              <div className="mt-3 border-t border-border/80 pt-3">
+                <div className="mb-2 flex items-center justify-between px-1 text-xs font-bold text-foreground">
+                  <span>Transparency Portals</span>
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                    External Portals
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  {transparencyPortals.map((portal) => (
+                    <a
+                      key={portal.href}
+                      href={portal.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center justify-between rounded-lg border border-border/70 bg-card/60 px-3 py-2.5 text-xs font-semibold text-foreground/90 transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      <div className="flex min-w-0 flex-col pr-2">
+                        <span className="truncate font-semibold text-foreground">
+                          {portal.label}
+                        </span>
+                        {portal.description ? (
+                          <span className="truncate text-[11px] font-normal text-muted-foreground">
+                            {portal.description}
+                          </span>
+                        ) : null}
+                      </div>
+                      <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </header>

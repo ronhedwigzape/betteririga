@@ -602,6 +602,14 @@ export const NavigationItemSchema = z.object({
   iconKey: z.string().optional(),
 })
 
+export const TransparencyPortalSchema = z.object({
+  label: z.string().min(1),
+  href: z.string().url(),
+  description: z.string().optional(),
+})
+
+export type TransparencyPortal = z.infer<typeof TransparencyPortalSchema>
+
 export const DirectoryControlsSchema = z.object({
   serviceCategories: z.array(z.string().min(1)).min(1),
   officialTabs: z.array(TabOptionSchema).min(1),
@@ -661,6 +669,7 @@ export const SiteContentSchema = z.object({
     skipLabel: z.string().min(1),
   }),
   navigation: z.array(NavigationItemSchema),
+  transparencyPortals: z.array(TransparencyPortalSchema).default([]),
   directoryControls: DirectoryControlsSchema,
   searchFilters: z
     .array(

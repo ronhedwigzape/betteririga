@@ -127,6 +127,23 @@
     { "href": "/verification", "label": "Verify", "iconKey": "verification" },
     { "href": "/about", "label": "About", "iconKey": "about" }
   ],
+  "transparencyPortals": [
+    {
+      "label": "Iriga, Camarines Sur",
+      "href": "https://transparency-portal-iriga.betteririga.org/",
+      "description": "City Government Transparency Portal"
+    },
+    {
+      "label": "Camarines Sur 5th District Engineering Office",
+      "href": "https://transparency-portal-camsur5-deo.betteririga.org/",
+      "description": "DPWH Camarines Sur 5th DEO Public Works & Infrastructure"
+    },
+    {
+      "label": "Province of Camarines Sur",
+      "href": "https://transparency-portal-camsur.betteririga.org/",
+      "description": "Provincial Government Transparency Portal"
+    }
+  ],
   "directoryControls": {
     "serviceCategories": [
       "all",

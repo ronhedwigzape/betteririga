@@ -45,6 +45,7 @@ import {
   getCarrierRegistry,
   getNationalBudget,
   getBetterGovDatasets,
+  getTransparencyPortals,
 } from "../iriga-data"
 import { useCivicStore } from "../../store/civic-store"
 
@@ -1191,6 +1192,68 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       globalsCssContent.includes("-webkit-tap-highlight-color: transparent") &&
       globalsCssContent.includes("*:focus:not(:focus-visible)"),
       "globals.css must suppress click outline & tap flickers"
+    )
+
+    // 10. Hero search scroll guard & animated reset
+    assert.ok(
+      globalSearchContent.includes("isResetting") &&
+      globalSearchContent.includes("animate-out") &&
+      globalSearchContent.includes("matching.length > 0") &&
+      globalSearchContent.includes("RotateCcw"),
+      "global-civic-search.tsx must guard against scrolling when there is no data and include exit/reset animations"
+    )
+
+    // 11. Navigation "Transparency" dropdown with 3 official redirects
+    const portals = getTransparencyPortals()
+    assert.equal(portals.length, 3, "must provide exactly 3 transparency portals")
+    assert.deepEqual(
+      portals.map((p) => ({ label: p.label, href: p.href })),
+      [
+        {
+          label: "Iriga, Camarines Sur",
+          href: "https://transparency-portal-iriga.betteririga.org/",
+        },
+        {
+          label: "Camarines Sur 5th District Engineering Office",
+          href: "https://transparency-portal-camsur5-deo.betteririga.org/",
+        },
+        {
+          label: "Province of Camarines Sur",
+          href: "https://transparency-portal-camsur.betteririga.org/",
+        },
+      ],
+      "Transparency portals must point to Iriga, CamSur 5th DEO, and Province"
+    )
+
+    const siteHeaderContent = fs.readFileSync("components/civic/site-header.tsx", "utf8")
+    assert.ok(
+      siteHeaderContent.includes("DropdownMenu") &&
+      siteHeaderContent.includes("Transparency") &&
+      siteHeaderContent.includes("transparencyPortals"),
+      "site-header.tsx must render Transparency dropdown with portals in both desktop and mobile drawer"
+    )
+
+    const siteContentJson = JSON.parse(fs.readFileSync("data/site-content.json", "utf8"))
+    assert.deepEqual(
+      siteContentJson.transparencyPortals.map((p: { label: string; href: string }) => ({
+        label: p.label,
+        href: p.href,
+      })),
+      [
+        {
+          label: "Iriga, Camarines Sur",
+          href: "https://transparency-portal-iriga.betteririga.org/",
+        },
+        {
+          label: "Camarines Sur 5th District Engineering Office",
+          href: "https://transparency-portal-camsur5-deo.betteririga.org/",
+        },
+        {
+          label: "Province of Camarines Sur",
+          href: "https://transparency-portal-camsur.betteririga.org/",
+        },
+      ],
+      "site-content.json must specify all 3 verified transparency portal redirects"
     )
   })
 })
