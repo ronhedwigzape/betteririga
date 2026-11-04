@@ -1,6 +1,6 @@
 -- =============================================================================
 -- BetterIriga.org — Irigueño Freedom Wall Sticky-Note Canvas Schema
--- Run this SQL in your Supabase Project -> SQL Editor
+-- Run this entire script in your Supabase Project -> SQL Editor -> Click "Run"
 -- =============================================================================
 
 create table if not exists public.freedom_wall_posts (
@@ -14,13 +14,18 @@ create table if not exists public.freedom_wall_posts (
   created_at timestamptz not null default now()
 );
 
+-- Index on created_at for fast descending feed retrieval
 create index if not exists idx_freedom_wall_posts_created_at
   on public.freedom_wall_posts (created_at desc);
 
--- Enable Row Level Security (RLS) so all notes stay safely on BetterIriga.org
+-- Grant schema and table access to public (anon) and authenticated roles
+grant usage on schema public to anon, authenticated;
+grant all on table public.freedom_wall_posts to anon, authenticated;
+
+-- Enable Row Level Security (RLS)
 alter table public.freedom_wall_posts enable row level security;
 
--- Public read access for everyone visiting BetterIriga.org
+-- 1. Public read access for everyone visiting BetterIriga.org
 drop policy if exists "Allow public read access on freedom_wall_posts" on public.freedom_wall_posts;
 create policy "Allow public read access on freedom_wall_posts"
   on public.freedom_wall_posts
@@ -28,7 +33,7 @@ create policy "Allow public read access on freedom_wall_posts"
   to anon, authenticated
   using (true);
 
--- Public insert access with length & coordinate constraints enforced by table CHECKs
+-- 2. Public insert access with length & coordinate constraints
 drop policy if exists "Allow public insert on freedom_wall_posts" on public.freedom_wall_posts;
 create policy "Allow public insert on freedom_wall_posts"
   on public.freedom_wall_posts
@@ -40,7 +45,7 @@ create policy "Allow public insert on freedom_wall_posts"
     and y >= 0 and y <= 6000
   );
 
--- Allow repositioning sticky notes on the canvas
+-- 3. Allow repositioning sticky notes on the canvas
 drop policy if exists "Allow public position update on freedom_wall_posts" on public.freedom_wall_posts;
 create policy "Allow public position update on freedom_wall_posts"
   on public.freedom_wall_posts
@@ -51,3 +56,6 @@ create policy "Allow public position update on freedom_wall_posts"
     x >= 0 and x <= 6000
     and y >= 0 and y <= 6000
   );
+
+-- Self-test query to verify the table is ready (should return 0 or existing count)
+select count(*) as freedom_wall_posts_ready from public.freedom_wall_posts;

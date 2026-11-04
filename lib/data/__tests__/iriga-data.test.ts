@@ -697,4 +697,54 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "layout.tsx must render <Analytics />"
     )
   })
+
+  it("handles Freedom Wall API endpoints and Supabase diagnostics gracefully", async () => {
+    const { GET: getFreedomWall, POST: postFreedomWall } = await import(
+      "@/app/api/freedom-wall/route"
+    )
+    const { GET: getDiagnostics } = await import(
+      "@/app/api/freedom-wall/diagnostics/route"
+    )
+
+    // Diagnostics should always return valid payload even when unconfigured
+    const diagRes = await getDiagnostics()
+    assert.equal(diagRes.status, 200)
+    const diagJson = await diagRes.json()
+    assert.ok("detectedEnv" in diagJson)
+    assert.ok(typeof diagJson.setupSql === "string")
+    assert.ok(diagJson.setupSql.includes("create table if not exists public.freedom_wall_posts"))
+
+    // GET /api/freedom-wall should return valid json
+    const getRes = await getFreedomWall()
+    assert.equal(getRes.status, 200)
+    const getJson = await getRes.json()
+    assert.ok("storage" in getJson)
+    assert.ok(Array.isArray(getJson.notes))
+
+    // POST /api/freedom-wall should validate input
+    const badReq = new Request("http://localhost/api/freedom-wall", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: "" }),
+    })
+    // @ts-expect-error test NextRequest signature with Request
+    const badRes = await postFreedomWall(badReq)
+    assert.equal(badRes.status, 422)
+
+    // Valid post should succeed locally or remotely
+    const goodReq = new Request("http://localhost/api/freedom-wall", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: "Test note from civic test suite",
+        color: "bg-yellow-100 border-yellow-300 text-yellow-950",
+      }),
+    })
+    // @ts-expect-error test NextRequest signature with Request
+    const goodRes = await postFreedomWall(goodReq)
+    assert.ok(goodRes.status === 200 || goodRes.status === 201)
+    const goodJson = await goodRes.json()
+    assert.ok("note" in goodJson)
+    assert.equal(goodJson.note.content, "Test note from civic test suite")
+  })
 })

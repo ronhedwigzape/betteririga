@@ -6,6 +6,13 @@ import {
   RotateCcw,
   X,
   Move,
+  Database,
+  CheckCircle2,
+  AlertTriangle,
+  Copy,
+  Check,
+  RefreshCw,
+  ExternalLink,
 } from "lucide-react"
 import { formatNoteTimestamp } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -19,6 +26,11 @@ export function FreedomWallBoard() {
   const uiCopy = freedomWall.uiCopy
 
   const notes = useCivicStore((state) => state.freedomWallNotes)
+  const storageMode = useCivicStore((state) => state.freedomWallStorageMode)
+  const syncError = useCivicStore((state) => state.freedomWallSyncError)
+  const clearSyncError = useCivicStore(
+    (state) => state.clearFreedomWallSyncError
+  )
   const hydrateFreedomWall = useCivicStore((state) => state.hydrateFreedomWall)
   const addFreedomWallNote = useCivicStore((state) => state.addFreedomWallNote)
   const moveFreedomWallNote = useCivicStore(
@@ -48,6 +60,62 @@ export function FreedomWallBoard() {
       "bg-yellow-100 border-yellow-300 text-yellow-900"
   )
   const [submitting, setSubmitting] = React.useState(false)
+
+  // Diagnostics modal state
+  const [isDiagnosticsOpen, setIsDiagnosticsOpen] = React.useState(false)
+  const [diagnostics, setDiagnostics] = React.useState<{
+    ok?: boolean
+    status?: string
+    summary?: string
+    error?: string
+    detectedEnv?: Record<string, boolean>
+    maskedHost?: string | null
+    keyType?: string
+    tableExists?: boolean
+    notesCount?: number
+    setupSql?: string
+    instructions?: string[]
+  } | null>(null)
+  const [loadingDiagnostics, setLoadingDiagnostics] = React.useState(false)
+  const [copiedSql, setCopiedSql] = React.useState(false)
+
+  const fetchDiagnostics = React.useCallback(async () => {
+    setLoadingDiagnostics(true)
+    try {
+      const res = await fetch("/api/freedom-wall/diagnostics", {
+        cache: "no-store",
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setDiagnostics(data)
+      }
+    } catch {
+      setDiagnostics({
+        ok: false,
+        status: "fetch_failed",
+        summary: "Could not reach /api/freedom-wall/diagnostics",
+      })
+    } finally {
+      setLoadingDiagnostics(false)
+    }
+  }, [])
+
+  const handleOpenDiagnostics = () => {
+    setIsDiagnosticsOpen(true)
+    void fetchDiagnostics()
+  }
+
+  const handleCopySql = () => {
+    if (!diagnostics?.setupSql) return
+    navigator.clipboard.writeText(diagnostics.setupSql)
+    setCopiedSql(true)
+    setTimeout(() => setCopiedSql(false), 2000)
+  }
+
+  const handleRetrySync = async () => {
+    await fetchDiagnostics()
+    await hydrateFreedomWall()
+  }
 
   const centerBoard = React.useCallback(() => {
     const el = viewportRef.current
@@ -208,17 +276,40 @@ export function FreedomWallBoard() {
           data-wall-toolbar
           className="pointer-events-auto absolute top-4 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-2xl border border-gray-700/60 bg-gray-900/90 px-2.5 py-1.5 shadow-xl backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2"
         >
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-xs font-bold tracking-wide text-white">
-              {uiCopy.toolbarBadge}
-            </span>
+          {/* Database Connection Indicator Button */}
+          <button
+            type="button"
+            onClick={handleOpenDiagnostics}
+            title="Click to view database connection status and diagnostics"
+            className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold transition-colors hover:bg-gray-800"
+          >
+            {storageMode === "supabase" ? (
+              <>
+                <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="hidden text-emerald-300 font-medium sm:inline">
+                  Supabase
+                </span>
+                <span className="text-xs font-bold text-white">
+                  {uiCopy.toolbarBadge}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="size-2 rounded-full bg-amber-400" />
+                <span className="text-xs font-medium text-amber-300">
+                  Local Mode
+                </span>
+                <span className="hidden text-[11px] text-gray-400 underline sm:inline">
+                  (Setup DB)
+                </span>
+              </>
+            )}
             {notes.length > 0 ? (
               <span className="rounded-full bg-gray-800 px-2 py-0.5 text-[11px] font-semibold text-gray-300">
                 {notes.length}
               </span>
             ) : null}
-          </div>
+          </button>
 
           <div className="hidden h-4 w-px bg-gray-700 sm:block" />
 
@@ -254,6 +345,37 @@ export function FreedomWallBoard() {
             {uiCopy.addNoteButtonLabel}
           </button>
         </div>
+
+        {/* Floating Database Sync Notice (If note was saved to local storage but failed cloud sync) */}
+        {syncError ? (
+          <div className="pointer-events-auto absolute bottom-4 left-4 right-4 z-40 mx-auto max-w-lg rounded-xl border border-amber-600/70 bg-amber-950/95 p-3 shadow-2xl backdrop-blur-md text-xs text-amber-100 flex items-start justify-between gap-3 animate-in fade-in slide-in-from-bottom-2">
+            <div className="flex items-start gap-2 min-w-0">
+              <AlertTriangle className="size-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <p className="font-semibold text-amber-200">
+                  Note Saved to Device (Cloud Sync Pending)
+                </p>
+                <p className="mt-0.5 text-amber-300/80 truncate text-[11px]">
+                  {syncError}
+                </p>
+                <button
+                  type="button"
+                  onClick={handleOpenDiagnostics}
+                  className="mt-1 font-bold text-amber-300 underline hover:text-white"
+                >
+                  View Supabase Setup & Diagnostics &rarr;
+                </button>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={clearSyncError}
+              className="text-amber-400 hover:text-white shrink-0 p-1 rounded-md"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+        ) : null}
 
         {/* Empty State Overlay (When database has 0 notes) */}
         {notes.length === 0 ? (
@@ -325,7 +447,7 @@ export function FreedomWallBoard() {
         </button>
       </div>
 
-      {/* Post a Note Modal (Matches BetterLibmanan.org) */}
+      {/* Post a Note Modal */}
       {isComposeOpen ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-xs"
@@ -429,6 +551,217 @@ export function FreedomWallBoard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Database Connection & Diagnostics Modal */}
+      {isDiagnosticsOpen ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
+          onClick={() => setIsDiagnosticsOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-3xl border border-gray-700 bg-gray-900 p-6 text-white shadow-2xl"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-gray-800">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-xl bg-blue-950 border border-blue-800/60 text-blue-400">
+                  <Database className="size-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">
+                    Freedom Wall Database Status
+                  </h3>
+                  <p className="text-xs text-gray-400">
+                    Vercel & Supabase Cloud Connection Diagnostics
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDiagnosticsOpen(false)}
+                className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-4">
+              {/* Overall Status Banner */}
+              {loadingDiagnostics ? (
+                <div className="flex items-center justify-center gap-2 p-6 text-sm text-gray-400">
+                  <RefreshCw className="size-4 animate-spin text-blue-400" />
+                  Testing live database connection...
+                </div>
+              ) : diagnostics?.ok ? (
+                <div className="flex items-start gap-3 rounded-2xl border border-emerald-800/80 bg-emerald-950/40 p-3.5 text-xs text-emerald-200">
+                  <CheckCircle2 className="size-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-emerald-100">
+                      Supabase Cloud Connected & Ready
+                    </p>
+                    <p className="mt-0.5 text-emerald-300/90 leading-relaxed">
+                      All new sticky notes are successfully saved to Supabase (table{" "}
+                      <code className="rounded bg-emerald-900/60 px-1 py-0.5 text-[11px]">
+                        freedom_wall_posts
+                      </code>
+                      ). Current cloud note count:{" "}
+                      <strong>{diagnostics.notesCount ?? 0}</strong>.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-start gap-3 rounded-2xl border border-amber-800/80 bg-amber-950/40 p-3.5 text-xs text-amber-200">
+                  <AlertTriangle className="size-5 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-amber-100">
+                      {diagnostics?.status === "table_missing"
+                        ? "Action Needed: Create Database Table in Supabase"
+                        : "Action Needed: Configure Supabase Credentials"}
+                    </p>
+                    <p className="mt-0.5 text-amber-300/90 leading-relaxed">
+                      {diagnostics?.summary ||
+                        "Sticky notes are currently stored locally in your browser because cloud sync could not reach Supabase."}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Vercel Environment Variables Status */}
+              <div className="rounded-2xl border border-gray-800 bg-gray-950/60 p-4">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2.5">
+                  1. Vercel Environment Variables
+                </h4>
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between rounded-lg bg-gray-900 px-3 py-2">
+                    <span className="font-mono text-gray-300">
+                      NEXT_PUBLIC_SUPABASE_URL
+                    </span>
+                    <span
+                      className={cn(
+                        "font-semibold flex items-center gap-1",
+                        diagnostics?.detectedEnv?.NEXT_PUBLIC_SUPABASE_URL ||
+                          diagnostics?.detectedEnv?.SUPABASE_URL
+                          ? "text-emerald-400"
+                          : "text-rose-400"
+                      )}
+                    >
+                      {diagnostics?.detectedEnv?.NEXT_PUBLIC_SUPABASE_URL ||
+                      diagnostics?.detectedEnv?.SUPABASE_URL ? (
+                        <>
+                          <Check className="size-3.5" /> Detected (
+                          {diagnostics.maskedHost ?? "connected"})
+                        </>
+                      ) : (
+                        <>
+                          <X className="size-3.5" /> Missing
+                        </>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-lg bg-gray-900 px-3 py-2">
+                    <span className="font-mono text-gray-300">
+                      SUPABASE_ANON_KEY / SERVICE_ROLE
+                    </span>
+                    <span
+                      className={cn(
+                        "font-semibold flex items-center gap-1",
+                        diagnostics?.keyType && diagnostics.keyType !== "none"
+                          ? "text-emerald-400"
+                          : "text-rose-400"
+                      )}
+                    >
+                      {diagnostics?.keyType && diagnostics.keyType !== "none" ? (
+                        <>
+                          <Check className="size-3.5" /> Active (
+                          {diagnostics.keyType})
+                        </>
+                      ) : (
+                        <>
+                          <X className="size-3.5" /> Missing
+                        </>
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <p className="mt-2 text-[11px] text-gray-500">
+                  Tip: In Vercel Project Settings &rarr; Environment Variables, add
+                  these variables and trigger a <strong>Redeploy</strong>.
+                </p>
+              </div>
+
+              {/* Supabase SQL Table Setup */}
+              <div className="rounded-2xl border border-gray-800 bg-gray-950/60 p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    2. Supabase SQL Schema
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={handleCopySql}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600/90 px-2.5 py-1 text-xs font-bold text-white transition-colors hover:bg-blue-500"
+                  >
+                    {copiedSql ? (
+                      <>
+                        <Check className="size-3" /> Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="size-3" /> Copy SQL
+                      </>
+                    )}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Open your{" "}
+                  <a
+                    href="https://supabase.com/dashboard"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-400 underline inline-flex items-center gap-0.5"
+                  >
+                    Supabase Dashboard <ExternalLink className="size-2.5" />
+                  </a>{" "}
+                  &rarr; <strong>SQL Editor</strong> &rarr; click{" "}
+                  <strong>New query</strong> &rarr; paste this SQL &rarr; click{" "}
+                  <strong>Run</strong>.
+                </p>
+
+                {diagnostics?.setupSql ? (
+                  <pre className="mt-3 max-h-36 overflow-y-auto rounded-xl border border-gray-800 bg-gray-900 p-3 font-mono text-[11px] text-gray-300">
+                    {diagnostics.setupSql}
+                  </pre>
+                ) : null}
+              </div>
+
+              {/* Actions Footer */}
+              <div className="flex items-center justify-between gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleRetrySync}
+                  disabled={loadingDiagnostics}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-gray-700 bg-gray-800 px-3.5 py-2 text-xs font-semibold text-gray-200 transition-colors hover:bg-gray-700 disabled:opacity-50"
+                >
+                  <RefreshCw
+                    className={cn(
+                      "size-3.5",
+                      loadingDiagnostics && "animate-spin"
+                    )}
+                  />
+                  Test Connection Now
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsDiagnosticsOpen(false)}
+                  className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-blue-500"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       ) : null}

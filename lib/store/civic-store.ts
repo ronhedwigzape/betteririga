@@ -126,6 +126,9 @@ export interface CivicStoreState {
   freedomWallHydrated: boolean
   freedomWallStorageMode: "supabase" | "local-fallback"
   freedomWallNotes: FreedomWallStickyNote[]
+  freedomWallSyncError: string | null
+  freedomWallTableExists: boolean
+  clearFreedomWallSyncError: () => void
 
   // Actions
   setSearchQuery: (query: string) => void
@@ -187,6 +190,9 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
       ? "supabase"
       : "local-fallback",
     freedomWallNotes: [],
+    freedomWallSyncError: null,
+    freedomWallTableExists: true,
+    clearFreedomWallSyncError: () => set({ freedomWallSyncError: null }),
 
   setSearchQuery: (searchQuery) => set({ searchQuery }),
   setSearchSection: (searchSection) => set({ searchSection }),
@@ -268,26 +274,40 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
       }
     }
 
-    const supabaseConfigured = isSupabaseFreedomWallConfigured()
     set({
       freedomWallHydrated: true,
-      freedomWallStorageMode: supabaseConfigured
-        ? "supabase"
-        : "local-fallback",
       freedomWallNotes: validLocalNotes,
     })
 
-    if (supabaseConfigured) {
+    // Always attempt remote sync (via first-party API or direct Supabase client)
+    try {
       const remoteNotes = await fetchSupabaseFreedomWallNotes()
-      const remoteIds = new Set(remoteNotes.map((n) => n.id))
-      const merged = [
-        ...remoteNotes,
-        ...validLocalNotes.filter((n) => !remoteIds.has(n.id)),
-      ]
-      safeWriteJson(STORAGE_KEYS.stickyNotes, merged)
+      if (remoteNotes.length > 0) {
+        const remoteIds = new Set(remoteNotes.map((n) => n.id))
+        const merged = [
+          ...remoteNotes,
+          ...validLocalNotes.filter((n) => !remoteIds.has(n.id)),
+        ]
+        safeWriteJson(STORAGE_KEYS.stickyNotes, merged)
+        set({
+          freedomWallNotes: merged,
+          freedomWallStorageMode: "supabase",
+          freedomWallTableExists: true,
+          freedomWallSyncError: null,
+        })
+      } else {
+        // Check if configured
+        if (isSupabaseFreedomWallConfigured()) {
+          set({
+            freedomWallStorageMode: "supabase",
+            freedomWallTableExists: true,
+          })
+        }
+      }
+    } catch (err) {
       set({
-        freedomWallNotes: merged,
-        freedomWallStorageMode: "supabase",
+        freedomWallStorageMode: "local-fallback",
+        freedomWallSyncError: err instanceof Error ? err.message : String(err),
       })
     }
   },
@@ -329,9 +349,31 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
     safeWriteJson(STORAGE_KEYS.stickyNotes, nextNotes)
     set({ freedomWallNotes: nextNotes })
 
-    if (isSupabaseFreedomWallConfigured()) {
-      void insertSupabaseFreedomWallNote(validated)
-    }
+    // Synchronize to Supabase asynchronously with diagnostic tracking
+    void (async () => {
+      try {
+        const res = await insertSupabaseFreedomWallNote(validated)
+        if (res.storage === "supabase") {
+          set({
+            freedomWallStorageMode: "supabase",
+            freedomWallSyncError: null,
+            freedomWallTableExists: true,
+          })
+        } else if (res.error) {
+          set({
+            freedomWallStorageMode: "local-fallback",
+            freedomWallSyncError: res.error,
+            freedomWallTableExists: res.tableExists !== false,
+          })
+        }
+      } catch (err) {
+        set({
+          freedomWallStorageMode: "local-fallback",
+          freedomWallSyncError:
+            err instanceof Error ? err.message : "Failed to sync note",
+        })
+      }
+    })()
 
     return validated
   },
@@ -347,7 +389,7 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
     safeWriteJson(STORAGE_KEYS.stickyNotes, updated)
     set({ freedomWallNotes: updated })
 
-    if (persistRemote && isSupabaseFreedomWallConfigured()) {
+    if (persistRemote) {
       void updateSupabaseFreedomWallNotePosition(noteId, clampedX, clampedY)
     }
   },
