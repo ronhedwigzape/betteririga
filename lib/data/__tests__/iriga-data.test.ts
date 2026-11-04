@@ -850,4 +850,74 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "components/civic/site-header.tsx must use shadcn Tooltip on compact hotlines"
     )
   })
+
+  it("verifies budget link reliability, searchbar icon centering, button contrast, navigation animation, live weather video, and facebook profile", () => {
+    // 1. Budget page links directly to specific canonical district URL
+    const budgetPageContent = fs.readFileSync("app/budget/page.tsx", "utf8")
+    assert.ok(
+      budgetPageContent.includes("https://budget.bettergov.ph/hgab/2027/districts/leg%3Acamarines-sur%3A5th"),
+      "app/budget/page.tsx must link directly to canonical Camarines Sur 5th District URL"
+    )
+    assert.ok(
+      !budgetPageContent.includes("https://budget.bettergov.ph/districts/camarines-sur-5th"),
+      "app/budget/page.tsx must not link to legacy redirecting district URL"
+    )
+
+    // 2. Searchbar icon centering across search components
+    const searchContent = fs.readFileSync("components/civic/global-civic-search.tsx", "utf8")
+    assert.ok(
+      searchContent.includes("inset-y-0 left-0 flex items-center"),
+      "global-civic-search.tsx must center the search icon using inset-y-0 flex items-center"
+    )
+
+    // 3. Button and Badge variants have explicit text-foreground
+    const buttonContent = fs.readFileSync("components/ui/button.tsx", "utf8")
+    assert.ok(
+      buttonContent.includes("text-foreground hover:bg-muted hover:text-foreground"),
+      "button.tsx must define text-foreground for outline and ghost variants"
+    )
+
+    // 4. Default navigation transition animation exists
+    const templateContent = fs.readFileSync("app/template.tsx", "utf8")
+    assert.ok(
+      templateContent.includes("animate-in fade-in-0") &&
+      templateContent.includes("motion-reduce:animate-none"),
+      "app/template.tsx must define enter transition and respect prefers-reduced-motion"
+    )
+
+    // 5. Weather card background video assets exist
+    assert.ok(fs.existsSync("public/weather/sunny.mp4"), "sunny.mp4 must exist")
+    assert.ok(fs.existsSync("public/weather/sunny.webm"), "sunny.webm must exist")
+    assert.ok(fs.existsSync("public/weather/cloudy.mp4"), "cloudy.mp4 must exist")
+    assert.ok(fs.existsSync("public/weather/rainy.mp4"), "rainy.mp4 must exist")
+
+    const livelySectionsContent = fs.readFileSync("components/civic/iriga-lively-sections.tsx", "utf8")
+    assert.ok(
+      livelySectionsContent.includes("video") &&
+      livelySectionsContent.includes("WEATHER_VIDEO_ASSETS"),
+      "iriga-lively-sections.tsx must implement live video weather background"
+    )
+
+    // 6. Facebook section has profile picture and no preview timeline iframe
+    assert.ok(fs.existsSync("public/iriga-facebook-profile.jpg"), "iriga-facebook-profile.jpg must exist")
+    assert.ok(
+      livelySectionsContent.includes("/iriga-facebook-profile.jpg"),
+      "iriga-lively-sections.tsx must render the official Facebook profile picture"
+    )
+    assert.ok(
+      !livelySectionsContent.includes("Preview Interactive Timeline"),
+      "iriga-lively-sections.tsx must remove preview interactive timeline button"
+    )
+    assert.ok(
+      !livelySectionsContent.includes("facebook.com/plugins/page.php"),
+      "iriga-lively-sections.tsx must remove Facebook timeline iframe"
+    )
+
+    // 7. Contacts hotline cards have department badges
+    const contactsContent = fs.readFileSync("app/contacts/page.tsx", "utf8")
+    assert.ok(
+      contactsContent.includes("getHotlineDepartmentBadge"),
+      "app/contacts/page.tsx must render department badges instead of generic red pills"
+    )
+  })
 })

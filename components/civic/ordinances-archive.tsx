@@ -52,7 +52,9 @@ export function OrdinancesArchive({ measures }: OrdinancesArchiveProps) {
       <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
         <div className="grid gap-3 md:grid-cols-3">
           <div className="relative md:col-span-2">
-            <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <Search className="size-4 text-muted-foreground" />
+            </div>
             <input
               type="search"
               value={query}

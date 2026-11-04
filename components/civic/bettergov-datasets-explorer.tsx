@@ -90,7 +90,9 @@ export function BetterGovDatasetsExplorer({
           </div>
 
           <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <Search className="size-4 text-muted-foreground" />
+            </div>
             <input
               type="text"
               value={searchQuery}
@@ -216,7 +218,7 @@ export function BetterGovDatasetsExplorer({
                   <button
                     type="button"
                     onClick={() => handleCopyApi(d)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
+                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1.5 text-[11px] font-semibold text-foreground/80 hover:bg-muted hover:text-foreground transition"
                     title="Copy REST API Endpoint"
                   >
                     {copiedId === d.id ? (
@@ -236,7 +238,7 @@ export function BetterGovDatasetsExplorer({
                     href={d.apiUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition"
+                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1.5 text-[11px] font-semibold text-foreground/80 hover:bg-muted hover:text-foreground transition"
                     title="View Raw JSON API Response"
                   >
                     <FileCode2 className="size-3" />

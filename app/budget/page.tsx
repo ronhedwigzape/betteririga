@@ -293,7 +293,7 @@ export default function BudgetPage() {
               {nationalBudget.camSur5thDistrictLedger.attributionMeaning}
             </span>
             <a
-              href="https://budget.bettergov.ph/districts/camarines-sur-5th"
+              href="https://budget.bettergov.ph/hgab/2027/districts/leg%3Acamarines-sur%3A5th"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 font-semibold text-blue-600 hover:underline dark:text-blue-400"

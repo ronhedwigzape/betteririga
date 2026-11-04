@@ -94,7 +94,9 @@ export function OfficialsDirectory() {
         </div>
 
         <div className="relative">
-          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <Search className="size-4 text-muted-foreground" />
+          </div>
           <input
             type="search"
             value={query}

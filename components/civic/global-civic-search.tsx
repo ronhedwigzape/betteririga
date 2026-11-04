@@ -44,7 +44,9 @@ export function GlobalCivicSearch() {
     <div className="w-full max-w-full rounded-2xl border border-border bg-card p-3.5 shadow-md transition-shadow hover:shadow-lg sm:p-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <Search className="size-4 text-muted-foreground" />
+          </div>
           <input
             type="search"
             value={query}
@@ -54,14 +56,16 @@ export function GlobalCivicSearch() {
             className="h-12 w-full rounded-xl border border-input bg-background pr-10 pl-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none"
           />
           {query ? (
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              aria-label="Clear search query"
-              className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <X className="size-4" />
-            </button>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search query"
+                className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
           ) : null}
         </div>
       </div>
@@ -77,10 +81,10 @@ export function GlobalCivicSearch() {
                 type="button"
                 onClick={() => setSection(item.section)}
                 className={cn(
-                  "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                  "rounded-full px-3 py-1 text-xs font-semibold transition-all",
                   active
                     ? "bg-blue-600 text-white shadow-xs"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                    : "border border-border/70 bg-muted/80 text-foreground/80 hover:bg-muted hover:text-foreground"
                 )}
               >
                 {item.label}
@@ -98,7 +102,7 @@ export function GlobalCivicSearch() {
               "rounded-full px-2.5 py-0.5 font-semibold transition",
               verificationFilter === "all"
                 ? "bg-background text-foreground shadow-2xs"
-                : "text-muted-foreground"
+                : "text-foreground/75 hover:text-foreground"
             )}
           >
             All Verified
@@ -110,7 +114,7 @@ export function GlobalCivicSearch() {
               "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-semibold transition",
               verificationFilter === "verified-only"
                 ? "bg-emerald-600 text-white shadow-2xs"
-                : "text-muted-foreground"
+                : "text-foreground/75 hover:text-foreground"
             )}
           >
             <ShieldCheck className="size-3" />
@@ -123,7 +127,7 @@ export function GlobalCivicSearch() {
               "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-semibold transition",
               verificationFilter === "open-gaps"
                 ? "bg-amber-600 text-white shadow-2xs"
-                : "text-muted-foreground"
+                : "text-foreground/75 hover:text-foreground"
             )}
           >
             <AlertTriangle className="size-3" />
@@ -134,7 +138,7 @@ export function GlobalCivicSearch() {
 
       {/* Popular Searches from Store */}
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1 font-medium text-foreground/80">
+        <span className="inline-flex items-center gap-1 font-semibold text-foreground">
           <Sparkles className="size-3.5 text-blue-600 dark:text-blue-400" />
           Try searching:
         </span>
@@ -143,7 +147,7 @@ export function GlobalCivicSearch() {
             key={sample}
             type="button"
             onClick={() => setQuery(sample)}
-            className="rounded-md border border-border/80 bg-background px-2.5 py-1 text-xs text-foreground/80 transition hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400"
+            className="rounded-md border border-border/80 bg-background px-2.5 py-1 text-xs font-medium text-foreground transition hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400"
           >
             {sample}
           </button>

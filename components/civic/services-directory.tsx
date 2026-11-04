@@ -96,7 +96,9 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
       <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 sm:p-4 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85">
         {/* Search Input */}
         <div className="relative">
-          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <Search className="size-4 text-muted-foreground" />
+          </div>
           <input
             type="search"
             value={query}
@@ -119,7 +121,7 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
                   "rounded-full px-3 py-1 text-xs font-semibold transition",
                   category === cat
                     ? "bg-blue-600 text-white shadow-2xs"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
+                    : "border border-border/70 bg-muted/80 text-foreground/80 hover:bg-muted hover:text-foreground"
                 )}
               >
                 {cat === "all"

@@ -5,6 +5,11 @@ import {
   ExternalLink,
   CheckCircle2,
   MapPin,
+  AlertTriangle,
+  Building2,
+  HeartPulse,
+  Users,
+  Shield,
 } from "lucide-react"
 import { getCivicSnapshot, getPageMetadata } from "@/lib/data/iriga-data"
 import { ContactsDirectory } from "@/components/civic/contacts-directory"
@@ -23,6 +28,83 @@ import {
 } from "@/components/ui/tooltip"
 
 export const metadata: Metadata = getPageMetadata("contacts")
+
+function getHotlineDepartmentBadge(id: string) {
+  if (id.includes("cdrrmo")) {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 border-amber-300 bg-amber-50 text-amber-900 text-[10px] font-semibold dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-200"
+      >
+        <AlertTriangle className="size-3 text-amber-600 dark:text-amber-400" />
+        Rescue & Flood
+      </Badge>
+    )
+  }
+  if (id.includes("mayor")) {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 border-blue-300 bg-blue-50 text-blue-900 text-[10px] font-semibold dark:border-blue-800 dark:bg-blue-950/60 dark:text-blue-200"
+      >
+        <Building2 className="size-3 text-blue-600 dark:text-blue-400" />
+        Mayor&apos;s Office
+      </Badge>
+    )
+  }
+  if (id.includes("cho")) {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 border-rose-300 bg-rose-50 text-rose-900 text-[10px] font-semibold dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-200"
+      >
+        <HeartPulse className="size-3 text-rose-600 dark:text-rose-400" />
+        Health & Medical
+      </Badge>
+    )
+  }
+  if (id.includes("cswdo")) {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 border-purple-300 bg-purple-50 text-purple-900 text-[10px] font-semibold dark:border-purple-800 dark:bg-purple-950/60 dark:text-purple-200"
+      >
+        <Users className="size-3 text-purple-600 dark:text-purple-400" />
+        Social Welfare
+      </Badge>
+    )
+  }
+  if (id.includes("csu")) {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 border-indigo-300 bg-indigo-50 text-indigo-900 text-[10px] font-semibold dark:border-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-200"
+      >
+        <Shield className="size-3 text-indigo-600 dark:text-indigo-400" />
+        Civil Security
+      </Badge>
+    )
+  }
+  if (id.includes("911")) {
+    return (
+      <Badge
+        variant="outline"
+        className="gap-1 border-emerald-300 bg-emerald-50 text-emerald-900 text-[10px] font-semibold dark:border-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200"
+      >
+        <PhoneCall className="size-3 text-emerald-600 dark:text-emerald-400" />
+        National 911
+      </Badge>
+    )
+  }
+  return (
+    <Badge
+      variant="outline"
+      className="border-slate-300 bg-slate-50 text-slate-800 text-[10px] font-semibold dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+    >
+      Official Hotline
+    </Badge>
+  )
+}
 
 export default function ContactsPage() {
   const snapshot = getCivicSnapshot()
@@ -80,18 +162,16 @@ export default function ContactsPage() {
             {hotlines.map((hotline) => (
               <Tooltip key={hotline.id}>
                 <TooltipTrigger asChild>
-                  <Card className="civic-card-hover flex flex-col justify-between rounded-2xl border border-rose-200/80 bg-card p-5 shadow-2xs dark:border-rose-900/50 hover:border-rose-500 transition-colors cursor-pointer">
+                  <Card className="civic-card-hover flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs hover:border-blue-500 transition-colors cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between gap-2">
                         <CarrierBadge
                           number={hotline.number}
                           networkOrType={hotline.networkOrType}
                         />
-                        {hotline.priority === "primary" ? (
-                          <Badge variant="destructive" className="text-[10px] font-bold uppercase bg-rose-600">
-                            24/7 Priority
-                          </Badge>
-                        ) : null}
+                        <span className="shrink-0">
+                          {getHotlineDepartmentBadge(hotline.id)}
+                        </span>
                       </div>
 
                       <h3 className="mt-2.5 text-sm font-semibold text-muted-foreground">
@@ -99,7 +179,7 @@ export default function ContactsPage() {
                       </h3>
                       <a
                         href={hotline.telHref}
-                        className="mt-1 block font-mono text-2xl font-extrabold text-rose-700 hover:underline dark:text-rose-400"
+                        className="mt-1 block font-mono text-2xl font-extrabold text-foreground hover:text-blue-600 hover:underline transition-colors"
                       >
                         {hotline.number}
                       </a>

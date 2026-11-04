@@ -30,7 +30,7 @@ const ENDPOINTS: ApiEndpointItem[] = [
     description: "Multi-year funding history (2020–2027), representative records, and DPWH 5th DEO allocations.",
     category: "bettergov",
     method: "GET",
-    primaryUrl: "https://budget.bettergov.ph/districts/camarines-sur-5th",
+    primaryUrl: "https://budget.bettergov.ph/hgab/2027/districts/leg%3Acamarines-sur%3A5th",
   },
   {
     id: "bg-dpwh-projects",

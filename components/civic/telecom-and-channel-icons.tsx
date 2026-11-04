@@ -122,7 +122,7 @@ export function LandlineLogo({
         className="size-full"
         aria-label="Landline / PLDT"
       >
-        <rect width="24" height="24" rx="4" fill="#DC2626" />
+        <rect width="24" height="24" rx="4" fill="#0284C7" />
         <path
           d="M7 8.5C7 7.67 7.67 7 8.5 7h1.4c.4 0 .76.24.9.61l.7 1.87a1 1 0 0 1-.25 1.07l-.9.9a7.6 7.6 0 0 0 3.7 3.7l.9-.9a1 1 0 0 1 1.07-.25l1.87.7c.37.14.61.5.61.9v1.4c0 .83-.67 1.5-1.5 1.5-6.07 0-11-4.93-11-11v-1.4z"
           fill="#FFFFFF"

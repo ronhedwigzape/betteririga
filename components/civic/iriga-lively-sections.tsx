@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   CloudSun,
   CloudRain,
@@ -19,7 +20,6 @@ import {
   ArrowRight,
   RefreshCw,
   CheckCircle2,
-  X,
 } from "lucide-react"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { CitationBadge } from "@/components/civic/citation-badge"
@@ -35,11 +35,66 @@ interface WeatherSnapshot {
   humidityPct: number
   windKmh: number
   isLive: boolean
+  weatherCode?: number
   hourly: Array<{
     timeLabel: string
     tempC: number
     isRainy: boolean
   }>
+}
+
+type WeatherVideoTheme = "rainy" | "cloudy" | "sunny"
+
+const WEATHER_VIDEO_ASSETS: Record<
+  WeatherVideoTheme,
+  { mp4: string; webm: string; poster: string; label: string }
+> = {
+  sunny: {
+    mp4: "/weather/sunny.mp4",
+    webm: "/weather/sunny.webm",
+    poster: "/weather/sunny-poster.jpg",
+    label: "Sunny Skies (Iriga City)",
+  },
+  cloudy: {
+    mp4: "/weather/cloudy.mp4",
+    webm: "/weather/cloudy.webm",
+    poster: "/weather/cloudy-poster.jpg",
+    label: "Mountain Clouds & Overcast",
+  },
+  rainy: {
+    mp4: "/weather/rainy.mp4",
+    webm: "/weather/rainy.webm",
+    poster: "/weather/rainy-poster.jpg",
+    label: "Tropical Rain & Showers",
+  },
+}
+
+function resolveWeatherTheme(
+  code?: number,
+  conditionLabel?: string
+): WeatherVideoTheme {
+  if (code !== undefined) {
+    if (code >= 51) return "rainy"
+    if (code === 2 || code === 3 || code === 45 || code === 48) return "cloudy"
+    return "sunny"
+  }
+  const str = (conditionLabel ?? "").toLowerCase()
+  if (
+    str.includes("rain") ||
+    str.includes("shower") ||
+    str.includes("drizzle") ||
+    str.includes("storm")
+  ) {
+    return "rainy"
+  }
+  if (
+    str.includes("cloud") ||
+    str.includes("overcast") ||
+    str.includes("fog")
+  ) {
+    return "cloudy"
+  }
+  return "sunny"
 }
 
 export function IrigaLivelySections() {
@@ -60,7 +115,12 @@ export function IrigaLivelySections() {
     hourly: weatherBaseline.hourly,
   })
   const [refreshingWeather, setRefreshingWeather] = React.useState(false)
-  const [showFbEmbed, setShowFbEmbed] = React.useState(false)
+
+  const weatherTheme = resolveWeatherTheme(
+    weather.weatherCode,
+    weather.conditionLabel
+  )
+  const currentVideo = WEATHER_VIDEO_ASSETS[weatherTheme]
 
   const fetchLiveWeather = React.useCallback(async () => {
     setRefreshingWeather(true)
@@ -73,6 +133,7 @@ export function IrigaLivelySections() {
         const tempC = Math.round(Number(data.current.temperature_2m))
         const humidity = Math.round(Number(data.current.relative_humidity_2m))
         const wind = Math.round(Number(data.current.wind_speed_10m))
+        const wCode = Number(data.current.weather_code ?? 0)
 
         const hourlyItems: WeatherSnapshot["hourly"] = []
         const times: string[] = data?.hourly?.time ?? []
@@ -96,12 +157,11 @@ export function IrigaLivelySections() {
         setWeather({
           temperatureC: Number.isNaN(tempC) ? 31 : tempC,
           conditionLabel:
-            Number(data.current.weather_code ?? 0) >= 51
-              ? "Tropical Showers"
-              : "Partly Cloudy",
+            wCode >= 51 ? "Tropical Showers" : wCode >= 2 ? "Partly Cloudy" : "Mainly Clear",
           humidityPct: Number.isNaN(humidity) ? 78 : humidity,
           windKmh: Number.isNaN(wind) ? 14 : wind,
           isLive: true,
+          weatherCode: wCode,
           hourly: hourlyItems.length > 0 ? hourlyItems : weatherBaseline.hourly,
         })
       }
@@ -148,107 +208,147 @@ export function IrigaLivelySections() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-12">
-            {/* Left Column: Weather Today Card */}
-            <Card className="flex flex-col justify-between border-blue-200/80 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 p-6 text-white shadow-md lg:col-span-5">
-              <div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">
-                    <MapPin className="size-3.5 text-amber-300" />
-                    Iriga City, Camarines Sur
-                  </span>
-                  <button
-                    type="button"
-                    onClick={fetchLiveWeather}
-                    aria-label="Refresh Iriga weather"
-                    className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white transition hover:bg-white/25"
-                  >
-                    <RefreshCw
-                      className={`size-3 ${refreshingWeather ? "animate-spin" : ""}`}
-                    />
-                    {weather.isLive ? "Updated Today" : "Rinconada Weather"}
-                  </button>
-                </div>
-
-                <div className="mt-6 flex items-center gap-4">
-                  <div className="flex size-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-xs">
-                    <CloudSun className="size-10 text-amber-300" />
-                  </div>
-                  <div>
-                    <div className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-                      {weather.temperatureC}°C
-                    </div>
-                    <p className="mt-0.5 text-sm font-medium text-blue-100">
-                      {weather.conditionLabel}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 grid grid-cols-2 gap-3 rounded-xl bg-white/10 p-3.5 text-xs backdrop-blur-xs">
-                  <div className="flex items-center gap-2">
-                    <Droplets className="size-4 text-sky-300" />
-                    <div>
-                      <p className="text-blue-200">Humidity</p>
-                      <p className="font-mono text-sm font-bold">
-                        {weather.humidityPct}%
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Wind className="size-4 text-emerald-300" />
-                    <div>
-                      <p className="text-blue-200">Wind Speed</p>
-                      <p className="font-mono text-sm font-bold">
-                        {weather.windKmh} km/h
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Hourly Forecast Strip */}
-                <div className="mt-5">
-                  <p className="mb-2 text-[11px] font-semibold tracking-wider text-blue-200 uppercase">
-                    Today&apos;s Iriga Forecast (PHT)
-                  </p>
-                  <div className="grid grid-cols-4 gap-2">
-                    {weather.hourly.map((slot) => (
-                      <div
-                        key={slot.timeLabel}
-                        className="flex flex-col items-center rounded-xl bg-white/10 px-2 py-2.5 text-center"
-                      >
-                        <span className="text-[11px] text-blue-100">
-                          {slot.timeLabel}
-                        </span>
-                        {slot.isRainy ? (
-                          <CloudRain className="my-1.5 size-4 text-sky-300" />
-                        ) : (
-                          <Sun className="my-1.5 size-4 text-amber-300" />
-                        )}
-                        <span className="font-mono text-xs font-bold">
-                          {slot.tempC}°C
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            {/* Left Column: Weather Today Card with Dynamic Live Background Video */}
+            <Card className="relative overflow-hidden flex flex-col justify-between border-blue-200/80 bg-slate-950 p-6 text-white shadow-md lg:col-span-5 min-h-[460px]">
+              {/* Background Video Layer */}
+              <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                <video
+                  key={weatherTheme}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster={currentVideo.poster}
+                  className="h-full w-full object-cover object-center opacity-40 scale-105 transition-opacity duration-1000 motion-reduce:hidden"
+                >
+                  <source src={currentVideo.webm} type="video/webm" />
+                  <source src={currentVideo.mp4} type="video/mp4" />
+                </video>
+                {/* Fallback image for prefers-reduced-motion */}
+                <div
+                  className="hidden h-full w-full bg-cover bg-center opacity-30 motion-reduce:block"
+                  style={{ backgroundImage: `url(${currentVideo.poster})` }}
+                />
+                {/* Gradient & Dark Vignette Overlays for WCAG AAA Contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/75 to-slate-950/60" />
+                <div className="absolute inset-0 bg-blue-950/30 mix-blend-multiply" />
               </div>
 
-              <div className="mt-5 border-t border-white/15 pt-3 text-[11px] text-blue-100">
-                <p>
-                  <strong>CDRRMO 24/7 Weather & Flood Hotline:</strong>{" "}
-                  <a
-                    href="tel:+63542999918"
-                    className="font-mono font-bold text-amber-300 underline"
-                  >
-                    (054) 299 9918
-                  </a>{" "}
-                  •{" "}
-                  <a
-                    href="tel:+639216364018"
-                    className="font-mono font-bold text-amber-300 underline"
-                  >
-                    0921 636 4018
-                  </a>
-                </p>
+              {/* Foreground Content (z-10 relative) */}
+              <div className="relative z-10 flex flex-col justify-between h-full space-y-5">
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xs">
+                      <MapPin className="size-3.5 text-amber-300" />
+                      Iriga City, Camarines Sur
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
+                        <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        {currentVideo.label}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={fetchLiveWeather}
+                        aria-label="Refresh Iriga weather"
+                        className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white transition hover:bg-white/25 backdrop-blur-xs"
+                      >
+                        <RefreshCw
+                          className={`size-3 ${refreshingWeather ? "animate-spin" : ""}`}
+                        />
+                        {weather.isLive ? "Updated Today" : "Rinconada Weather"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex items-center gap-4">
+                    <div className="flex size-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-md shadow-xs">
+                      {weatherTheme === "rainy" ? (
+                        <CloudRain className="size-10 text-sky-300" />
+                      ) : weatherTheme === "cloudy" ? (
+                        <CloudSun className="size-10 text-amber-300" />
+                      ) : (
+                        <Sun className="size-10 text-amber-400" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+                        {weather.temperatureC}°C
+                      </div>
+                      <p className="mt-0.5 text-sm font-medium text-blue-100 flex items-center gap-1.5">
+                        {weather.conditionLabel}
+                        <span className="text-[11px] text-blue-200/80">• Live Video</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 grid grid-cols-2 gap-3 rounded-xl bg-white/10 p-3.5 text-xs backdrop-blur-xs border border-white/10">
+                    <div className="flex items-center gap-2">
+                      <Droplets className="size-4 text-sky-300" />
+                      <div>
+                        <p className="text-blue-200">Humidity</p>
+                        <p className="font-mono text-sm font-bold">
+                          {weather.humidityPct}%
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Wind className="size-4 text-emerald-300" />
+                      <div>
+                        <p className="text-blue-200">Wind Speed</p>
+                        <p className="font-mono text-sm font-bold">
+                          {weather.windKmh} km/h
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Hourly Forecast Strip */}
+                  <div className="mt-5">
+                    <p className="mb-2 text-[11px] font-semibold tracking-wider text-blue-200 uppercase">
+                      Today&apos;s Iriga Forecast (PHT)
+                    </p>
+                    <div className="grid grid-cols-4 gap-2">
+                      {weather.hourly.map((slot) => (
+                        <div
+                          key={slot.timeLabel}
+                          className="flex flex-col items-center rounded-xl bg-white/10 px-2 py-2.5 text-center border border-white/5"
+                        >
+                          <span className="text-[11px] text-blue-100">
+                            {slot.timeLabel}
+                          </span>
+                          {slot.isRainy ? (
+                            <CloudRain className="my-1.5 size-4 text-sky-300" />
+                          ) : (
+                            <Sun className="my-1.5 size-4 text-amber-300" />
+                          )}
+                          <span className="font-mono text-xs font-bold">
+                            {slot.tempC}°C
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-5 border-t border-white/15 pt-3 text-[11px] text-blue-100">
+                  <p>
+                    <strong>CDRRMO 24/7 Weather & Flood Hotline:</strong>{" "}
+                    <a
+                      href="tel:+63542999918"
+                      className="font-mono font-bold text-amber-300 underline"
+                    >
+                      (054) 299 9918
+                    </a>{" "}
+                    •{" "}
+                    <a
+                      href="tel:+639216364018"
+                      className="font-mono font-bold text-amber-300 underline"
+                    >
+                      0921 636 4018
+                    </a>
+                  </p>
+                </div>
               </div>
             </Card>
 
@@ -440,104 +540,71 @@ export function IrigaLivelySections() {
               <CitationBadge citation={fbChannel.citation} compact />
             </div>
 
-            {/* Right Live Facebook Page Hub & Opt-in Embed */}
+            {/* Right Live Facebook Page Hub (Without Preview Timeline, with Official Profile Avatar) */}
             <div className="flex w-full max-w-full flex-col items-center lg:col-span-6">
-              {!showFbEmbed ? (
-                <Card className="w-full max-w-full border-blue-200/90 bg-card p-5 shadow-xs sm:max-w-[500px] dark:border-blue-900/60">
-                  {/* Page Header */}
-                  <div className="flex items-center gap-3.5 border-b border-border/80 pb-4">
-                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xs">
-                      <FacebookLogo className="size-6" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="truncate font-bold text-foreground">
-                          Lungsod ng Iriga
-                        </h3>
-                        <span
-                          className="inline-flex size-4 items-center justify-center rounded-full bg-blue-600 text-white"
-                          title="Verified City Hall Page"
-                        >
-                          <CheckCircle2 className="size-3" />
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        {fbChannel.handleOrDomain} • Official Government Channel
-                      </p>
-                    </div>
+              <Card className="w-full max-w-full border-blue-200/90 bg-card p-5 shadow-xs sm:max-w-[500px] dark:border-blue-900/60">
+                {/* Page Header */}
+                <div className="flex items-center gap-3.5 border-b border-border/80 pb-4">
+                  <div className="relative size-12 shrink-0 overflow-hidden rounded-full border-2 border-blue-600/30 bg-muted shadow-xs">
+                    <Image
+                      src="/iriga-facebook-profile.jpg"
+                      alt="Lungsod ng Iriga Official Facebook Profile"
+                      width={48}
+                      height={48}
+                      className="size-full object-cover"
+                    />
                   </div>
-
-                  {/* Highlights */}
-                  <div className="my-4 space-y-2.5 rounded-xl bg-blue-50/70 p-3.5 text-xs text-blue-950 dark:bg-blue-950/30 dark:text-blue-200">
-                    <div className="flex items-start gap-2">
-                      <Megaphone className="mt-0.5 size-4 shrink-0 text-blue-600 dark:text-blue-400" />
-                      <p className="leading-relaxed">
-                        Official announcements, typhoon bulletins, class suspensions, and community welfare advisories published directly by the City Public Information Office.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="space-y-2 pt-1">
-                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs">
-                      <a
-                        href={fbChannel.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="gap-2"
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="truncate font-bold text-foreground">
+                        Lungsod ng Iriga
+                      </h3>
+                      <span
+                        className="inline-flex size-4 items-center justify-center rounded-full bg-blue-600 text-white"
+                        title="Verified City Hall Page"
                       >
-                        <FacebookLogo className="size-4" />
-                        Open @irigacitygovt on Facebook
-                        <ExternalLink className="size-3.5" />
-                      </a>
-                    </Button>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setShowFbEmbed(true)}
-                      className="w-full rounded-xl"
-                    >
-                      Preview Interactive Timeline
-                    </Button>
+                        <CheckCircle2 className="size-3" />
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {fbChannel.handleOrDomain} • Official Government Channel
+                    </p>
                   </div>
+                </div>
 
-                  <p className="mt-3 text-center text-[11px] text-muted-foreground">
-                    Fast-loading civic mode active • Zero third-party tracking scripts until previewed
-                  </p>
-                </Card>
-              ) : (
-                <Card className="w-full max-w-full overflow-hidden border-border bg-white p-2 shadow-md sm:max-w-[500px]">
-                  <div className="mb-2 flex items-center justify-between border-b border-border/80 px-2 pb-2">
-                    <span className="text-xs font-semibold text-slate-800">
-                      Live Facebook Timeline Preview
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setShowFbEmbed(false)}
-                      className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 hover:bg-slate-200"
-                    >
-                      <X className="size-3" />
-                      Close Preview
-                    </button>
+                {/* Highlights */}
+                <div className="my-4 space-y-2.5 rounded-xl bg-blue-50/70 p-3.5 text-xs text-blue-950 dark:bg-blue-950/30 dark:text-blue-200">
+                  <div className="flex items-start gap-2">
+                    <Megaphone className="mt-0.5 size-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <p className="leading-relaxed">
+                      Official announcements, typhoon bulletins, class suspensions, and community welfare advisories published directly by the City Public Information Office.
+                    </p>
                   </div>
-                  <iframe
-                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Firigacitygovt&tabs=timeline&width=500&height=520&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
-                    width="100%"
-                    height="520"
-                    loading="lazy"
-                    style={{ border: "none", overflow: "hidden" }}
-                    scrolling="no"
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    title="Lungsod ng Iriga | Iriga City Official Facebook Page — Live Timeline"
-                    className="mx-auto h-[480px] w-full max-w-full sm:h-[520px]"
-                  />
-                </Card>
-              )}
+                </div>
+
+                {/* Direct Action Button */}
+                <div className="space-y-2 pt-1">
+                  <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs font-semibold">
+                    <a
+                      href={fbChannel.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gap-2"
+                    >
+                      <FacebookLogo className="size-4" />
+                      Open @irigacitygovt on Facebook
+                      <ExternalLink className="size-3.5" />
+                    </a>
+                  </Button>
+                </div>
+
+                <p className="mt-3 text-center text-[11px] text-muted-foreground">
+                  Fast-loading civic mode active • Direct connection to official Facebook updates
+                </p>
+              </Card>
+
               <p className="mt-2 text-center text-xs text-muted-foreground">
-                Having trouble viewing the Facebook feed in your browser?{" "}
+                Follow advisories in real time:{" "}
                 <a
                   href={fbChannel.url}
                   target="_blank"

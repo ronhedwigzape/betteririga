@@ -12,7 +12,7 @@
     "status": "Live BetterGov API Sync",
     "plainSummary": "BetterGov.ph tracks the entire multi-year DPWH Camarines Sur 5th DEO budget serving Iriga City and Rinconada: ₱1.32B (2020), ₱1.62B (2021), ₱1.30B (2022), ₱1.03B (2023), ₱557.70M (2024), ₱582.50M (2025), ₱1.01B (2026 Enacted GAA), and ₱532.41M in FY 2027 House Bill named projects.",
     "citation": {
-      "sourceUrl": "https://budget.bettergov.ph/districts/camarines-sur-5th",
+      "sourceUrl": "https://budget.bettergov.ph/hgab/2027/districts/leg%3Acamarines-sur%3A5th",
       "sourceName": "BetterGov.ph Open Budget API — Camarines Sur 5th District & DEO Multi-Year Ledger",
       "retrievedAt": "2026-11-03",
       "archiveUrl": "https://budget-assets.bettergov.ph/hgab/2027/pdf/hb10858-3r-vol-ic.pdf#page=221"
