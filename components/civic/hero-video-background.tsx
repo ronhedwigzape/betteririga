@@ -38,7 +38,7 @@ export function HeroVideoBackground({
   className,
   children,
 }: HeroVideoBackgroundProps) {
-  const containerRef = React.useRef<HTMLDivElement | null>(null)
+  const containerRef = React.useRef<HTMLElement | null>(null)
   const videoRef = React.useRef<HTMLVideoElement | null>(null)
   const [parallaxY, setParallaxY] = React.useState(0)
 
@@ -66,8 +66,8 @@ export function HeroVideoBackground({
       const rect = containerRef.current.getBoundingClientRect()
       // Only compute when hero is visible in viewport
       if (rect.bottom > 0 && rect.top < window.innerHeight) {
-        // Parallax speed: 0.3x scroll delta
-        const offset = Math.max(-60, Math.min(120, -rect.top * 0.32))
+        // Parallax speed: 0.4x scroll delta for visible dynamic depth
+        const offset = Math.max(-100, Math.min(180, -rect.top * 0.42))
         setParallaxY(offset)
       }
     }
@@ -113,19 +113,20 @@ export function HeroVideoBackground({
   }
 
   return (
-    <div
+    <section
       ref={containerRef}
+      aria-label="Hero - BetterIriga Public Guide"
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-border/60 shadow-lg",
+        "relative overflow-hidden w-full border-b border-border/70",
         className
       )}
     >
       {/* Covered Parallax Video / Poster Layer */}
       <div
-        className="pointer-events-none absolute -top-[15%] left-0 h-[135%] w-full will-change-transform"
+        className="pointer-events-none absolute -top-[20%] left-0 h-[140%] w-full will-change-transform"
         style={{
           transform: isReducedMotion
-            ? "scale(1.05)"
+            ? "scale(1.02)"
             : `translate3d(0, ${parallaxY}px, 0) scale(1.08)`,
           transition: "transform 0.08s ease-out",
         }}
@@ -133,6 +134,7 @@ export function HeroVideoBackground({
         {!isReducedMotion ? (
           <video
             ref={videoRef}
+            src={videoMp4}
             autoPlay
             muted
             loop
@@ -144,14 +146,14 @@ export function HeroVideoBackground({
             onLoadedData={(e) => {
               e.currentTarget.play().catch(() => {})
             }}
-            className="h-full w-full object-cover object-center opacity-85 transition-opacity duration-700 dark:opacity-60"
+            className="h-full w-full object-cover object-center opacity-90 transition-opacity duration-700 dark:opacity-70"
           >
             <source src={videoWebm} type="video/webm" />
             <source src={videoMp4} type="video/mp4" />
           </video>
         ) : (
           <div
-            className="h-full w-full bg-cover bg-center opacity-60 dark:opacity-40"
+            className="h-full w-full bg-cover bg-center opacity-70 dark:opacity-50"
             style={{ backgroundImage: `url('${poster}')` }}
             aria-hidden="true"
           />
@@ -160,20 +162,20 @@ export function HeroVideoBackground({
 
       {/* Covered Multi-layer Backdrop Gradients: Luminous for light mode, deep for dark mode */}
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/85 to-background/98 dark:from-slate-950/75 dark:via-background/85 dark:to-background/98"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/50 via-background/70 to-background/95 dark:from-slate-950/60 dark:via-background/75 dark:to-background/95"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-background/40 to-background/90 dark:via-background/60 dark:to-background/95"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-background/30 to-background/80 dark:via-background/50 dark:to-background/90"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:28px_28px] opacity-25 dark:opacity-15"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:28px_28px] opacity-20 dark:opacity-10"
         aria-hidden="true"
       />
 
       {/* Foreground Hero Content */}
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10 mx-auto max-w-7xl">{children}</div>
 
       {/* Video Attribution & Controls */}
       <div className="absolute right-3.5 bottom-3.5 z-20 flex max-w-[calc(100%-2rem)] flex-wrap items-center justify-end gap-2">
@@ -212,6 +214,6 @@ export function HeroVideoBackground({
           </button>
         ) : null}
       </div>
-    </div>
+    </section>
   )
 }

@@ -894,24 +894,48 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "projects-explorer.tsx must render semantic indicator dots for statuses"
     )
 
-    // Header pure shadcn Community Guide modal
+    // Header pure shadcn Community Guide modal with controlled unmounting
     const headerContent = fs.readFileSync("components/civic/site-header.tsx", "utf8")
     assert.ok(
-      headerContent.includes("<Dialog>") &&
+      headerContent.includes("<Dialog") &&
+      headerContent.includes("guideOpen") &&
+      headerContent.includes("setGuideOpen(false)") &&
       headerContent.includes("About This Community Guide"),
-      "site-header.tsx must implement a pure shadcn Dialog modal for the Community Guide notice"
+      "site-header.tsx must implement a controlled pure shadcn Dialog modal that unmounts on button clicks"
     )
 
-    // Section-wide live weather video
+    // Weather card live video and clean single-layer section
     const livelySectionsContent = fs.readFileSync("components/civic/iriga-lively-sections.tsx", "utf8")
     assert.ok(
       livelySectionsContent.includes("videoRef") &&
       livelySectionsContent.includes("id=\"weather-map\"") &&
       livelySectionsContent.includes("absolute inset-0 z-0 overflow-hidden"),
-      "iriga-lively-sections.tsx must max out the live weather background video to cover the entire section"
+      "iriga-lively-sections.tsx must embed the live weather background video directly inside the Weather Today Card"
     )
 
-    // Footer matches navbar logo and lists other Better LGUs
+    // 12-point scalloped rosette Facebook verified badge
+    const telecomContent = fs.readFileSync("components/civic/telecom-and-channel-icons.tsx", "utf8")
+    assert.ok(
+      telecomContent.includes("FacebookVerifiedBadge") &&
+      telecomContent.includes("#0866FF") &&
+      telecomContent.includes("strokeWidth=\"2.6\""),
+      "telecom-and-channel-icons.tsx must implement authentic 12-point scalloped FacebookVerifiedBadge in #0866FF"
+    )
+
+    // Hero section semantic <section> and full-width breakout
+    const heroContent = fs.readFileSync("components/civic/hero-video-background.tsx", "utf8")
+    const homeContent = fs.readFileSync("app/page.tsx", "utf8")
+    assert.ok(
+      heroContent.includes("<section") &&
+      heroContent.includes("parallaxY"),
+      "hero-video-background.tsx must be a semantic <section> with parallax scrolling"
+    )
+    assert.ok(
+      homeContent.includes("w-[calc(100%+1.5rem)]") || homeContent.includes("HeroVideoBackground"),
+      "app/page.tsx must style HeroVideoBackground edge-to-edge"
+    )
+
+    // Footer uses 100% shadcn UI components, matches navbar logo, and enlists Better LGU Civic Network in Column 3
     const footerContent = fs.readFileSync("components/civic/site-footer.tsx", "utf8")
     assert.ok(
       footerContent.includes("<BetterIrigaLogo") &&
@@ -919,9 +943,17 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "site-footer.tsx must use horizontal BetterIrigaLogo matching the navbar"
     )
     assert.ok(
+      footerContent.includes("<Button") &&
+      footerContent.includes("<Badge") &&
+      footerContent.includes("<Card") &&
+      footerContent.includes("<Separator"),
+      "site-footer.tsx must be composed using 100% shadcn UI components (Button, Badge, Card, Separator)"
+    )
+    assert.ok(
       footerContent.includes("Better LGU Civic Network") &&
-      footerContent.includes("siblingPortals"),
-      "site-footer.tsx must mention other Better LGUs from siblingPortals"
+      footerContent.includes("siblingPortals") &&
+      footerContent.includes("Official Primary Sources"),
+      "site-footer.tsx must enlist Better LGU Civic Network under the sources and civic network section"
     )
 
     // 3. Button and Badge variants have explicit text-foreground

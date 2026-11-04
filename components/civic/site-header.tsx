@@ -46,6 +46,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
@@ -169,6 +170,7 @@ export function SiteHeader() {
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const [guideOpen, setGuideOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
   const snapshot = useCivicStore((state) => state.snapshot)
   const brand = snapshot.siteContent.brand
@@ -190,11 +192,12 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Render-phase state adjustment: close mobile menu when navigating
+  // Render-phase state adjustment: close mobile menu and guide modal when navigating
   const [prevPathname, setPrevPathname] = React.useState(pathname)
   if (prevPathname !== pathname) {
     setPrevPathname(pathname)
     setMobileOpen(false)
+    setGuideOpen(false)
   }
 
   return (
@@ -371,7 +374,7 @@ export function SiteHeader() {
       <div className="w-full max-w-full overflow-hidden border-b border-blue-200/70 bg-blue-50/90 text-blue-950 dark:border-blue-900/50 dark:bg-blue-950/50 dark:text-blue-100">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-1.5 text-xs sm:px-6 lg:px-8">
           {/* Left: Clickable Community Guide Notice opening a pure shadcn Modal */}
-          <Dialog>
+          <Dialog open={guideOpen} onOpenChange={setGuideOpen}>
             <DialogTrigger asChild>
               <button
                 type="button"
@@ -406,10 +409,26 @@ export function SiteHeader() {
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter className="flex-col sm:flex-row gap-2 pt-2 border-t border-border">
-                <Button asChild variant="outline" size="sm" className="rounded-xl">
+                <DialogClose asChild>
+                  <Button variant="outline" size="sm" className="rounded-xl">
+                    Close
+                  </Button>
+                </DialogClose>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="rounded-xl"
+                  onClick={() => setGuideOpen(false)}
+                >
                   <Link href="/about">Learn More in About</Link>
                 </Button>
-                <Button asChild size="sm" className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+                <Button
+                  asChild
+                  size="sm"
+                  className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => setGuideOpen(false)}
+                >
                   <Link href="/verification">View Verification Ledger</Link>
                 </Button>
               </DialogFooter>

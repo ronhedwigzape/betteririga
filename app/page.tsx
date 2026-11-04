@@ -100,9 +100,9 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16 pb-12">
-      {/* Covered Parallax Hero Section */}
+      {/* Covered Parallax Hero Section (Max Width Edge-to-Edge Breakout) */}
       <Reveal>
-        <HeroVideoBackground className="px-4 pt-12 pb-14 sm:px-6 lg:px-8">
+        <HeroVideoBackground className="-mx-3 sm:-mx-6 lg:-mx-8 w-[calc(100%+1.5rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] -mt-4 sm:-mt-6 pt-10 pb-14 sm:pt-14 sm:pb-18 lg:pt-16 lg:pb-20">
           <div className="mx-auto max-w-4xl text-center">
             {/* Enlarged Official Emblem */}
             <div className="mb-6 flex justify-center">
