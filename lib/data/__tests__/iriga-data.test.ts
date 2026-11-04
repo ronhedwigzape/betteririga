@@ -1173,20 +1173,24 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "LICENSE file must contain dual MIT and CC BY 4.0 licenses"
     )
 
-    // 9. Flicker-free, stable layout search with floating animated dropdown
+    // 9. 100% shadcn UI search in hero with suggestion scroll animation across breakpoints
     const globalSearchContent = fs.readFileSync("components/civic/global-civic-search.tsx", "utf8")
     assert.ok(
-      globalSearchContent.includes("animate-civic-dropdown absolute top-full") &&
+      globalSearchContent.includes("@/components/ui/card") &&
+      globalSearchContent.includes("@/components/ui/badge") &&
+      globalSearchContent.includes("@/components/ui/button") &&
+      globalSearchContent.includes("@/components/ui/input") &&
+      globalSearchContent.includes("scrollToResults") &&
+      globalSearchContent.includes('behavior: "smooth"') &&
       globalSearchContent.includes("active:scale-95"),
-      "global-civic-search.tsx must render search results in a floating animated dropdown overlay without layout displacement"
+      "global-civic-search.tsx must use 100% shadcn UI primitives and smoothly scroll to suggestion contents"
     )
 
     const globalsCssContent = fs.readFileSync("app/globals.css", "utf8")
     assert.ok(
-      globalsCssContent.includes("animate-civic-dropdown") &&
       globalsCssContent.includes("-webkit-tap-highlight-color: transparent") &&
       globalsCssContent.includes("*:focus:not(:focus-visible)"),
-      "globals.css must include civic-dropdown animation and suppress click outline & tap flickers"
+      "globals.css must suppress click outline & tap flickers"
     )
   })
 })
