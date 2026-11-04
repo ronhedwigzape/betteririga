@@ -83,6 +83,8 @@
     "logos": {
       "lightMode": "/BetterIriga-Blue-Foreground-Transparent.png",
       "darkMode": "/BetterIriga-White-Foreground-Transparent.png",
+      "horizontalLight": "/BetterIriga-Horizontal-LightMode-Blue.png",
+      "horizontalDark": "/BetterIriga-Horizontal-DarkMode-White.png",
       "badge": "/BetterIriga-Badge-BlueAndWhite-Transparent.png",
       "alt": "BetterIriga.org Official Emblem"
     }

@@ -565,6 +565,8 @@ export const ValidCivicSectionSchema = z.object({
 export const BrandLogosSchema = z.object({
   lightMode: z.string().min(1),
   darkMode: z.string().min(1),
+  horizontalLight: z.string().min(1).optional(),
+  horizontalDark: z.string().min(1).optional(),
   badge: z.string().min(1),
   alt: z.string().min(1),
 })

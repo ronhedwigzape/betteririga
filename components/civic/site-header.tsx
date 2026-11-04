@@ -185,48 +185,59 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* 1. Top Emergency Hotline Bar (BetterLibmanan TopUtilityBar style) */}
+      {/* 1. Top Emergency Hotline Bar (Upper Right Redirection & Compact Hotlines) */}
       <div className="w-full max-w-full overflow-hidden bg-slate-950 text-slate-100">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-1.5 text-xs sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:gap-x-4">
-            <span className="inline-flex items-center gap-1.5 font-semibold text-amber-400">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-1.5 text-xs sm:gap-4 sm:px-6 lg:px-8">
+          {/* Left: Compact Hotlines */}
+          <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 sm:gap-2">
+            <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-bold text-amber-400">
               <PhoneCall className="size-3.5 animate-civic-pulse" />
-              {brand.hotlineBarLabel}
+              <span className="hidden sm:inline">Emergency:</span>
             </span>
-            {primaryHotlines.map((hotline) => (
-              <a
-                key={hotline.id}
-                href={hotline.telHref}
-                className="inline-flex items-center gap-1.5 text-slate-200 transition hover:text-amber-300"
-              >
-                <CarrierIconOnly
-                  number={hotline.number}
-                  networkOrType={hotline.networkOrType}
-                  className="size-3.5"
-                />
-                <span className="text-slate-400">{hotline.label}:</span>
-                <span className="font-mono font-semibold">{hotline.number}</span>
-              </a>
-            ))}
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {primaryHotlines.map((hotline) => (
+                <a
+                  key={hotline.id}
+                  href={hotline.telHref}
+                  title={`${hotline.agency} - ${hotline.label}`}
+                  className="inline-flex shrink-0 items-center gap-1 rounded-md border border-slate-800 bg-slate-900/90 px-2 py-0.5 text-[11px] font-medium text-slate-200 transition-colors hover:border-amber-500/50 hover:bg-slate-800 hover:text-amber-300"
+                >
+                  <CarrierIconOnly
+                    number={hotline.number}
+                    networkOrType={hotline.networkOrType}
+                    className="size-3"
+                  />
+                  <span className="font-mono font-semibold text-slate-100">
+                    {hotline.number}
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
-          <div className="hidden items-center gap-3 md:flex">
-            <span className="rounded bg-slate-800 px-2 py-0.5 text-[11px] font-medium text-slate-300">
+
+          {/* Upper Right: Official LGU Portal Redirection & City Details */}
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <span className="hidden md:inline-block rounded-md border border-slate-700/60 bg-slate-900 px-2 py-0.5 text-[11px] font-medium text-slate-300">
               {brand.cityQuickBadge}
             </span>
             <a
               href={officialWebsite}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-slate-300 underline-offset-2 hover:text-white hover:underline"
+              className="inline-flex items-center gap-1.5 rounded-full border border-blue-600/70 bg-blue-950/90 px-2.5 py-0.5 text-[11px] font-semibold text-blue-200 shadow-xs transition-colors hover:border-blue-500 hover:bg-blue-900 hover:text-white"
+              title="Visit Official City Government of Iriga Website (iriga.gov.ph)"
             >
-              iriga.gov.ph
-              <ExternalLink className="size-3" />
+              <span className="hidden sm:inline text-slate-300">Official Portal:</span>
+              <span className="font-bold underline-offset-2 hover:underline">
+                iriga.gov.ph
+              </span>
+              <ExternalLink className="size-3 text-blue-400" />
             </a>
           </div>
         </div>
       </div>
 
-      {/* 2. Main Sticky Navigation Bar (BetterLibmanan sticky top-0 Navbar architecture) */}
+      {/* 2. Main Sticky Navigation Bar */}
       <header
         className={cn(
           "sticky top-0 z-50 w-full border-b border-border/80 bg-background/95 backdrop-blur-md transition-shadow duration-200 supports-[backdrop-filter]:bg-background/90",
@@ -234,27 +245,20 @@ export function SiteHeader() {
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-2.5 sm:gap-3 sm:py-3 sm:px-6 lg:px-8">
-          <Link href="/" className="group flex min-w-0 shrink items-center gap-2.5 sm:gap-3">
+          <Link
+            href="/"
+            className="group flex min-w-0 shrink items-center gap-2 sm:gap-2.5"
+            aria-label={`${brand.fullDomain} - Home`}
+          >
             <BetterIrigaLogo
-              size={44}
+              variant="horizontal"
               priority
-              alt={`${brand.fullDomain} Official Emblem`}
-              className="size-10 sm:size-11 transition-transform duration-300 group-hover:scale-105"
+              alt={`${brand.fullDomain} Official Logo`}
+              className="h-8 sm:h-9 md:h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
             />
-            <div className="min-w-0">
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="truncate text-base font-bold tracking-tight text-foreground sm:text-lg">
-                  {brand.name}
-                  <span className="text-blue-600 dark:text-blue-400">
-                    {brand.domainSuffix}
-                  </span>
-                </span>
-                <span className="hidden rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-blue-800 uppercase xl:inline-block dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
-                  {brand.regionBadge}
-                </span>
-              </div>
-              <p className="truncate text-[11px] text-muted-foreground sm:text-xs">{brand.tagline}</p>
-            </div>
+            <span className="sr-only">
+              {brand.fullDomain} - {brand.tagline}
+            </span>
           </Link>
 
           {/* Desktop Nav — One-word labels allow clean display on lg+ screens */}

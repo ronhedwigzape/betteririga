@@ -81,12 +81,12 @@ export default function HomePage() {
       <Reveal>
         <HeroVideoBackground className="px-4 pt-10 pb-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-4 flex justify-center">
+            <div className="mb-6 flex justify-center">
               <BetterIrigaLogo
-                size={96}
+                size={180}
                 priority
                 alt={`${snapshot.siteContent.brand.fullDomain} Official Emblem`}
-                className="size-20 transition-transform duration-500 hover:scale-105 sm:size-24"
+                className="size-32 sm:size-40 md:size-44 lg:size-48 transition-transform duration-500 hover:scale-105 drop-shadow-2xl"
               />
             </div>
 

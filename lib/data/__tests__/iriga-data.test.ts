@@ -747,4 +747,54 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     assert.ok("note" in goodJson)
     assert.equal(goodJson.note.content, "Test note from civic test suite")
   })
+
+  it("enforces light mode default, horizontal navbar logo, enlarged hero emblem, and compact hotlines", () => {
+    // 1. Theme default is light mode
+    const themeProviderContent = fs.readFileSync(
+      "components/theme-provider.tsx",
+      "utf8"
+    )
+    assert.ok(
+      themeProviderContent.includes('defaultTheme="light"'),
+      "theme-provider.tsx must specify defaultTheme='light'"
+    )
+    assert.ok(
+      themeProviderContent.includes("enableSystem={false}"),
+      "theme-provider.tsx must disable system theme override"
+    )
+
+    // 2. Navbar uses horizontal logo variant
+    const siteHeaderContent = fs.readFileSync(
+      "components/civic/site-header.tsx",
+      "utf8"
+    )
+    assert.ok(
+      siteHeaderContent.includes('variant="horizontal"'),
+      "site-header.tsx must use horizontal logo variant in navbar"
+    )
+    assert.ok(
+      siteHeaderContent.includes("Official Portal:"),
+      "site-header.tsx must display official portal label on upper right"
+    )
+    assert.ok(
+      siteHeaderContent.includes("iriga.gov.ph"),
+      "site-header.tsx must display iriga.gov.ph link on upper right"
+    )
+
+    // 3. Hero home page has enlarged emblem
+    const homeContent = fs.readFileSync("app/page.tsx", "utf8")
+    assert.ok(
+      homeContent.includes("size={180}"),
+      "app/page.tsx must have enlarged hero logo with size 180"
+    )
+    assert.ok(
+      homeContent.includes("lg:size-48"),
+      "app/page.tsx must use responsive enlarged size class up to lg:size-48"
+    )
+
+    // 4. Site content brand logos include horizontal logos
+    const logos = getBrandLogos()
+    assert.ok(logos?.horizontalLight, "Brand logos must define horizontalLight")
+    assert.ok(logos?.horizontalDark, "Brand logos must define horizontalDark")
+  })
 })
