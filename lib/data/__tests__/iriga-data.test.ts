@@ -1172,5 +1172,21 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       licenseFileContent.includes("Creative Commons Attribution 4.0 International Public License (CC BY 4.0)"),
       "LICENSE file must contain dual MIT and CC BY 4.0 licenses"
     )
+
+    // 9. Flicker-free, stable layout search with floating animated dropdown
+    const globalSearchContent = fs.readFileSync("components/civic/global-civic-search.tsx", "utf8")
+    assert.ok(
+      globalSearchContent.includes("animate-civic-dropdown absolute top-full") &&
+      globalSearchContent.includes("active:scale-95"),
+      "global-civic-search.tsx must render search results in a floating animated dropdown overlay without layout displacement"
+    )
+
+    const globalsCssContent = fs.readFileSync("app/globals.css", "utf8")
+    assert.ok(
+      globalsCssContent.includes("animate-civic-dropdown") &&
+      globalsCssContent.includes("-webkit-tap-highlight-color: transparent") &&
+      globalsCssContent.includes("*:focus:not(:focus-visible)"),
+      "globals.css must include civic-dropdown animation and suppress click outline & tap flickers"
+    )
   })
 })

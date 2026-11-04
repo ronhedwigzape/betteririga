@@ -139,53 +139,55 @@ export function HeroVideoBackground({
       ref={containerRef}
       aria-label="Hero - BetterIriga Public Guide"
       className={cn(
-        "relative overflow-hidden w-full border-b border-border/70",
+        "relative w-full border-b border-border/70",
         className
       )}
     >
-      {/* Covered Parallax Video / Poster Layer */}
-      <div
-        ref={parallaxLayerRef}
-        className="pointer-events-none absolute -top-[15%] left-0 h-[130%] w-full will-change-transform"
-        style={{
-          transform: isReducedMotion
-            ? "scale(1.02)"
-            : "translate3d(0, 0px, 0) scale(1.12)",
-        }}
-      >
-        {!isReducedMotion ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={poster}
-            aria-hidden="true"
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onLoadedData={(e) => {
-              e.currentTarget.play().catch(() => {})
-            }}
-            className="h-full w-full object-cover object-center opacity-90 transition-opacity duration-700 dark:opacity-70"
-          >
-            {/* Crisp 1080p video for desktop & larger viewports */}
-            <source
-              src={video1080p}
-              media="(min-width: 1024px)"
-              type="video/mp4"
+      {/* Covered Parallax Video / Poster Layer (Clipped to Hero Boundary) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          ref={parallaxLayerRef}
+          className="absolute -top-[15%] left-0 h-[130%] w-full will-change-transform"
+          style={{
+            transform: isReducedMotion
+              ? "scale(1.02)"
+              : "translate3d(0, 0px, 0) scale(1.12)",
+          }}
+        >
+          {!isReducedMotion ? (
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={poster}
+              aria-hidden="true"
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onLoadedData={(e) => {
+                e.currentTarget.play().catch(() => {})
+              }}
+              className="h-full w-full object-cover object-center opacity-90 transition-opacity duration-500 dark:opacity-70"
+            >
+              {/* Crisp 1080p video for desktop & larger viewports */}
+              <source
+                src={video1080p}
+                media="(min-width: 1024px)"
+                type="video/mp4"
+              />
+              {/* Efficient 720p streams for mobile & tablet */}
+              <source src={videoWebm} type="video/webm" />
+              <source src={videoMp4} type="video/mp4" />
+            </video>
+          ) : (
+            <div
+              className="h-full w-full bg-cover bg-center opacity-70 dark:opacity-50"
+              style={{ backgroundImage: `url('${poster}')` }}
+              aria-hidden="true"
             />
-            {/* Efficient 720p streams for mobile & tablet */}
-            <source src={videoWebm} type="video/webm" />
-            <source src={videoMp4} type="video/mp4" />
-          </video>
-        ) : (
-          <div
-            className="h-full w-full bg-cover bg-center opacity-70 dark:opacity-50"
-            style={{ backgroundImage: `url('${poster}')` }}
-            aria-hidden="true"
-          />
-        )}
+          )}
+        </div>
       </div>
 
       {/* Covered Multi-layer Backdrop Gradients: Luminous for light mode, deep for dark mode */}
