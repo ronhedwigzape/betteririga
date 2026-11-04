@@ -343,3 +343,4 @@ export function StatisticsCharts({ stats }: StatisticsChartsProps) {
     </div>
   )
 }
+
