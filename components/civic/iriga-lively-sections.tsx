@@ -25,6 +25,9 @@ import { useCivicStore } from "@/lib/store/civic-store"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { FacebookLogo } from "@/components/civic/telecom-and-channel-icons"
 import { Reveal } from "@/components/civic/reveal"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 interface WeatherSnapshot {
   temperatureC: number
@@ -37,17 +40,6 @@ interface WeatherSnapshot {
     tempC: number
     isRainy: boolean
   }>
-}
-
-function describeWeatherCode(code: number): string {
-  if (code === 0) return "Clear Sky"
-  if (code === 1 || code === 2) return "Partly Cloudy"
-  if (code === 3) return "Overcast"
-  if (code >= 45 && code <= 48) return "Misty / Foggy"
-  if (code >= 51 && code <= 67) return "Light to Moderate Rain"
-  if (code >= 80 && code <= 82) return "Tropical Rain Showers"
-  if (code >= 95) return "Thunderstorm Advisory"
-  return "Warm Tropical Breeze"
 }
 
 export function IrigaLivelySections() {
@@ -81,7 +73,6 @@ export function IrigaLivelySections() {
         const tempC = Math.round(Number(data.current.temperature_2m))
         const humidity = Math.round(Number(data.current.relative_humidity_2m))
         const wind = Math.round(Number(data.current.wind_speed_10m))
-        const code = Number(data.current.weather_code ?? 1)
 
         const hourlyItems: WeatherSnapshot["hourly"] = []
         const times: string[] = data?.hourly?.time ?? []
@@ -103,68 +94,65 @@ export function IrigaLivelySections() {
         }
 
         setWeather({
-          temperatureC: Number.isNaN(tempC)
-            ? weatherBaseline.temperatureC
-            : tempC,
-          conditionLabel: describeWeatherCode(code),
-          humidityPct: Number.isNaN(humidity)
-            ? weatherBaseline.humidityPct
-            : humidity,
-          windKmh: Number.isNaN(wind) ? weatherBaseline.windKmh : wind,
+          temperatureC: Number.isNaN(tempC) ? 31 : tempC,
+          conditionLabel:
+            Number(data.current.weather_code ?? 0) >= 51
+              ? "Tropical Showers"
+              : "Partly Cloudy",
+          humidityPct: Number.isNaN(humidity) ? 78 : humidity,
+          windKmh: Number.isNaN(wind) ? 14 : wind,
           isLive: true,
-          hourly:
-            hourlyItems.length === 4 ? hourlyItems : weatherBaseline.hourly,
+          hourly: hourlyItems.length > 0 ? hourlyItems : weatherBaseline.hourly,
         })
       }
     } catch {
-      // Keep clean fallback
+      // Keep baseline on error
     } finally {
       setRefreshingWeather(false)
     }
-  }, [geo.latitude, geo.longitude, weatherBaseline])
+  }, [geo.latitude, geo.longitude, weatherBaseline.hourly])
 
   React.useEffect(() => {
     const timer = window.setTimeout(() => {
       void fetchLiveWeather()
-    }, 50)
+    }, 1500)
     return () => window.clearTimeout(timer)
   }, [fetchLiveWeather])
 
   return (
-    <div className="space-y-14">
-      {/* 1. Weather Today & Interactive Map of Iriga City */}
+    <div className="space-y-16">
+      {/* 1. Weather Today & Interactive Map of Iriga City (Natural Standalone Cards) */}
       <Reveal>
-        <section
-          id="weather-map"
-          className="scroll-mt-24 rounded-3xl border border-border bg-card p-6 shadow-xs sm:p-8"
-        >
-          <div className="flex flex-col justify-between gap-2 border-b border-border pb-4 sm:flex-row sm:items-center">
+        <section id="weather-map" className="scroll-mt-24 space-y-6">
+          <div className="flex flex-col justify-between gap-2 border-b border-border/80 pb-4 sm:flex-row sm:items-center">
             <div>
-              <span className="text-xs font-bold tracking-wider text-blue-600 uppercase dark:text-blue-400">
+              <Badge variant="secondary" className="font-semibold text-blue-700 dark:text-blue-300">
                 Real-Time Rinconada Weather & Geography
-              </span>
-              <h2 className="mt-1 flex items-center gap-2 text-2xl font-extrabold text-foreground">
+              </Badge>
+              <h2 className="mt-1.5 flex items-center gap-2 text-2xl font-extrabold text-foreground sm:text-3xl">
                 <Compass className="size-6 text-blue-600 dark:text-blue-400" />
                 Weather Today & Interactive Map of Iriga City
               </h2>
             </div>
-            <a
-              href={geo.osmLinkUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
-            >
-              Open Full Map on OpenStreetMap
-              <ExternalLink className="size-3.5" />
-            </a>
+            <Button asChild variant="outline" size="sm" className="rounded-xl">
+              <a
+                href={geo.osmLinkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gap-1.5"
+              >
+                Open Full Map on OpenStreetMap
+                <ExternalLink className="size-3.5" />
+              </a>
+            </Button>
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-12">
+          <div className="grid gap-6 lg:grid-cols-12">
             {/* Left Column: Weather Today Card */}
-            <div className="flex flex-col justify-between rounded-2xl border border-blue-200/80 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 p-6 text-white shadow-md lg:col-span-5">
+            <Card className="flex flex-col justify-between border-blue-200/80 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 p-6 text-white shadow-md lg:col-span-5">
               <div>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">
                     <MapPin className="size-3.5 text-amber-300" />
                     Iriga City, Camarines Sur
                   </span>
@@ -172,7 +160,7 @@ export function IrigaLivelySections() {
                     type="button"
                     onClick={fetchLiveWeather}
                     aria-label="Refresh Iriga weather"
-                    className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium transition hover:bg-white/25"
+                    className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white transition hover:bg-white/25"
                   >
                     <RefreshCw
                       className={`size-3 ${refreshingWeather ? "animate-spin" : ""}`}
@@ -262,10 +250,10 @@ export function IrigaLivelySections() {
                   </a>
                 </p>
               </div>
-            </div>
+            </Card>
 
             {/* Right Column: Interactive OpenStreetMap of Iriga City */}
-            <div className="flex flex-col justify-between rounded-2xl border border-border bg-muted/20 p-4 lg:col-span-7">
+            <Card className="flex flex-col justify-between border-border bg-card p-4 shadow-xs lg:col-span-7">
               <div className="overflow-hidden rounded-xl border border-border bg-muted">
                 <iframe
                   src={geo.osmEmbedUrl}
@@ -282,40 +270,38 @@ export function IrigaLivelySections() {
                     <MapPin className="size-4 text-blue-600 dark:text-blue-400" />
                     {profile.cityHallAddress}
                   </span>
-                  <span className="rounded-md bg-muted px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
+                  <Badge variant="outline" className="font-mono text-[11px]">
                     {geo.latitude}°N, {geo.longitude}°E • ZIP {geo.postalCode}
-                  </span>
+                  </Badge>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5">
                   {geo.landmarks.map((landmark) => (
-                    <span
+                    <Badge
                       key={landmark}
-                      className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+                      variant="secondary"
+                      className="gap-1 font-medium text-[11px]"
                     >
                       <Mountain className="size-3 text-emerald-600 dark:text-emerald-400" />
                       {landmark}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </section>
       </Reveal>
 
-      {/* 2. Brief History of Iriga City Timeline (BetterSolano-style) */}
+      {/* 2. Brief History of Iriga City Timeline (Natural Standalone Cards) */}
       <Reveal delayMs={60}>
-        <section
-          id="history"
-          className="scroll-mt-24 rounded-3xl border border-border bg-gradient-to-b from-amber-50/50 via-card to-card p-6 shadow-xs sm:p-8 dark:from-amber-950/15"
-        >
-          <div className="flex flex-col justify-between gap-2 border-b border-border pb-4 sm:flex-row sm:items-center">
+        <section id="history" className="scroll-mt-24 space-y-6">
+          <div className="flex flex-col justify-between gap-2 border-b border-border/80 pb-4 sm:flex-row sm:items-center">
             <div>
-              <span className="text-xs font-bold tracking-wider text-amber-700 uppercase dark:text-amber-400">
+              <Badge variant="secondary" className="font-semibold text-amber-800 dark:text-amber-400">
                 From &ldquo;I-raga&rdquo; (1578) to the City of Crystal Clear Springs
-              </span>
-              <h2 className="mt-1 flex items-center gap-2 text-2xl font-extrabold text-foreground">
+              </Badge>
+              <h2 className="mt-1.5 flex items-center gap-2 text-2xl font-extrabold text-foreground sm:text-3xl">
                 <BookOpen className="size-6 text-amber-600 dark:text-amber-400" />
                 Brief History of Iriga City
               </h2>
@@ -323,19 +309,19 @@ export function IrigaLivelySections() {
             <CitationBadge citation={profile.citation} compact />
           </div>
 
-          <div className="mt-6 grid gap-8 lg:grid-cols-12">
+          <div className="grid gap-8 lg:grid-cols-12">
             {/* Timeline Column */}
             <div className="relative space-y-4 border-l-2 border-blue-600/30 pl-6 lg:col-span-8">
               {profile.historyTimeline.map((item) => (
-                <div
+                <Card
                   key={item.year}
-                  className="civic-card-hover group relative rounded-2xl border border-border bg-background p-4 shadow-2xs transition hover:border-blue-500"
+                  className="civic-card-hover group relative border-border bg-card p-4 shadow-2xs transition-all hover:border-blue-500"
                 >
                   <span className="absolute top-5 -left-[31px] size-3.5 rounded-full border-2 border-blue-600 bg-background transition group-hover:scale-125 group-hover:bg-blue-600" />
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-blue-600 px-3 py-0.5 font-mono text-xs font-bold text-white">
+                    <Badge variant="default" className="bg-blue-600 text-white font-mono text-xs font-bold">
                       {item.year}
-                    </span>
+                    </Badge>
                     <h3 className="text-sm font-bold text-foreground sm:text-base">
                       {item.title}
                     </h3>
@@ -343,16 +329,16 @@ export function IrigaLivelySections() {
                   <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
                     {item.description}
                   </p>
-                </div>
+                </Card>
               ))}
             </div>
 
             {/* Cultural & Geographic Highlights Column */}
             <div className="space-y-4 lg:col-span-4">
               {profile.historyHighlights.map((card) => (
-                <div
+                <Card
                   key={card.title}
-                  className="civic-card-hover rounded-2xl border border-border bg-background p-5 shadow-2xs"
+                  className="civic-card-hover border-border bg-card p-5 shadow-2xs"
                 >
                   <h3 className="text-sm font-bold text-foreground">
                     {card.title}
@@ -360,27 +346,26 @@ export function IrigaLivelySections() {
                   <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
                     {card.description}
                   </p>
-                </div>
+                </Card>
               ))}
 
-              <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-5 text-xs text-blue-950 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-100">
-                <p className="font-bold">
+              <Card className="border-blue-200/80 bg-blue-50/60 p-5 text-xs text-blue-950 shadow-xs dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-100">
+                <p className="font-bold text-sm">
                   Patron Saint & Annual Festivities
                 </p>
-                <p className="mt-1 text-blue-900/90 dark:text-blue-200">
+                <p className="mt-2 text-blue-900/90 dark:text-blue-200">
                   • <strong>Fiesta:</strong> {profile.patronSaintFiesta}
                 </p>
                 <p className="mt-1 text-blue-900/90 dark:text-blue-200">
                   • <strong>Cultural Festival:</strong> {profile.majorFestival}
                 </p>
-                <Link
-                  href="/about"
-                  className="mt-3 inline-flex items-center gap-1 font-bold text-blue-700 underline dark:text-blue-300"
-                >
-                  Read Full City Profile & Sources
-                  <ArrowRight className="size-3.5" />
-                </Link>
-              </div>
+                <Button asChild variant="link" size="sm" className="mt-2 p-0 h-auto font-bold text-blue-700 dark:text-blue-300">
+                  <Link href="/about" className="gap-1">
+                    Read Full City Profile & Sources
+                    <ArrowRight className="size-3.5" />
+                  </Link>
+                </Button>
+              </Card>
             </div>
           </div>
         </section>
@@ -388,17 +373,14 @@ export function IrigaLivelySections() {
 
       {/* 3. Live Official LGU Iriga Facebook Page Embed Section */}
       <Reveal delayMs={90}>
-        <section
-          id="facebook-updates"
-          className="scroll-mt-24 rounded-3xl border border-blue-200/80 bg-gradient-to-br from-blue-50/70 via-card to-card p-6 shadow-xs sm:p-8 dark:border-blue-900/50 dark:from-blue-950/25"
-        >
+        <section id="facebook-updates" className="scroll-mt-24 space-y-6">
           <div className="grid items-center gap-8 lg:grid-cols-12">
             {/* Left Intro */}
             <div className="space-y-4 lg:col-span-6">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white">
+              <Badge variant="default" className="bg-blue-600 text-white gap-1.5">
                 <FacebookLogo className="size-3.5" />
                 Official Facebook Page • {fbChannel.handleOrDomain}
-              </span>
+              </Badge>
 
               <h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
                 Real-Time Advisories, Straight from Lungsod ng Iriga
@@ -434,24 +416,25 @@ export function IrigaLivelySections() {
               </ul>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <a
-                  href={fbChannel.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-500"
-                >
-                  <FacebookLogo className="size-4" />
-                  Visit facebook.com/irigacitygovt
-                  <ExternalLink className="size-3.5" />
-                </a>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs">
+                  <a
+                    href={fbChannel.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="gap-2"
+                  >
+                    <FacebookLogo className="size-4" />
+                    Visit facebook.com/irigacitygovt
+                    <ExternalLink className="size-3.5" />
+                  </a>
+                </Button>
 
-                <Link
-                  href="/freedom-wall"
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-bold text-foreground transition hover:bg-muted"
-                >
-                  Post on Irigueño Freedom Wall
-                  <ArrowRight className="size-3.5" />
-                </Link>
+                <Button asChild variant="outline" className="rounded-xl">
+                  <Link href="/freedom-wall" className="gap-1.5">
+                    Post on Irigueño Freedom Wall
+                    <ArrowRight className="size-3.5" />
+                  </Link>
+                </Button>
               </div>
 
               <CitationBadge citation={fbChannel.citation} compact />
@@ -460,10 +443,10 @@ export function IrigaLivelySections() {
             {/* Right Live Facebook Page Hub & Opt-in Embed */}
             <div className="flex w-full max-w-full flex-col items-center lg:col-span-6">
               {!showFbEmbed ? (
-                <div className="w-full max-w-full rounded-2xl border border-blue-200/90 bg-card p-5 shadow-md sm:max-w-[500px] dark:border-blue-900/60">
+                <Card className="w-full max-w-full border-blue-200/90 bg-card p-5 shadow-xs sm:max-w-[500px] dark:border-blue-900/60">
                   {/* Page Header */}
-                  <div className="flex items-center gap-3.5 border-b border-border pb-4">
-                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-sm">
+                  <div className="flex items-center gap-3.5 border-b border-border/80 pb-4">
+                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xs">
                       <FacebookLogo className="size-6" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -496,32 +479,35 @@ export function IrigaLivelySections() {
 
                   {/* Action Buttons */}
                   <div className="space-y-2 pt-1">
-                    <a
-                      href={fbChannel.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-blue-500"
-                    >
-                      <FacebookLogo className="size-4" />
-                      Open @irigacitygovt on Facebook
-                      <ExternalLink className="size-3.5" />
-                    </a>
+                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs">
+                      <a
+                        href={fbChannel.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="gap-2"
+                      >
+                        <FacebookLogo className="size-4" />
+                        Open @irigacitygovt on Facebook
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    </Button>
 
-                    <button
+                    <Button
                       type="button"
+                      variant="outline"
                       onClick={() => setShowFbEmbed(true)}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2 text-xs font-semibold text-foreground transition hover:bg-muted"
+                      className="w-full rounded-xl"
                     >
                       Preview Interactive Timeline
-                    </button>
+                    </Button>
                   </div>
 
                   <p className="mt-3 text-center text-[11px] text-muted-foreground">
                     Fast-loading civic mode active • Zero third-party tracking scripts until previewed
                   </p>
-                </div>
+                </Card>
               ) : (
-                <div className="w-full max-w-full overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-md sm:max-w-[500px]">
+                <Card className="w-full max-w-full overflow-hidden border-border bg-white p-2 shadow-md sm:max-w-[500px]">
                   <div className="mb-2 flex items-center justify-between border-b border-border/80 px-2 pb-2">
                     <span className="text-xs font-semibold text-slate-800">
                       Live Facebook Timeline Preview
@@ -548,7 +534,7 @@ export function IrigaLivelySections() {
                     title="Lungsod ng Iriga | Iriga City Official Facebook Page — Live Timeline"
                     className="mx-auto h-[480px] w-full max-w-full sm:h-[520px]"
                   />
-                </div>
+                </Card>
               )}
               <p className="mt-2 text-center text-xs text-muted-foreground">
                 Having trouble viewing the Facebook feed in your browser?{" "}

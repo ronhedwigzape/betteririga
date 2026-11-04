@@ -28,9 +28,6 @@ import { CitationBadge } from "@/components/civic/citation-badge"
 import { Reveal } from "@/components/civic/reveal"
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CardContent,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -78,10 +75,10 @@ export default function BudgetPage() {
 
   return (
     <div className="space-y-12 py-4">
-      {/* Page Hero with shadcn Card */}
+      {/* Page Hero Header & Key Stats (No outer card container) */}
       <Reveal>
-        <Card className="rounded-3xl border border-border bg-gradient-to-br from-emerald-50/70 via-card to-card p-5 sm:p-8 dark:from-emerald-950/25">
-          <CardHeader className="p-0 gap-2">
+        <section className="space-y-6">
+          <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="secondary" className="gap-1.5 bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200 font-bold">
                 <FileSpreadsheet className="size-3.5" />
@@ -93,65 +90,73 @@ export default function BudgetPage() {
               </Badge>
             </div>
 
-            <CardTitle className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+            <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               {pageCopy.title}
-            </CardTitle>
-            <CardDescription className="max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            </h1>
+            <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               {pageCopy.subtitle}
-            </CardDescription>
-          </CardHeader>
+            </p>
+          </div>
 
-          {/* Top Fiscal Highlights using shadcn Cards */}
-          <CardContent className="p-0 mt-6 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="civic-card-hover border-border bg-background p-4 shadow-2xs">
-              <span className="text-xs font-medium text-muted-foreground">
-                2025 Iriga National Tax Allotment
-              </span>
-              <div className="mt-1 text-2xl font-extrabold text-emerald-700 dark:text-emerald-400 font-mono">
-                {formatPesoCompact(fy2025.amountPhp)}
-              </div>
-              <p className="mt-0.5 break-words font-mono text-xs text-muted-foreground">
-                {formatPeso(fy2025.amountPhp)} (+18.33% vs 2024)
-              </p>
+          {/* Top Fiscal Highlights - Direct shadcn Cards sitting naturally */}
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="civic-card-hover border-border bg-card shadow-2xs">
+              <CardContent className="p-4 sm:p-5">
+                <span className="text-xs font-medium text-muted-foreground">
+                  2025 Iriga National Tax Allotment
+                </span>
+                <div className="mt-1 text-2xl font-extrabold text-emerald-700 dark:text-emerald-400 font-mono">
+                  {formatPesoCompact(fy2025.amountPhp)}
+                </div>
+                <p className="mt-0.5 break-words font-mono text-xs text-muted-foreground">
+                  {formatPeso(fy2025.amountPhp)} (+18.33% vs 2024)
+                </p>
+              </CardContent>
             </Card>
 
-            <Card className="civic-card-hover border-border bg-background p-4 shadow-2xs">
-              <span className="text-xs font-medium text-muted-foreground">
-                2025 Share Per Iriga Resident
-              </span>
-              <div className="mt-1 text-2xl font-extrabold text-blue-700 dark:text-blue-400 font-mono">
-                {formatPeso(perCapita2025)}
-              </div>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Divided across {profile.population2024.toLocaleString()} citizens
-              </p>
+            <Card className="civic-card-hover border-border bg-card shadow-2xs">
+              <CardContent className="p-4 sm:p-5">
+                <span className="text-xs font-medium text-muted-foreground">
+                  2025 Share Per Iriga Resident
+                </span>
+                <div className="mt-1 text-2xl font-extrabold text-blue-700 dark:text-blue-400 font-mono">
+                  {formatPeso(perCapita2025)}
+                </div>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Divided across {profile.population2024.toLocaleString()} citizens
+                </p>
+              </CardContent>
             </Card>
 
-            <Card className="civic-card-hover border-border bg-background p-4 shadow-2xs">
-              <span className="text-xs font-medium text-muted-foreground">
-                CamSur 5th DEO Enacted (2026 GAA)
-              </span>
-              <div className="mt-1 text-2xl font-extrabold text-foreground font-mono">
-                ₱1.01B
-              </div>
-              <p className="mt-0.5 text-xs text-muted-foreground font-mono">
-                ₱1,012,023,000 for District 5
-              </p>
+            <Card className="civic-card-hover border-border bg-card shadow-2xs">
+              <CardContent className="p-4 sm:p-5">
+                <span className="text-xs font-medium text-muted-foreground">
+                  CamSur 5th DEO Enacted (2026 GAA)
+                </span>
+                <div className="mt-1 text-2xl font-extrabold text-foreground font-mono">
+                  ₱1.01B
+                </div>
+                <p className="mt-0.5 text-xs text-muted-foreground font-mono">
+                  ₱1,012,023,000 for District 5
+                </p>
+              </CardContent>
             </Card>
 
-            <Card className="civic-card-hover border-border bg-background p-4 shadow-2xs">
-              <span className="text-xs font-medium text-muted-foreground">
-                National Proposed Budget (NEP 2027)
-              </span>
-              <div className="mt-1 text-2xl font-extrabold text-purple-700 dark:text-purple-400 font-mono">
-                ₱7.20 Trillion
-              </div>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                +5.99% (+₱407.02B) vs 2026 baseline
-              </p>
+            <Card className="civic-card-hover border-border bg-card shadow-2xs">
+              <CardContent className="p-4 sm:p-5">
+                <span className="text-xs font-medium text-muted-foreground">
+                  National Proposed Budget (NEP 2027)
+                </span>
+                <div className="mt-1 text-2xl font-extrabold text-purple-700 dark:text-purple-400 font-mono">
+                  ₱7.20 Trillion
+                </div>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  +5.99% (+₱407.02B) vs 2026 baseline
+                </p>
+              </CardContent>
             </Card>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
       </Reveal>
 
       {/* Section 1: The 3-Phase National Budget Cycle */}
@@ -202,9 +207,9 @@ export default function BudgetPage() {
         </section>
       </Reveal>
 
-      {/* Section 2: Camarines Sur 5th Legislative District & DEO Multi-Year Ledger */}
+      {/* Section 2: Camarines Sur 5th Legislative District & DEO Multi-Year Ledger (No outer card container) */}
       <Reveal delayMs={60}>
-        <Card className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-2xs space-y-6">
+        <section className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-emerald-700 uppercase dark:text-emerald-400">
@@ -228,15 +233,15 @@ export default function BudgetPage() {
             </Badge>
           </div>
 
-          <div className="space-y-3.5">
+          <div className="space-y-3">
             {nationalBudget.camSur5thDistrictLedger.years.map((y) => {
               const widthPct = Math.round((y.amountPhp / maxDistrictPhp) * 100)
               const isProposed = y.stage === "nep" || y.stage === "hgab3"
 
               return (
-                <div
+                <Card
                   key={`${y.fy}-${y.stage}`}
-                  className="civic-card-hover rounded-xl border border-border bg-background p-4"
+                  className="civic-card-hover border border-border bg-card p-4 shadow-2xs"
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <div className="flex items-center gap-2">
@@ -278,12 +283,12 @@ export default function BudgetPage() {
                       style={{ width: `${widthPct}%` }}
                     />
                   </div>
-                </div>
+                </Card>
               )
             })}
           </div>
 
-          <div className="pt-2 border-t border-border flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs">
             <span className="text-muted-foreground">
               {nationalBudget.camSur5thDistrictLedger.attributionMeaning}
             </span>
@@ -297,7 +302,7 @@ export default function BudgetPage() {
               <ExternalLink className="size-3.5" />
             </a>
           </div>
-        </Card>
+        </section>
       </Reveal>
 
       {/* Section 3: National GAA FY2020–2026 Series & Proposed NEP 2027 */}
@@ -318,11 +323,11 @@ export default function BudgetPage() {
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {nationalBudget.gaaNationalTotals.map((item) => (
                 <div
                   key={item.year}
-                  className="flex flex-wrap items-center justify-between rounded-xl border border-border/80 bg-background p-3 text-xs"
+                  className="flex flex-wrap items-center justify-between rounded-xl bg-muted/40 hover:bg-muted/70 p-3 text-xs transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <span className="font-mono font-bold text-sm text-foreground">
@@ -364,7 +369,7 @@ export default function BudgetPage() {
               {nationalBudget.nep2027National.topDepartments.map((dept) => (
                 <div
                   key={dept.id}
-                  className="rounded-xl border border-border/70 bg-background p-2.5 text-xs space-y-1"
+                  className="rounded-xl bg-muted/40 hover:bg-muted/70 p-2.5 text-xs space-y-1 transition-colors"
                 >
                   <div className="flex items-center justify-between gap-1">
                     <span className="font-semibold text-foreground truncate">
@@ -451,22 +456,22 @@ export default function BudgetPage() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-12">
-            {/* NTA Growth Bars */}
-            <Card className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-2xs lg:col-span-7 space-y-4">
+            {/* NTA Growth Bars (Direct standalone cards) */}
+            <div className="lg:col-span-7 space-y-3">
               <h3 className="text-base font-bold text-foreground">
                 Iriga City NTA Allocation History
               </h3>
 
-              <div className="space-y-3.5">
+              <div className="space-y-3">
                 {ntaSeries
                   .slice()
                   .sort((a, b) => a.fiscalYear - b.fiscalYear)
                   .map((item) => {
                     const widthPct = Math.round((item.amountPhp / maxNta) * 100)
                     return (
-                      <div
+                      <Card
                         key={item.id}
-                        className="civic-card-hover rounded-xl border border-border bg-background p-4"
+                        className="civic-card-hover border border-border bg-card p-4 shadow-2xs"
                       >
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
                           <div>
@@ -505,14 +510,17 @@ export default function BudgetPage() {
                         <p className="mt-2 text-xs text-muted-foreground">
                           {item.description}
                         </p>
-                      </div>
+                      </Card>
                     )
                   })}
               </div>
-            </Card>
+            </div>
 
             {/* Mandatory Set-Asides Grid */}
             <div className="lg:col-span-5 space-y-3">
+              <h3 className="text-base font-bold text-foreground">
+                Mandatory Legal Set-Asides
+              </h3>
               {statutoryRules.map((rule) => (
                 <Card
                   key={rule.id}
@@ -541,9 +549,9 @@ export default function BudgetPage() {
         </section>
       </Reveal>
 
-      {/* Section 6: National Fiscal & Procurement Datasets from BetterGov.ph */}
+      {/* Section 6: National Fiscal & Procurement Datasets from BetterGov.ph (No outer card container) */}
       <Reveal delayMs={140}>
-        <Card className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-2xs space-y-6">
+        <section className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-blue-700 uppercase dark:text-blue-400">
@@ -569,7 +577,7 @@ export default function BudgetPage() {
             {fiscalDatasets.map((d) => (
               <Card
                 key={d.id}
-                className="civic-card-hover flex flex-col justify-between rounded-2xl border border-border bg-background p-4 shadow-2xs space-y-3"
+                className="civic-card-hover flex flex-col justify-between rounded-2xl border border-border bg-card p-4 shadow-2xs space-y-3"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-1 text-[11px]">
@@ -605,7 +613,7 @@ export default function BudgetPage() {
               </Card>
             ))}
           </div>
-        </Card>
+        </section>
       </Reveal>
 
       {/* Section 7: BetterGov.ph Budget Data API & AI Agent MCP Server */}
@@ -685,9 +693,9 @@ claude mcp add --transport http ph-budget https://budget.bettergov.ph/mcp
         </Card>
       </Reveal>
 
-      {/* Section 8: Full Disclosure & Honest Gap Ledger */}
+      {/* Section 8: Full Disclosure & Honest Gap Ledger (No outer card container) */}
       <Reveal delayMs={180}>
-        <Card className="rounded-3xl border border-amber-300/80 bg-amber-50/40 p-5 sm:p-8 dark:border-amber-900/60 dark:bg-amber-950/20 space-y-6">
+        <section className="space-y-4">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
               <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-amber-800 uppercase dark:text-amber-300">
@@ -709,11 +717,11 @@ claude mcp add --transport http ph-budget https://budget.bettergov.ph/mcp
             </Button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {disclosures.map((item) => (
               <Card
                 key={item.id}
-                className="civic-card-hover rounded-xl border border-border bg-background p-5 shadow-2xs space-y-2"
+                className="civic-card-hover rounded-xl border border-border bg-card p-5 shadow-2xs space-y-2"
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
@@ -752,7 +760,7 @@ claude mcp add --transport http ph-budget https://budget.bettergov.ph/mcp
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-background p-4 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 text-xs">
             <span>
               Need to request financial documents directly from City Hall? Call
               the <strong>City Budget Office</strong> (<code>(054) 299 9925</code>) or{" "}
@@ -768,7 +776,7 @@ claude mcp add --transport http ph-budget https://budget.bettergov.ph/mcp
               <ExternalLink className="size-3.5" />
             </a>
           </div>
-        </Card>
+        </section>
       </Reveal>
     </div>
   )

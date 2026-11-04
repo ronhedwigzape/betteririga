@@ -797,4 +797,57 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     assert.ok(logos?.horizontalLight, "Brand logos must define horizontalLight")
     assert.ok(logos?.horizontalDark, "Brand logos must define horizontalDark")
   })
+
+  it("verifies latest budget display on home, shadcn tooltips on hotlines, and no Supabase mentions on freedom wall", () => {
+    // 1. Home page displays latest enacted budget (2026 GAA)
+    const homeContent = fs.readFileSync("app/page.tsx", "utf8")
+    assert.ok(
+      homeContent.includes("latestDistrictWork") &&
+      homeContent.includes("Public Works (GAA)"),
+      "app/page.tsx must dynamically display the latest enacted GAA public works"
+    )
+    assert.ok(
+      homeContent.includes("Tooltip") && homeContent.includes("TooltipContent"),
+      "app/page.tsx must use shadcn Tooltip for emergency hotlines"
+    )
+
+    // 2. Freedom Wall board has zero mentions of Supabase in user-facing component
+    const freedomWallBoardContent = fs.readFileSync(
+      "components/civic/freedom-wall-board.tsx",
+      "utf8"
+    )
+    // Should not contain "Supabase" in any rendered text or JSX
+    assert.ok(
+      !freedomWallBoardContent.includes(">Supabase<"),
+      "Freedom wall board must not display 'Supabase' in UI text"
+    )
+    assert.ok(
+      !freedomWallBoardContent.includes("View Supabase Setup"),
+      "Freedom wall board must not display 'View Supabase Setup'"
+    )
+    assert.ok(
+      !freedomWallBoardContent.includes("realtime in supabase"),
+      "Freedom wall board must not display 'realtime in supabase'"
+    )
+
+    // 3. Freedom wall board contains 3.5s real-time poll
+    assert.ok(
+      freedomWallBoardContent.includes("refreshRemoteNotes"),
+      "Freedom wall board must support real-time refresh"
+    )
+
+    // 4. Contacts page hotlines use shadcn Tooltip
+    const contactsContent = fs.readFileSync("app/contacts/page.tsx", "utf8")
+    assert.ok(
+      contactsContent.includes("Tooltip") && contactsContent.includes("TooltipContent"),
+      "app/contacts/page.tsx must use shadcn Tooltip on emergency hotlines"
+    )
+
+    // 5. Header hotlines use shadcn Tooltip
+    const headerContent = fs.readFileSync("components/civic/site-header.tsx", "utf8")
+    assert.ok(
+      headerContent.includes("Tooltip") && headerContent.includes("TooltipContent"),
+      "components/civic/site-header.tsx must use shadcn Tooltip on compact hotlines"
+    )
+  })
 })

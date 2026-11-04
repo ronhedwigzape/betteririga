@@ -31,6 +31,11 @@ import {
 } from "lucide-react"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
 import { CarrierIconOnly } from "@/components/civic/telecom-and-channel-icons"
 import { cn } from "@/lib/utils"
@@ -196,21 +201,28 @@ export function SiteHeader() {
             </span>
             <div className="flex items-center gap-1.5 sm:gap-2">
               {primaryHotlines.map((hotline) => (
-                <a
-                  key={hotline.id}
-                  href={hotline.telHref}
-                  title={`${hotline.agency} - ${hotline.label}`}
-                  className="inline-flex shrink-0 items-center gap-1 rounded-md border border-slate-800 bg-slate-900/90 px-2 py-0.5 text-[11px] font-medium text-slate-200 transition-colors hover:border-amber-500/50 hover:bg-slate-800 hover:text-amber-300"
-                >
-                  <CarrierIconOnly
-                    number={hotline.number}
-                    networkOrType={hotline.networkOrType}
-                    className="size-3"
-                  />
-                  <span className="font-mono font-semibold text-slate-100">
-                    {hotline.number}
-                  </span>
-                </a>
+                <Tooltip key={hotline.id}>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={hotline.telHref}
+                      className="inline-flex shrink-0 items-center gap-1 rounded-md border border-slate-800 bg-slate-900/90 px-2 py-0.5 text-[11px] font-medium text-slate-200 transition-colors hover:border-amber-500/50 hover:bg-slate-800 hover:text-amber-300"
+                    >
+                      <CarrierIconOnly
+                        number={hotline.number}
+                        networkOrType={hotline.networkOrType}
+                        className="size-3"
+                      />
+                      <span className="font-mono font-semibold text-slate-100">
+                        {hotline.number}
+                      </span>
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="text-xs bg-slate-900 text-slate-100 border-slate-800">
+                    <p className="font-bold text-amber-300">{hotline.agency}</p>
+                    <p className="text-[11px] text-slate-300">{hotline.label} • {hotline.networkOrType}</p>
+                    <p className="text-[10px] text-emerald-400 mt-0.5">Click to call {hotline.number}</p>
+                  </TooltipContent>
+                </Tooltip>
               ))}
             </div>
           </div>

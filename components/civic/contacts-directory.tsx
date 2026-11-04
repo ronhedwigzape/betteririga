@@ -8,7 +8,9 @@ import { useCivicStore } from "@/lib/store/civic-store"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { GapNotice } from "@/components/civic/gap-notice"
 import { Reveal } from "@/components/civic/reveal"
-import { cn } from "@/lib/utils"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 
 interface ContactsDirectoryProps {
   offices?: OfficeContact[]
@@ -42,33 +44,28 @@ export function ContactsDirectory({ offices }: ContactsDirectoryProps) {
       {/* Sticky Search & Category Filter */}
       <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
         <div className="relative">
-          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
-          <input
+          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground z-10" />
+          <Input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search 29 City Hall offices by name, phone number, email, or department head..."
             aria-label="Search Iriga City Hall offices"
-            className="h-10 w-full rounded-xl border border-input bg-background pr-4 pl-10 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none"
+            className="h-10 w-full rounded-xl pr-4 pl-10 text-sm bg-background"
           />
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
           <div className="flex flex-wrap gap-1.5">
             {contactCategories.map((cat) => (
-              <button
+              <Badge
                 key={cat}
-                type="button"
+                variant={category === cat ? "default" : "secondary"}
                 onClick={() => setCategory(cat)}
-                className={cn(
-                  "rounded-full px-3 py-1 text-xs font-semibold transition",
-                  category === cat
-                    ? "bg-blue-600 text-white"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
-                )}
+                className="cursor-pointer font-semibold"
               >
                 {cat === "all" ? `All Offices (${activeOffices.length})` : cat}
-              </button>
+              </Badge>
             ))}
           </div>
           <span className="text-xs text-muted-foreground">
@@ -82,14 +79,14 @@ export function ContactsDirectory({ offices }: ContactsDirectoryProps) {
       <Reveal delayMs={60}>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((office) => (
-            <article
+            <Card
               key={office.id}
               className="civic-card-hover flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs"
             >
               <div className="space-y-2.5">
-                <span className="inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-800 dark:bg-blue-950 dark:text-blue-200">
+                <Badge variant="outline" className="text-[11px] font-semibold text-blue-800 bg-blue-50 dark:bg-blue-950 dark:text-blue-200">
                   {office.category}
-                </span>
+                </Badge>
 
                 <h3 className="text-base font-bold text-foreground">
                   {office.name}
@@ -151,7 +148,7 @@ export function ContactsDirectory({ offices }: ContactsDirectoryProps) {
               <div className="mt-4 pt-3">
                 <CitationBadge citation={office.citation} compact />
               </div>
-            </article>
+            </Card>
           ))}
         </div>
       </Reveal>

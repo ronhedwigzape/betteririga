@@ -14,6 +14,13 @@ import {
   FacebookLogo,
 } from "@/components/civic/telecom-and-channel-icons"
 import { Reveal } from "@/components/civic/reveal"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 export const metadata: Metadata = getPageMetadata("contacts")
 
@@ -71,41 +78,47 @@ export default function ContactsPage() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {hotlines.map((hotline) => (
-              <div
-                key={hotline.id}
-                className="civic-card-hover flex flex-col justify-between rounded-2xl border border-rose-200/80 bg-card p-5 shadow-2xs dark:border-rose-900/50"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <CarrierBadge
-                      number={hotline.number}
-                      networkOrType={hotline.networkOrType}
-                    />
-                    {hotline.priority === "primary" ? (
-                      <span className="text-[11px] font-bold text-rose-600 uppercase dark:text-rose-400">
-                        24/7 Priority
-                      </span>
-                    ) : null}
-                  </div>
+              <Tooltip key={hotline.id}>
+                <TooltipTrigger asChild>
+                  <Card className="civic-card-hover flex flex-col justify-between rounded-2xl border border-rose-200/80 bg-card p-5 shadow-2xs dark:border-rose-900/50 hover:border-rose-500 transition-colors cursor-pointer">
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <CarrierBadge
+                          number={hotline.number}
+                          networkOrType={hotline.networkOrType}
+                        />
+                        {hotline.priority === "primary" ? (
+                          <Badge variant="destructive" className="text-[10px] font-bold uppercase bg-rose-600">
+                            24/7 Priority
+                          </Badge>
+                        ) : null}
+                      </div>
 
-                  <h3 className="mt-2.5 text-sm font-semibold text-muted-foreground">
-                    {hotline.label}
-                  </h3>
-                  <a
-                    href={hotline.telHref}
-                    className="mt-1 block font-mono text-2xl font-extrabold text-rose-700 hover:underline dark:text-rose-400"
-                  >
-                    {hotline.number}
-                  </a>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {hotline.agency}
-                  </p>
-                </div>
+                      <h3 className="mt-2.5 text-sm font-semibold text-muted-foreground">
+                        {hotline.label}
+                      </h3>
+                      <a
+                        href={hotline.telHref}
+                        className="mt-1 block font-mono text-2xl font-extrabold text-rose-700 hover:underline dark:text-rose-400"
+                      >
+                        {hotline.number}
+                      </a>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {hotline.agency}
+                      </p>
+                    </div>
 
-                <div className="mt-4 pt-2">
-                  <CitationBadge citation={hotline.citation} compact />
-                </div>
-              </div>
+                    <div className="mt-4 pt-2">
+                      <CitationBadge citation={hotline.citation} compact />
+                    </div>
+                  </Card>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="text-xs max-w-xs">
+                  <p className="font-bold text-foreground">{hotline.label} — {hotline.agency}</p>
+                  <p className="text-muted-foreground font-mono">{hotline.number} • {hotline.networkOrType}</p>
+                  <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Click / Tap to dial immediately</p>
+                </TooltipContent>
+              </Tooltip>
             ))}
           </div>
         </section>
@@ -126,21 +139,21 @@ export default function ContactsPage() {
 
           <div className="grid gap-4 md:grid-cols-3">
             {channels.map((channel) => (
-              <div
+              <Card
                 key={channel.id}
                 className="civic-card-hover flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs"
               >
                 <div className="space-y-2">
                   {channel.platform === "Facebook Page" ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100/90 px-2.5 py-0.5 text-xs font-bold text-blue-900 dark:bg-blue-950 dark:text-blue-200">
+                    <Badge variant="secondary" className="gap-1.5 bg-blue-100/90 text-blue-900 dark:bg-blue-950 dark:text-blue-200 font-bold">
                       <FacebookLogo className="size-3.5" />
                       Facebook Page
-                    </span>
+                    </Badge>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-950 dark:text-blue-200">
+                    <Badge variant="outline" className="gap-1.5 font-semibold text-blue-800 dark:text-blue-200">
                       <Globe className="size-3.5" />
                       {channel.platform}
-                    </span>
+                    </Badge>
                   )}
                   <h3 className="text-base font-bold text-foreground">
                     {channel.name}
@@ -161,7 +174,7 @@ export default function ContactsPage() {
                 <div className="mt-4 pt-2">
                   <CitationBadge citation={channel.citation} compact />
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </section>

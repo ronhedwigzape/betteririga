@@ -79,17 +79,6 @@ const STORAGE_KEYS = {
   stickyNotes: "betteririga:freedom-wall:sticky-notes:v3",
 } as const
 
-function safeReadJson<T>(key: string, fallback: T): T {
-  if (typeof window === "undefined") return fallback
-  try {
-    const raw = window.localStorage.getItem(key)
-    if (!raw) return fallback
-    return JSON.parse(raw) as T
-  } catch {
-    return fallback
-  }
-}
-
 function safeWriteJson(key: string, value: unknown): void {
   if (typeof window === "undefined") return
   try {
@@ -148,6 +137,7 @@ export interface CivicStoreState {
 
   // Freedom Wall Sticky-Note Canvas Actions
   hydrateFreedomWall: () => Promise<void>
+  syncFreedomWallNotes: (notes: FreedomWallStickyNote[]) => void
   addFreedomWallNote: (input: NewFreedomWallNoteInput) => FreedomWallStickyNote
   moveFreedomWallNote: (
     noteId: string,
@@ -263,53 +253,29 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
   },
 
   hydrateFreedomWall: async () => {
-    if (get().freedomWallHydrated) return
-
-    const savedNotesRaw = safeReadJson<unknown[]>(STORAGE_KEYS.stickyNotes, [])
-    const validLocalNotes: FreedomWallStickyNote[] = []
-    for (const item of savedNotesRaw) {
-      const parsed = FreedomWallStickyNoteSchema.safeParse(item)
-      if (parsed.success) {
-        validLocalNotes.push(parsed.data)
-      }
-    }
-
-    set({
-      freedomWallHydrated: true,
-      freedomWallNotes: validLocalNotes,
-    })
-
-    // Always attempt remote sync (via first-party API or direct Supabase client)
     try {
       const remoteNotes = await fetchSupabaseFreedomWallNotes()
-      if (remoteNotes.length > 0) {
-        const remoteIds = new Set(remoteNotes.map((n) => n.id))
-        const merged = [
-          ...remoteNotes,
-          ...validLocalNotes.filter((n) => !remoteIds.has(n.id)),
-        ]
-        safeWriteJson(STORAGE_KEYS.stickyNotes, merged)
-        set({
-          freedomWallNotes: merged,
-          freedomWallStorageMode: "supabase",
-          freedomWallTableExists: true,
-          freedomWallSyncError: null,
-        })
-      } else {
-        // Check if configured
-        if (isSupabaseFreedomWallConfigured()) {
-          set({
-            freedomWallStorageMode: "supabase",
-            freedomWallTableExists: true,
-          })
-        }
-      }
+      set({
+        freedomWallHydrated: true,
+        freedomWallNotes: remoteNotes,
+        freedomWallStorageMode: "supabase",
+        freedomWallTableExists: true,
+        freedomWallSyncError: null,
+      })
     } catch (err) {
       set({
-        freedomWallStorageMode: "local-fallback",
+        freedomWallHydrated: true,
+        freedomWallNotes: [],
         freedomWallSyncError: err instanceof Error ? err.message : String(err),
       })
     }
+  },
+
+  syncFreedomWallNotes: (incomingNotes) => {
+    set({
+      freedomWallNotes: incomingNotes,
+      freedomWallHydrated: true,
+    })
   },
 
   addFreedomWallNote: (input) => {
@@ -344,31 +310,30 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
     }
 
     const validated = FreedomWallStickyNoteSchema.parse(candidate)
-    const nextNotes = [validated, ...freedomWallNotes]
 
-    safeWriteJson(STORAGE_KEYS.stickyNotes, nextNotes)
-    set({ freedomWallNotes: nextNotes })
+    if (typeof window === "undefined") {
+      set({ freedomWallNotes: [validated, ...freedomWallNotes] })
+      return validated
+    }
 
-    // Synchronize to Supabase asynchronously with diagnostic tracking
     void (async () => {
       try {
         const res = await insertSupabaseFreedomWallNote(validated)
-        if (res.storage === "supabase") {
-          set({
-            freedomWallStorageMode: "supabase",
+        if (res.storage === "supabase" && res.note) {
+          set((state) => ({
+            freedomWallNotes: [
+              res.note,
+              ...state.freedomWallNotes.filter((n) => n.id !== res.note.id),
+            ],
             freedomWallSyncError: null,
-            freedomWallTableExists: true,
-          })
-        } else if (res.error) {
+          }))
+        } else {
           set({
-            freedomWallStorageMode: "local-fallback",
-            freedomWallSyncError: res.error,
-            freedomWallTableExists: res.tableExists !== false,
+            freedomWallSyncError: res.error || "Unable to save note to database",
           })
         }
       } catch (err) {
         set({
-          freedomWallStorageMode: "local-fallback",
           freedomWallSyncError:
             err instanceof Error ? err.message : "Failed to sync note",
         })

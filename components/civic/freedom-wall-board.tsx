@@ -1,21 +1,14 @@
 "use client"
 
 import * as React from "react"
-import {
-  Plus,
-  RotateCcw,
-  X,
-  Move,
-  Database,
-  CheckCircle2,
-  AlertTriangle,
-  Copy,
-  Check,
-  RefreshCw,
-  ExternalLink,
-} from "lucide-react"
+import { Plus, RotateCcw, X, Move } from "lucide-react"
+import { createClient } from "@supabase/supabase-js"
 import { formatNoteTimestamp } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
+import { mapRowToFreedomWallNote, type SupabaseFreedomWallNoteRow } from "@/lib/supabase/freedom-wall"
+import type { FreedomWallStickyNote } from "@/lib/data/schemas"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export function FreedomWallBoard() {
@@ -26,13 +19,8 @@ export function FreedomWallBoard() {
   const uiCopy = freedomWall.uiCopy
 
   const notes = useCivicStore((state) => state.freedomWallNotes)
-  const storageMode = useCivicStore((state) => state.freedomWallStorageMode)
-  const syncError = useCivicStore((state) => state.freedomWallSyncError)
-  const clearSyncError = useCivicStore(
-    (state) => state.clearFreedomWallSyncError
-  )
   const hydrateFreedomWall = useCivicStore((state) => state.hydrateFreedomWall)
-  const addFreedomWallNote = useCivicStore((state) => state.addFreedomWallNote)
+  const syncFreedomWallNotes = useCivicStore((state) => state.syncFreedomWallNotes)
   const moveFreedomWallNote = useCivicStore(
     (state) => state.moveFreedomWallNote
   )
@@ -60,62 +48,25 @@ export function FreedomWallBoard() {
       "bg-yellow-100 border-yellow-300 text-yellow-900"
   )
   const [submitting, setSubmitting] = React.useState(false)
+  const [postError, setPostError] = React.useState<string | null>(null)
 
-  // Diagnostics modal state
-  const [isDiagnosticsOpen, setIsDiagnosticsOpen] = React.useState(false)
-  const [diagnostics, setDiagnostics] = React.useState<{
-    ok?: boolean
-    status?: string
-    summary?: string
-    error?: string
-    detectedEnv?: Record<string, boolean>
-    maskedHost?: string | null
-    keyType?: string
-    tableExists?: boolean
-    notesCount?: number
-    setupSql?: string
-    instructions?: string[]
-  } | null>(null)
-  const [loadingDiagnostics, setLoadingDiagnostics] = React.useState(false)
-  const [copiedSql, setCopiedSql] = React.useState(false)
-
-  const fetchDiagnostics = React.useCallback(async () => {
-    setLoadingDiagnostics(true)
+  // Real-time remote poll: fetches exclusively from database API
+  const refreshRemoteNotes = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/freedom-wall/diagnostics", {
+      const res = await fetch("/api/freedom-wall", {
+        headers: { Accept: "application/json" },
         cache: "no-store",
       })
       if (res.ok) {
-        const data = await res.json()
-        setDiagnostics(data)
+        const json = await res.json()
+        if (json.success && Array.isArray(json.notes)) {
+          syncFreedomWallNotes(json.notes)
+        }
       }
     } catch {
-      setDiagnostics({
-        ok: false,
-        status: "fetch_failed",
-        summary: "Could not reach /api/freedom-wall/diagnostics",
-      })
-    } finally {
-      setLoadingDiagnostics(false)
+      // Background poll silently retries next interval
     }
-  }, [])
-
-  const handleOpenDiagnostics = () => {
-    setIsDiagnosticsOpen(true)
-    void fetchDiagnostics()
-  }
-
-  const handleCopySql = () => {
-    if (!diagnostics?.setupSql) return
-    navigator.clipboard.writeText(diagnostics.setupSql)
-    setCopiedSql(true)
-    setTimeout(() => setCopiedSql(false), 2000)
-  }
-
-  const handleRetrySync = async () => {
-    await fetchDiagnostics()
-    await hydrateFreedomWall()
-  }
+  }, [syncFreedomWallNotes])
 
   const centerBoard = React.useCallback(() => {
     const el = viewportRef.current
@@ -139,8 +90,52 @@ export function FreedomWallBoard() {
         }
       }
     }, 0)
-    return () => window.clearTimeout(timer)
-  }, [hydrateFreedomWall, centerBoard])
+
+    // Periodic 3.5s real-time poll ensuring all browsers synchronize
+    const pollInterval = window.setInterval(refreshRemoteNotes, 3500)
+
+    return () => {
+      window.clearTimeout(timer)
+      window.clearInterval(pollInterval)
+    }
+  }, [hydrateFreedomWall, refreshRemoteNotes, centerBoard])
+
+  // Realtime websocket listener (when client env vars are available)
+  React.useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key =
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+
+    if (!url || !key) return
+
+    try {
+      const client = createClient(url, key, { auth: { persistSession: false } })
+      const channel = client
+        .channel("freedom-wall-realtime-feed")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "freedom_wall_posts" },
+          (payload) => {
+            if (payload.eventType === "INSERT") {
+              const note = mapRowToFreedomWallNote(payload.new as SupabaseFreedomWallNoteRow)
+              if (note) {
+                syncFreedomWallNotes([note, ...notes.filter((n) => n.id !== note.id)])
+              }
+            } else {
+              void refreshRemoteNotes()
+            }
+          }
+        )
+        .subscribe()
+
+      return () => {
+        void client.removeChannel(channel)
+      }
+    } catch {
+      // Fallback polling guarantees sync
+    }
+  }, [notes, refreshRemoteNotes, syncFreedomWallNotes])
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -222,10 +217,11 @@ export function FreedomWallBoard() {
     }
   }
 
-  const handlePostNote = (e: React.FormEvent) => {
+  const handlePostNote = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!noteContent.trim() || submitting) return
     setSubmitting(true)
+    setPostError(null)
 
     const el = viewportRef.current
     let targetX = canvasConfig.defaultCenterX
@@ -244,29 +240,60 @@ export function FreedomWallBoard() {
       )
     }
 
-    addFreedomWallNote({
-      content: noteContent.trim(),
+    const newCandidate = {
+      id: `note-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      content: noteContent.trim().slice(0, canvasConfig.maxMessageLength),
+      x: Math.max(80, Math.min(5600, targetX)),
+      y: Math.max(80, Math.min(5600, targetY)),
       color: selectedColor,
-      x: targetX,
-      y: targetY,
-    })
+      rotation: Number(((Math.random() - 0.5) * 8).toFixed(2)),
+      createdAt: new Date().toISOString(),
+      authorLabel: "Anonymous",
+    }
 
-    setNoteContent("")
-    setSubmitting(false)
-    setIsComposeOpen(false)
+    try {
+      const res = await fetch("/api/freedom-wall", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCandidate),
+      })
+      const json = await res.json()
+
+      if (json.success && json.note) {
+        // Confirmed saved in database! Now and only now show on the board
+        syncFreedomWallNotes([json.note as FreedomWallStickyNote, ...notes.filter((n) => n.id !== (json.note as FreedomWallStickyNote).id)])
+        setNoteContent("")
+        setIsComposeOpen(false)
+      } else {
+        // Database insert failed! Do NOT show on board
+        setPostError(
+          json.error ||
+          "Unable to post note to the board right now. Please ensure your database table is ready, then try again."
+        )
+      }
+    } catch (err) {
+      setPostError(
+        err instanceof Error
+          ? err.message
+          : "Network connection error. Please try again in a moment."
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
-    <div className="relative">
-      {/* Interactive Full-Canvas Sticky-Note Board (BetterLibmanan Style) */}
+    <div className="relative h-[80vh] min-h-[580px] w-full max-w-full overflow-hidden rounded-3xl border border-border bg-slate-950 select-none">
+      {/* Viewport & Dragging Container */}
       <div
         ref={viewportRef}
         onWheel={handleWheel}
         onPointerDown={handleCanvasPointerDown}
         onPointerMove={handleCanvasPointerMove}
         onPointerUp={handleCanvasPointerUp}
+        onPointerCancel={handleCanvasPointerUp}
         className={cn(
-          "relative h-[74dvh] min-h-[540px] w-full overflow-hidden rounded-3xl border border-gray-800 bg-gray-950 select-none shadow-2xl",
+          "absolute inset-0 touch-none overflow-hidden",
           isPanning ? "cursor-grabbing" : "cursor-grab"
         )}
         style={{ touchAction: "none" }}
@@ -274,119 +301,72 @@ export function FreedomWallBoard() {
         {/* Top Floating Pill Toolbar */}
         <div
           data-wall-toolbar
-          className="pointer-events-auto absolute top-4 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-2xl border border-gray-700/60 bg-gray-900/90 px-2.5 py-1.5 shadow-xl backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2"
+          className="pointer-events-auto absolute top-4 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-2xl border border-slate-700/60 bg-slate-900/90 px-3 py-1.5 shadow-xl backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2"
         >
-          {/* Database Connection Indicator Button */}
-          <button
-            type="button"
-            onClick={handleOpenDiagnostics}
-            title="Click to view database connection status and diagnostics"
-            className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold transition-colors hover:bg-gray-800"
-          >
-            {storageMode === "supabase" ? (
-              <>
-                <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="hidden text-emerald-300 font-medium sm:inline">
-                  Supabase
-                </span>
-                <span className="text-xs font-bold text-white">
-                  {uiCopy.toolbarBadge}
-                </span>
-              </>
-            ) : (
-              <>
-                <span className="size-2 rounded-full bg-amber-400" />
-                <span className="text-xs font-medium text-amber-300">
-                  Local Mode
-                </span>
-                <span className="hidden text-[11px] text-gray-400 underline sm:inline">
-                  (Setup DB)
-                </span>
-              </>
-            )}
+          {/* Live Indicator Pill */}
+          <div className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold">
+            <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs font-bold text-white">
+              {uiCopy.toolbarBadge}
+            </span>
             {notes.length > 0 ? (
-              <span className="rounded-full bg-gray-800 px-2 py-0.5 text-[11px] font-semibold text-gray-300">
+              <Badge variant="secondary" className="px-1.5 py-0 font-mono text-[11px] bg-slate-800 text-slate-200">
                 {notes.length}
-              </span>
+              </Badge>
             ) : null}
-          </button>
+          </div>
 
-          <div className="hidden h-4 w-px bg-gray-700 sm:block" />
+          <div className="hidden h-4 w-px bg-slate-700 sm:block" />
 
-          <span className="hidden items-center gap-1.5 text-xs text-gray-400 md:inline-flex">
-            <Move className="size-3.5 text-gray-500" />
+          <span className="hidden items-center gap-1.5 text-xs text-slate-400 md:inline-flex">
+            <Move className="size-3.5 text-slate-500" />
             {uiCopy.toolbarHint}
           </span>
 
-          <div className="h-4 w-px bg-gray-700" />
+          <div className="h-4 w-px bg-slate-700" />
 
           <div className="flex items-center gap-1">
-            <span className="min-w-[3rem] text-center font-mono text-xs text-gray-300">
+            <span className="min-w-[3rem] text-center font-mono text-xs text-slate-300">
               {Math.round(scale * 100)}%
             </span>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-xs"
               onClick={centerBoard}
               title={uiCopy.resetViewLabel}
-              className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+              className="text-slate-400 hover:bg-slate-800 hover:text-white"
             >
               <RotateCcw className="size-3.5" />
-            </button>
+            </Button>
           </div>
 
-          <div className="h-4 w-px bg-gray-700" />
+          <div className="h-4 w-px bg-slate-700" />
 
-          <button
+          <Button
             type="button"
-            onClick={() => setIsComposeOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-md transition-colors hover:bg-blue-500 active:bg-blue-700"
+            size="sm"
+            onClick={() => {
+              setPostError(null)
+              setIsComposeOpen(true)
+            }}
+            className="rounded-xl bg-blue-600 font-bold text-xs text-white shadow-md hover:bg-blue-500 active:bg-blue-700"
           >
-            <Plus className="size-3.5 stroke-[2.5]" />
+            <Plus className="size-3.5 stroke-[2.5] mr-1" />
             {uiCopy.addNoteButtonLabel}
-          </button>
+          </Button>
         </div>
-
-        {/* Floating Database Sync Notice (If note was saved to local storage but failed cloud sync) */}
-        {syncError ? (
-          <div className="pointer-events-auto absolute bottom-4 left-4 right-4 z-40 mx-auto max-w-lg rounded-xl border border-amber-600/70 bg-amber-950/95 p-3 shadow-2xl backdrop-blur-md text-xs text-amber-100 flex items-start justify-between gap-3 animate-in fade-in slide-in-from-bottom-2">
-            <div className="flex items-start gap-2 min-w-0">
-              <AlertTriangle className="size-4 text-amber-400 shrink-0 mt-0.5" />
-              <div className="min-w-0">
-                <p className="font-semibold text-amber-200">
-                  Note Saved to Device (Cloud Sync Pending)
-                </p>
-                <p className="mt-0.5 text-amber-300/80 truncate text-[11px]">
-                  {syncError}
-                </p>
-                <button
-                  type="button"
-                  onClick={handleOpenDiagnostics}
-                  className="mt-1 font-bold text-amber-300 underline hover:text-white"
-                >
-                  View Supabase Setup & Diagnostics &rarr;
-                </button>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={clearSyncError}
-              className="text-amber-400 hover:text-white shrink-0 p-1 rounded-md"
-            >
-              <X className="size-3.5" />
-            </button>
-          </div>
-        ) : null}
 
         {/* Empty State Overlay (When database has 0 notes) */}
         {notes.length === 0 ? (
           <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 px-6 text-center">
-            <div className="flex size-16 items-center justify-center rounded-full border-2 border-dashed border-gray-700 bg-gray-900/60">
-              <Plus className="size-6 text-gray-500" />
+            <div className="flex size-16 items-center justify-center rounded-full border-2 border-dashed border-slate-700 bg-slate-900/60">
+              <Plus className="size-6 text-slate-500" />
             </div>
-            <p className="text-base font-bold text-gray-300">
+            <p className="text-base font-bold text-slate-300">
               {uiCopy.emptyStateTitle}
             </p>
-            <p className="max-w-sm text-xs leading-relaxed text-gray-500">
+            <p className="max-w-sm text-xs leading-relaxed text-slate-500">
               {uiCopy.emptyStateSubtitle}
             </p>
           </div>
@@ -400,83 +380,109 @@ export function FreedomWallBoard() {
             transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${scale})`,
             transformOrigin: "0 0",
             backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px)",
+              "radial-gradient(circle, rgba(148, 163, 184, 0.18) 1.5px, transparent 1.5px)",
             backgroundSize: "28px 28px",
           }}
-          className="relative"
+          className="relative transition-transform duration-75 ease-out"
         >
-          {notes.map((note) => (
-            <div
-              key={note.id}
-              data-sticky-note
-              onPointerDown={(e) =>
-                handleNotePointerDown(e, note.id, note.x, note.y)
-              }
-              style={{
-                left: note.x,
-                top: note.y,
-                transform: `rotate(${note.rotation}deg)`,
-              }}
-              className={cn(
-                "absolute w-56 cursor-grab rounded-2xl border-2 p-4 shadow-lg transition-shadow select-none hover:shadow-2xl active:cursor-grabbing",
-                note.color,
-                draggingNoteId === note.id && "z-30 ring-2 ring-white/60"
-              )}
-            >
-              <div className="mb-2 text-[10px] font-medium opacity-55">
-                {formatNoteTimestamp(note.createdAt)}
-              </div>
-              <p className="text-sm leading-relaxed font-medium break-words whitespace-pre-wrap">
-                {note.content}
-              </p>
-              <div className="mt-3 text-[10px] font-semibold opacity-45">
-                {note.authorLabel || uiCopy.anonymousFooterLabel}
-              </div>
-            </div>
-          ))}
-        </div>
+          {/* Subtle Canvas Center Marker */}
+          <div
+            style={{
+              left: canvasConfig.defaultCenterX - 100,
+              top: canvasConfig.defaultCenterY - 100,
+              width: 200,
+              height: 200,
+            }}
+            className="pointer-events-none absolute flex items-center justify-center rounded-full border border-dashed border-slate-800/80"
+          >
+            <span className="font-mono text-[10px] tracking-widest text-slate-700 uppercase">
+              Center
+            </span>
+          </div>
 
-        {/* Mobile Floating + Button */}
-        <button
-          type="button"
-          onClick={() => setIsComposeOpen(true)}
-          aria-label={uiCopy.addNoteButtonLabel}
-          className="pointer-events-auto absolute right-5 bottom-5 z-30 flex size-13 items-center justify-center rounded-full bg-blue-600 text-white shadow-xl transition-transform hover:bg-blue-500 active:scale-95 sm:hidden"
-        >
-          <Plus className="size-6" />
-        </button>
+          {/* Sticky Notes */}
+          {notes.map((note) => {
+            const isDragging = draggingNoteId === note.id
+            return (
+              <div
+                key={note.id}
+                data-sticky-note
+                onPointerDown={(e) =>
+                  handleNotePointerDown(e, note.id, note.x, note.y)
+                }
+                style={{
+                  left: note.x,
+                  top: note.y,
+                  transform: `rotate(${note.rotation}deg) scale(${isDragging ? 1.05 : 1})`,
+                  zIndex: isDragging ? 50 : 10,
+                }}
+                className={cn(
+                  "absolute w-56 sm:w-60 cursor-grab rounded-2xl border-2 p-4 text-xs shadow-md transition-shadow active:cursor-grabbing",
+                  note.color,
+                  isDragging
+                    ? "shadow-2xl ring-2 ring-blue-500/80"
+                    : "hover:shadow-xl"
+                )}
+              >
+                {/* Note Pin / Tape Header */}
+                <div className="mb-2 flex items-center justify-between opacity-70">
+                  <span className="size-2 rounded-full bg-black/25" />
+                  <span className="font-mono text-[10px] font-medium">
+                    {formatNoteTimestamp(note.createdAt)}
+                  </span>
+                </div>
+
+                {/* Note Message */}
+                <p className="font-medium leading-relaxed break-words whitespace-pre-wrap">
+                  {note.content}
+                </p>
+
+                {/* Footer Attribution */}
+                <div className="mt-3 pt-2 border-t border-black/10 flex items-center justify-between text-[10px] opacity-65 font-mono">
+                  <span>{note.authorLabel || "Anonymous"}</span>
+                  <span>Iriga City</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
 
-      {/* Post a Note Modal */}
+      {/* Compose Sticky Note Modal */}
       {isComposeOpen ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-xs"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
           onClick={() => setIsComposeOpen(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-md rounded-2xl border border-gray-700 bg-gray-900 p-6 text-white shadow-2xl"
+            className="w-full max-w-md rounded-3xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl"
           >
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-white">
-                  {uiCopy.modalTitle}
-                </h2>
-                <p className="mt-0.5 text-xs text-gray-400">
-                  {uiCopy.modalSubtitle}
-                </p>
-              </div>
-              <button
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">
+                {uiCopy.modalTitle}
+              </h3>
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-xs"
                 onClick={() => setIsComposeOpen(false)}
                 aria-label="Close modal"
-                className="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                className="text-slate-400 hover:bg-slate-800 hover:text-white"
               >
                 <X className="size-5" />
-              </button>
+              </Button>
             </div>
 
-            <form onSubmit={handlePostNote}>
+            <form onSubmit={handlePostNote} className="mt-4">
+              {/* Error Notice if Database Insert Failed */}
+              {postError ? (
+                <div className="mb-3 rounded-xl border border-rose-500/50 bg-rose-950/60 p-3 text-xs text-rose-200">
+                  <p className="font-semibold text-rose-300">Could not place note</p>
+                  <p className="mt-0.5 text-rose-200/90 text-[11px] leading-relaxed">{postError}</p>
+                </div>
+              ) : null}
+
               {/* Live Sticky Note Preview */}
               <div
                 className={cn(
@@ -502,15 +508,15 @@ export function FreedomWallBoard() {
                 maxLength={canvasConfig.maxMessageLength}
                 rows={4}
                 autoFocus
-                className="w-full resize-none rounded-xl border border-gray-700 bg-gray-800 px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none"
               />
-              <div className="mt-1 text-right text-xs text-gray-500">
+              <div className="mt-1 text-right text-xs text-slate-500">
                 {noteContent.length}/{canvasConfig.maxMessageLength}
               </div>
 
               {/* Sticky-Note Color Picker */}
               <div className="mt-3 mb-5 flex items-center gap-2.5">
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-slate-400">
                   {uiCopy.colorPickerLabel}
                 </span>
                 <div className="flex items-center gap-2">
@@ -524,7 +530,7 @@ export function FreedomWallBoard() {
                         "size-6 rounded-full transition-transform",
                         c.dotClass,
                         selectedColor === c.cardClass
-                          ? "scale-125 ring-2 ring-white ring-offset-2 ring-offset-gray-900"
+                          ? "scale-125 ring-2 ring-white ring-offset-2 ring-offset-slate-900"
                           : "opacity-75 hover:opacity-100"
                       )}
                     />
@@ -533,240 +539,28 @@ export function FreedomWallBoard() {
               </div>
 
               <div className="flex gap-2.5">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => setIsComposeOpen(false)}
-                  className="flex-1 rounded-xl bg-gray-800 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-700"
+                  className="flex-1 rounded-xl border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
                 >
                   {uiCopy.cancelButtonLabel}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   disabled={!noteContent.trim() || submitting}
-                  className="flex-1 rounded-xl bg-blue-600 py-2.5 text-sm font-bold text-white transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-45"
+                  className="flex-1 rounded-xl bg-blue-600 font-bold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   {submitting
                     ? uiCopy.submittingButtonLabel
                     : uiCopy.submitButtonLabel}
-                </button>
+                </Button>
               </div>
             </form>
-          </div>
-        </div>
-      ) : null}
-
-      {/* Database Connection & Diagnostics Modal */}
-      {isDiagnosticsOpen ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
-          onClick={() => setIsDiagnosticsOpen(false)}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-3xl border border-gray-700 bg-gray-900 p-6 text-white shadow-2xl"
-          >
-            <div className="flex items-center justify-between pb-3 border-b border-gray-800">
-              <div className="flex items-center gap-2.5">
-                <div className="flex size-9 items-center justify-center rounded-xl bg-blue-950 border border-blue-800/60 text-blue-400">
-                  <Database className="size-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-white">
-                    Freedom Wall Database Status
-                  </h3>
-                  <p className="text-xs text-gray-400">
-                    Vercel & Supabase Cloud Connection Diagnostics
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsDiagnosticsOpen(false)}
-                className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-
-            <div className="mt-4 space-y-4">
-              {/* Overall Status Banner */}
-              {loadingDiagnostics ? (
-                <div className="flex items-center justify-center gap-2 p-6 text-sm text-gray-400">
-                  <RefreshCw className="size-4 animate-spin text-blue-400" />
-                  Testing live database connection...
-                </div>
-              ) : diagnostics?.ok ? (
-                <div className="flex items-start gap-3 rounded-2xl border border-emerald-800/80 bg-emerald-950/40 p-3.5 text-xs text-emerald-200">
-                  <CheckCircle2 className="size-5 text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-emerald-100">
-                      Supabase Cloud Connected & Ready
-                    </p>
-                    <p className="mt-0.5 text-emerald-300/90 leading-relaxed">
-                      All new sticky notes are successfully saved to Supabase (table{" "}
-                      <code className="rounded bg-emerald-900/60 px-1 py-0.5 text-[11px]">
-                        freedom_wall_posts
-                      </code>
-                      ). Current cloud note count:{" "}
-                      <strong>{diagnostics.notesCount ?? 0}</strong>.
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-start gap-3 rounded-2xl border border-amber-800/80 bg-amber-950/40 p-3.5 text-xs text-amber-200">
-                  <AlertTriangle className="size-5 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-amber-100">
-                      {diagnostics?.status === "table_missing"
-                        ? "Action Needed: Create Database Table in Supabase"
-                        : "Action Needed: Configure Supabase Credentials"}
-                    </p>
-                    <p className="mt-0.5 text-amber-300/90 leading-relaxed">
-                      {diagnostics?.summary ||
-                        "Sticky notes are currently stored locally in your browser because cloud sync could not reach Supabase."}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Vercel Environment Variables Status */}
-              <div className="rounded-2xl border border-gray-800 bg-gray-950/60 p-4">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2.5">
-                  1. Vercel Environment Variables
-                </h4>
-                <div className="space-y-2 text-xs">
-                  <div className="flex items-center justify-between rounded-lg bg-gray-900 px-3 py-2">
-                    <span className="font-mono text-gray-300">
-                      NEXT_PUBLIC_SUPABASE_URL
-                    </span>
-                    <span
-                      className={cn(
-                        "font-semibold flex items-center gap-1",
-                        diagnostics?.detectedEnv?.NEXT_PUBLIC_SUPABASE_URL ||
-                          diagnostics?.detectedEnv?.SUPABASE_URL
-                          ? "text-emerald-400"
-                          : "text-rose-400"
-                      )}
-                    >
-                      {diagnostics?.detectedEnv?.NEXT_PUBLIC_SUPABASE_URL ||
-                      diagnostics?.detectedEnv?.SUPABASE_URL ? (
-                        <>
-                          <Check className="size-3.5" /> Detected (
-                          {diagnostics.maskedHost ?? "connected"})
-                        </>
-                      ) : (
-                        <>
-                          <X className="size-3.5" /> Missing
-                        </>
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between rounded-lg bg-gray-900 px-3 py-2">
-                    <span className="font-mono text-gray-300">
-                      SUPABASE_ANON_KEY / SERVICE_ROLE
-                    </span>
-                    <span
-                      className={cn(
-                        "font-semibold flex items-center gap-1",
-                        diagnostics?.keyType && diagnostics.keyType !== "none"
-                          ? "text-emerald-400"
-                          : "text-rose-400"
-                      )}
-                    >
-                      {diagnostics?.keyType && diagnostics.keyType !== "none" ? (
-                        <>
-                          <Check className="size-3.5" /> Active (
-                          {diagnostics.keyType})
-                        </>
-                      ) : (
-                        <>
-                          <X className="size-3.5" /> Missing
-                        </>
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <p className="mt-2 text-[11px] text-gray-500">
-                  Tip: In Vercel Project Settings &rarr; Environment Variables, add
-                  these variables and trigger a <strong>Redeploy</strong>.
-                </p>
-              </div>
-
-              {/* Supabase SQL Table Setup */}
-              <div className="rounded-2xl border border-gray-800 bg-gray-950/60 p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">
-                    2. Supabase SQL Schema
-                  </h4>
-                  <button
-                    type="button"
-                    onClick={handleCopySql}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600/90 px-2.5 py-1 text-xs font-bold text-white transition-colors hover:bg-blue-500"
-                  >
-                    {copiedSql ? (
-                      <>
-                        <Check className="size-3" /> Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="size-3" /> Copy SQL
-                      </>
-                    )}
-                  </button>
-                </div>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Open your{" "}
-                  <a
-                    href="https://supabase.com/dashboard"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-400 underline inline-flex items-center gap-0.5"
-                  >
-                    Supabase Dashboard <ExternalLink className="size-2.5" />
-                  </a>{" "}
-                  &rarr; <strong>SQL Editor</strong> &rarr; click{" "}
-                  <strong>New query</strong> &rarr; paste this SQL &rarr; click{" "}
-                  <strong>Run</strong>.
-                </p>
-
-                {diagnostics?.setupSql ? (
-                  <pre className="mt-3 max-h-36 overflow-y-auto rounded-xl border border-gray-800 bg-gray-900 p-3 font-mono text-[11px] text-gray-300">
-                    {diagnostics.setupSql}
-                  </pre>
-                ) : null}
-              </div>
-
-              {/* Actions Footer */}
-              <div className="flex items-center justify-between gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={handleRetrySync}
-                  disabled={loadingDiagnostics}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-gray-700 bg-gray-800 px-3.5 py-2 text-xs font-semibold text-gray-200 transition-colors hover:bg-gray-700 disabled:opacity-50"
-                >
-                  <RefreshCw
-                    className={cn(
-                      "size-3.5",
-                      loadingDiagnostics && "animate-spin"
-                    )}
-                  />
-                  Test Connection Now
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsDiagnosticsOpen(false)}
-                  className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-blue-500"
-                >
-                  Done
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       ) : null}
     </div>
   )
 }
-
-export { FreedomWallCtaSection } from "./freedom-wall-cta"

@@ -27,19 +27,21 @@ function getReducedMotionServerSnapshot() {
 }
 
 /**
- * Professional Civic Hero Video Background.
- * - Displays a scenic, atmospheric landscape loop (Mount Asog / Iriga scenery vibe)
+ * Professional Covered Parallax Hero Video Background:
+ * - Full covered background with smooth scroll-based parallax translation
  * - Sourced directly from central Civic Store (Zustand & Zod)
- * - Vividly visible and layered with subtle light/dark gradient overlays to guarantee WCAG AAA text contrast
- * - High-compatibility autoplay: playsInline, muted, defaultMuted, loop, with onLoadedData trigger
- * - Accessible: Respects `prefers-reduced-motion` via useSyncExternalStore and provides a manual Play/Pause toggle
- * - Fast & lightweight: Under 410KB total
+ * - Layered with subtle light/dark gradient overlays to guarantee WCAG AAA text contrast
+ * - High-compatibility autoplay: playsInline, muted, defaultMuted, loop
+ * - Respects `prefers-reduced-motion` and includes Play/Pause controls
  */
 export function HeroVideoBackground({
   className,
   children,
 }: HeroVideoBackgroundProps) {
+  const containerRef = React.useRef<HTMLDivElement | null>(null)
   const videoRef = React.useRef<HTMLVideoElement | null>(null)
+  const [parallaxY, setParallaxY] = React.useState(0)
+
   const isReducedMotion = React.useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotionSnapshot,
@@ -54,7 +56,37 @@ export function HeroVideoBackground({
   const videoMp4 = heroMedia?.videoMp4 ?? "/hero-background.mp4"
   const poster = heroMedia?.poster ?? "/hero-video-poster.jpg"
 
-  // Ensure autoplay starts reliably across Chrome, Safari, Firefox, and mobile browsers
+  // Covered Parallax scroll listener
+  React.useEffect(() => {
+    if (isReducedMotion) return
+
+    let rafId: number
+    const handleScroll = () => {
+      if (!containerRef.current) return
+      const rect = containerRef.current.getBoundingClientRect()
+      // Only compute when hero is visible in viewport
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        // Parallax speed: 0.3x scroll delta
+        const offset = Math.max(-60, Math.min(120, -rect.top * 0.32))
+        setParallaxY(offset)
+      }
+    }
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(handleScroll)
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      cancelAnimationFrame(rafId)
+    }
+  }, [isReducedMotion])
+
+  // Autoplay handler
   React.useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -82,53 +114,59 @@ export function HeroVideoBackground({
 
   return (
     <div
+      ref={containerRef}
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-border shadow-xs",
+        "relative overflow-hidden rounded-3xl border border-border/60 shadow-lg",
         className
       )}
     >
-      {/* Background Video Layer: Clearly visible landscape backdrop */}
-      {!isReducedMotion ? (
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={poster}
-          aria-hidden="true"
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          onLoadedData={(e) => {
-            e.currentTarget.play().catch(() => {})
-          }}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-85 transition-opacity duration-700 dark:opacity-65"
-        >
-          <source src={videoWebm} type="video/webm" />
-          <source src={videoMp4} type="video/mp4" />
-        </video>
-      ) : (
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-50 dark:opacity-35"
-          style={{ backgroundImage: `url('${poster}')` }}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Multi-layered Professional Civic Overlay */}
-      {/* 1. Luminous Base Gradient: Balances video visibility while ensuring WCAG AAA text contrast */}
+      {/* Covered Parallax Video / Poster Layer */}
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-blue-900/15 via-background/50 to-background/95 dark:from-slate-950/35 dark:via-background/65 dark:to-background/95"
+        className="pointer-events-none absolute -top-[15%] left-0 h-[135%] w-full will-change-transform"
+        style={{
+          transform: isReducedMotion
+            ? "scale(1.05)"
+            : `translate3d(0, ${parallaxY}px, 0) scale(1.08)`,
+          transition: "transform 0.08s ease-out",
+        }}
+      >
+        {!isReducedMotion ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={poster}
+            aria-hidden="true"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onLoadedData={(e) => {
+              e.currentTarget.play().catch(() => {})
+            }}
+            className="h-full w-full object-cover object-center opacity-85 transition-opacity duration-700 dark:opacity-60"
+          >
+            <source src={videoWebm} type="video/webm" />
+            <source src={videoMp4} type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            className="h-full w-full bg-cover bg-center opacity-60 dark:opacity-40"
+            style={{ backgroundImage: `url('${poster}')` }}
+            aria-hidden="true"
+          />
+        )}
+      </div>
+
+      {/* Covered Multi-layer Backdrop Gradients: Luminous for light mode, deep for dark mode */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/85 to-background/98 dark:from-slate-950/75 dark:via-background/85 dark:to-background/98"
         aria-hidden="true"
       />
-
-      {/* 2. Soft Radial Vignette: Highlights center content without hiding the landscape */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-background/20 via-background/40 to-background/90 dark:from-slate-950/25 dark:via-background/55 dark:to-background/95"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-background/40 to-background/90 dark:via-background/60 dark:to-background/95"
         aria-hidden="true"
       />
-
-      {/* 3. Subtle Technical Civic Grid Pattern */}
       <div
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:28px_28px] opacity-25 dark:opacity-15"
         aria-hidden="true"
@@ -137,7 +175,7 @@ export function HeroVideoBackground({
       {/* Foreground Hero Content */}
       <div className="relative z-10">{children}</div>
 
-      {/* Video Attribution & Play/Pause Controls */}
+      {/* Video Attribution & Controls */}
       <div className="absolute right-3.5 bottom-3.5 z-20 flex max-w-[calc(100%-2rem)] flex-wrap items-center justify-end gap-2">
         {heroMedia?.credit ? (
           <a
