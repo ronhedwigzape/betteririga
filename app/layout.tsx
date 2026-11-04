@@ -52,6 +52,12 @@ export default function RootLayout({
         inter.variable
       )}
     >
+      <head>
+        <link rel="preconnect" href="https://api.open-meteo.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://psgc.gitlab.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://open.er-api.com" />
+        <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
+      </head>
       <body className="flex min-h-svh flex-col bg-background text-foreground">
         <ThemeProvider>
           <a

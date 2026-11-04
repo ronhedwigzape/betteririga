@@ -1330,5 +1330,74 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       nextConfigContent.includes("nosniff"),
       "next.config.ts must enforce complete OWASP security headers (CSP, HSTS, Permissions-Policy, nosniff, COOP)"
     )
+
+    // 16. Dropdown and Dialog Whitespace Elimination & Performance Optimizations
+    // CSS scroll-lock whitespace prevention with high specificity
+    const whitespaceCssContent = fs.readFileSync("app/globals.css", "utf8")
+    assert.ok(
+      whitespaceCssContent.includes("html body[data-scroll-locked]") &&
+      whitespaceCssContent.includes("margin-right: 0px !important") &&
+      whitespaceCssContent.includes("--removed-body-scroll-bar-size: 0px !important"),
+      "app/globals.css must override body[data-scroll-locked] with high specificity to eliminate right-side whitespace on dropdown and dialog open"
+    )
+
+    // DropdownMenu default modal={false}
+    const dropdownMenuContent = fs.readFileSync("components/ui/dropdown-menu.tsx", "utf8")
+    assert.ok(
+      dropdownMenuContent.includes("modal = false"),
+      "components/ui/dropdown-menu.tsx must default modal={false} to prevent body scroll locking"
+    )
+
+    // Site header scroll-lock guard and modal={false} on DropdownMenu
+    const updatedHeaderContent = fs.readFileSync("components/civic/site-header.tsx", "utf8")
+    assert.ok(
+      updatedHeaderContent.includes("DropdownMenu modal={false}"),
+      "components/civic/site-header.tsx must pass modal={false} to DropdownMenu"
+    )
+    assert.ok(
+      updatedHeaderContent.includes("resetScrollLockGaps") &&
+      updatedHeaderContent.includes("MutationObserver"),
+      "components/civic/site-header.tsx must implement a MutationObserver scroll-lock guard"
+    )
+
+    // Next.js performance optimizations (compress, poweredByHeader: false, immutable media headers)
+    assert.ok(
+      nextConfigContent.includes("compress: true") &&
+      nextConfigContent.includes("poweredByHeader: false") &&
+      nextConfigContent.includes("/hero-background-1080p.mp4") &&
+      nextConfigContent.includes("/hero-video-poster-1080p.jpg"),
+      "next.config.ts must enable compression, disable poweredByHeader, and cache 1080p hero assets as immutable"
+    )
+
+    // Layout resource hints (preconnect and dns-prefetch)
+    const rootLayoutContent = fs.readFileSync("app/layout.tsx", "utf8")
+    assert.ok(
+      rootLayoutContent.includes("rel=\"preconnect\" href=\"https://api.open-meteo.com\"") &&
+      rootLayoutContent.includes("rel=\"preconnect\" href=\"https://psgc.gitlab.io\""),
+      "app/layout.tsx must contain preconnect resource hints for external APIs"
+    )
+
+    // Hero video background preload and data saver
+    const heroBgContent = fs.readFileSync("components/civic/hero-video-background.tsx", "utf8")
+    assert.ok(
+      heroBgContent.includes("preload=\"metadata\"") &&
+      heroBgContent.includes("saveData"),
+      "components/civic/hero-video-background.tsx must set preload='metadata' and respect data-saver mode"
+    )
+
+    // Dynamic code splitting for heavy Chart.js modules in budget and statistics
+    const budgetContent = fs.readFileSync("app/budget/page.tsx", "utf8")
+    assert.ok(
+      budgetContent.includes("dynamic(") &&
+      budgetContent.includes("BudgetChartsSkeleton"),
+      "app/budget/page.tsx must dynamically import BudgetCharts with a skeleton loader"
+    )
+
+    const statsContent = fs.readFileSync("app/statistics/page.tsx", "utf8")
+    assert.ok(
+      statsContent.includes("dynamic(") &&
+      statsContent.includes("StatisticsChartsSkeleton"),
+      "app/statistics/page.tsx must dynamically import StatisticsCharts with a skeleton loader"
+    )
   })
 })

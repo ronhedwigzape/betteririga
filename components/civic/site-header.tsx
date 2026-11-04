@@ -202,6 +202,45 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Guard against scroll-locking margins/paddings from Radix modals, dialogs, and dropdowns
+  React.useEffect(() => {
+    if (typeof document === "undefined") return
+
+    const resetScrollLockGaps = () => {
+      if (document.body.style.marginRight && document.body.style.marginRight !== "0px") {
+        document.body.style.marginRight = "0px"
+      }
+      if (document.body.style.paddingRight && document.body.style.paddingRight !== "0px") {
+        document.body.style.paddingRight = "0px"
+      }
+      if (document.documentElement.style.marginRight && document.documentElement.style.marginRight !== "0px") {
+        document.documentElement.style.marginRight = "0px"
+      }
+      if (document.documentElement.style.paddingRight && document.documentElement.style.paddingRight !== "0px") {
+        document.documentElement.style.paddingRight = "0px"
+      }
+    }
+
+    const observer = new MutationObserver(() => {
+      resetScrollLockGaps()
+    })
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-scroll-locked", "style"],
+    })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-scroll-locked", "style"],
+    })
+
+    resetScrollLockGaps()
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   // Render-phase state adjustment: close mobile menu and guide modal when navigating
   const [prevPathname, setPrevPathname] = React.useState(pathname)
   if (prevPathname !== pathname) {
@@ -338,9 +377,9 @@ export function SiteHeader() {
               )
             })}
 
-            {/* Transparency Portals Dropdown (100% shadcn UI) */}
+            {/* Transparency Portals Dropdown (100% shadcn UI, modal={false} prevents body scroll lock whitespace) */}
             {transparencyPortals.length > 0 ? (
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"

@@ -111,17 +111,18 @@ export function HeroVideoBackground({
       return
     }
 
+    // Check if user requested data-saver mode
+    const nav = typeof navigator !== "undefined" ? (navigator as unknown as { connection?: { saveData?: boolean } }) : null
+    if (nav?.connection?.saveData) {
+      video.pause()
+      return
+    }
+
     video.defaultMuted = true
     video.muted = true
 
-    // Check if the video has loaded a source; if not or on mount, ensure source is resolved
-    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024
-    if (!video.currentSrc && !video.src) {
-      video.src = isDesktop ? video1080p : videoMp4
-    }
-
     video.play().catch(() => {})
-  }, [isReducedMotion, video1080p, videoMp4])
+  }, [isReducedMotion])
 
   const togglePlayback = () => {
     if (!videoRef.current) return
@@ -161,6 +162,7 @@ export function HeroVideoBackground({
               muted
               loop
               playsInline
+              preload="metadata"
               poster={poster}
               aria-hidden="true"
               onPlay={() => setIsPlaying(true)}

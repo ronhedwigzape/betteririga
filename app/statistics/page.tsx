@@ -7,9 +7,52 @@ import {
   getCityStatistics,
   formatPesoCompact,
 } from "@/lib/data/iriga-data"
+import dynamic from "next/dynamic"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { Reveal } from "@/components/civic/reveal"
-import { StatisticsCharts } from "@/components/civic/statistics-charts"
+import { Card, CardContent } from "@/components/ui/card"
+
+function StatisticsChartsSkeleton() {
+  return (
+    <div className="grid gap-6 md:grid-cols-2">
+      <Card className="animate-pulse border-border/70 bg-card">
+        <CardContent className="h-64 sm:h-72 flex flex-col justify-center items-center gap-2 p-6">
+          <div className="h-4 w-48 rounded bg-muted/70" />
+          <div className="h-3 w-32 rounded bg-muted/50" />
+          <div className="mt-4 h-36 w-full rounded-lg bg-muted/30" />
+        </CardContent>
+      </Card>
+      <Card className="animate-pulse border-border/70 bg-card">
+        <CardContent className="h-64 sm:h-72 flex flex-col justify-center items-center gap-2 p-6">
+          <div className="h-4 w-48 rounded bg-muted/70" />
+          <div className="h-3 w-32 rounded bg-muted/50" />
+          <div className="mt-4 h-36 w-36 rounded-full bg-muted/30" />
+        </CardContent>
+      </Card>
+      <Card className="animate-pulse border-border/70 bg-card">
+        <CardContent className="h-80 sm:h-96 flex flex-col justify-center items-center gap-2 p-6">
+          <div className="h-4 w-52 rounded bg-muted/70" />
+          <div className="h-3 w-36 rounded bg-muted/50" />
+          <div className="mt-4 h-48 w-full rounded-lg bg-muted/30" />
+        </CardContent>
+      </Card>
+      <Card className="animate-pulse border-border/70 bg-card">
+        <CardContent className="h-80 sm:h-96 flex flex-col justify-center items-center gap-2 p-6">
+          <div className="h-4 w-52 rounded bg-muted/70" />
+          <div className="h-3 w-36 rounded bg-muted/50" />
+          <div className="mt-4 h-48 w-48 rounded-full bg-muted/30" />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+const StatisticsCharts = dynamic(
+  () => import("@/components/civic/statistics-charts").then((mod) => mod.StatisticsCharts),
+  {
+    loading: () => <StatisticsChartsSkeleton />,
+  }
+)
 
 export const metadata: Metadata = getPageMetadata("statistics")
 

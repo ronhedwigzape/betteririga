@@ -2,6 +2,8 @@ import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  compress: true,
+  poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
   },
@@ -26,6 +28,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: "/hero-background-1080p.mp4",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
         source: "/hero-background.webm",
         headers: [
           {
@@ -36,6 +47,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/hero-video-poster.jpg",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/hero-video-poster-1080p.jpg",
         headers: [
           {
             key: "Cache-Control",
@@ -91,7 +111,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.bettergov.ph https://psgc.gitlab.io https://open-meteo.com https://api.open-meteo.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.bettergov.ph https://psgc.gitlab.io https://open-meteo.com https://api.open-meteo.com https://open.er-api.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
               "media-src 'self'",
               "frame-src 'self' https://www.openstreetmap.org https://maps.google.com",
               "frame-ancestors 'self'",
