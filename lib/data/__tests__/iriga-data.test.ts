@@ -685,4 +685,16 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     // Ensure docs/plans directory was removed per user request
     assert.equal(fs.existsSync("docs/plans"), false, "docs/plans folder must be removed")
   })
+
+  it("integrates @vercel/analytics/next in RootLayout", () => {
+    const layoutContent = fs.readFileSync("app/layout.tsx", "utf8")
+    assert.ok(
+      layoutContent.includes('import { Analytics } from "@vercel/analytics/next"'),
+      "layout.tsx must import Analytics from @vercel/analytics/next"
+    )
+    assert.ok(
+      layoutContent.includes("<Analytics />"),
+      "layout.tsx must render <Analytics />"
+    )
+  })
 })
