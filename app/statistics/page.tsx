@@ -9,6 +9,7 @@ import {
 } from "@/lib/data/iriga-data"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { Reveal } from "@/components/civic/reveal"
+import { StatisticsCharts } from "@/components/civic/statistics-charts"
 
 export const metadata: Metadata = getPageMetadata("statistics")
 
@@ -116,6 +117,19 @@ export default function StatisticsPage() {
           </div>
         </div>
       </Reveal>
+
+      {/* Interactive City Data Charts (Chart.js) */}
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+            Interactive City Data Charts
+          </h2>
+          <p className="text-xs text-muted-foreground">
+            Explore official visual analytics for population growth, statutory budget distribution, top communities, and competitiveness pillars.
+          </p>
+        </div>
+        <StatisticsCharts stats={stats} />
+      </section>
 
       {/* Section 1: Demographics & Population Growth Trends */}
       <section className="space-y-4">

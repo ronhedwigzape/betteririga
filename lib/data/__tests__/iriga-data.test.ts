@@ -1113,5 +1113,38 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       fs.existsSync("components/civic/civic-page-container.tsx"),
       "civic-page-container.tsx must exist"
     )
+
+    // 5. Chart.js integration in Statistics and Budget
+    assert.ok(
+      fs.existsSync("components/civic/statistics-charts.tsx"),
+      "statistics-charts.tsx must exist"
+    )
+    const statsPageContent = fs.readFileSync("app/statistics/page.tsx", "utf8")
+    assert.ok(
+      statsPageContent.includes("<StatisticsCharts"),
+      "app/statistics/page.tsx must render StatisticsCharts component"
+    )
+    assert.ok(
+      fs.existsSync("components/civic/budget-charts.tsx"),
+      "budget-charts.tsx must exist"
+    )
+    const budgetPageContent = fs.readFileSync("app/budget/page.tsx", "utf8")
+    assert.ok(
+      budgetPageContent.includes("<BudgetCharts"),
+      "app/budget/page.tsx must render BudgetCharts component"
+    )
+
+    // 6. Direct hardware-accelerated hero parallax across all breakpoints
+    assert.ok(
+      heroVideoBackground.includes("translate3d(0, ${offset.toFixed(1)}px, 0)") ||
+      heroVideoBackground.includes("translate3d"),
+      "hero-video-background.tsx must use GPU hardware acceleration for parallax"
+    )
+    const homePageContent = fs.readFileSync("app/page.tsx", "utf8")
+    assert.ok(
+      !homePageContent.includes("<Reveal>\n        <HeroVideoBackground") &&
+      !homePageContent.includes("<Reveal><HeroVideoBackground"),
+      "HeroVideoBackground must not be wrapped in Reveal transition"
+    )
   })
 })

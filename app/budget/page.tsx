@@ -16,6 +16,7 @@ import {
   Database,
   Banknote,
   Code2,
+  BarChart3,
 } from "lucide-react"
 import {
   formatPeso,
@@ -27,6 +28,7 @@ import {
 } from "@/lib/data/iriga-data"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { Reveal } from "@/components/civic/reveal"
+import { BudgetCharts } from "@/components/civic/budget-charts"
 import {
   Card,
   CardContent,
@@ -437,6 +439,25 @@ export default function BudgetPage() {
               </Card>
             ))}
           </div>
+        </section>
+      </Reveal>
+
+      {/* Interactive Public Funds Visualizations (Chart.js) */}
+      <Reveal delayMs={100}>
+        <section className="space-y-4">
+          <div>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-emerald-700 uppercase dark:text-emerald-400">
+              <BarChart3 className="size-4" />
+              Interactive Public Funds Visualizations (Chart.js)
+            </span>
+            <h2 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">
+              NTA Growth Trends & Statutory Allocations
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Dynamic visual charts mapping annual National Tax Allotment growth, statutory community set-asides, and CamSur 5th District public works.
+            </p>
+          </div>
+          <BudgetCharts ntaSeries={ntaSeries} nationalBudget={nationalBudget} />
         </section>
       </Reveal>
 

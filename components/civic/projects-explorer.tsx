@@ -254,15 +254,15 @@ export function ProjectsExplorer({
         aria-label="Overview statistics of tracked works"
         className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4"
       >
-        <Card className="civic-card-hover border-amber-200/80 bg-gradient-to-br from-amber-500/10 via-card to-card shadow-2xs dark:border-amber-900/60 rounded-2xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
-            <CardDescription className="text-[11px] font-bold text-amber-900 uppercase tracking-wider dark:text-amber-300">
+        <Card className="civic-card-hover">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider">
               Tracked Works
             </CardDescription>
-            <HardHat className="size-4 text-amber-600 dark:text-amber-400" />
+            <HardHat className="size-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-            <CardTitle className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
+          <CardContent>
+            <CardTitle className="text-2xl font-bold font-mono tracking-tight">
               {totalAllTracked}
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -271,15 +271,15 @@ export function ProjectsExplorer({
           </CardContent>
         </Card>
 
-        <Card className="civic-card-hover border-emerald-200/80 bg-gradient-to-br from-emerald-500/10 via-card to-card shadow-2xs dark:border-emerald-900/60 rounded-2xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
-            <CardDescription className="text-[11px] font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
+        <Card className="civic-card-hover">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider">
               Monitored Funds
             </CardDescription>
-            <Banknote className="size-4 text-emerald-600 dark:text-emerald-400" />
+            <Banknote className="size-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-            <CardTitle className="text-2xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-400 sm:text-3xl">
+          <CardContent>
+            <CardTitle className="text-2xl font-bold font-mono tracking-tight text-emerald-600 dark:text-emerald-400">
               ₱397.92M+
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -288,15 +288,15 @@ export function ProjectsExplorer({
           </CardContent>
         </Card>
 
-        <Card className="civic-card-hover border-blue-200/80 bg-gradient-to-br from-blue-500/10 via-card to-card shadow-2xs dark:border-blue-900/60 rounded-2xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
-            <CardDescription className="text-[11px] font-bold text-blue-900 uppercase tracking-wider dark:text-blue-300">
+        <Card className="civic-card-hover">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider">
               DPWH CamSur 5th
             </CardDescription>
-            <Globe className="size-4 text-blue-600 dark:text-blue-400" />
+            <Globe className="size-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-            <CardTitle className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
+          <CardContent>
+            <CardTitle className="text-2xl font-bold font-mono tracking-tight">
               {totalBetterGovTracked}
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -305,15 +305,15 @@ export function ProjectsExplorer({
           </CardContent>
         </Card>
 
-        <Card className="civic-card-hover border-purple-200/80 bg-gradient-to-br from-purple-500/10 via-card to-card shadow-2xs dark:border-purple-900/60 rounded-2xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
-            <CardDescription className="text-[11px] font-bold text-purple-900 uppercase tracking-wider dark:text-purple-300">
+        <Card className="civic-card-hover">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardDescription className="text-xs font-semibold uppercase tracking-wider">
               LGU Iriga City
             </CardDescription>
-            <Building2 className="size-4 text-purple-600 dark:text-purple-400" />
+            <Building2 className="size-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-            <CardTitle className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
+          <CardContent>
+            <CardTitle className="text-2xl font-bold font-mono tracking-tight">
               {totalLguTracked}
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -603,94 +603,81 @@ export function ProjectsExplorer({
             {filteredBetterGov.map((rec) => (
               <Card
                 key={rec.id}
-                className="civic-card-hover flex flex-col justify-between rounded-2xl border-emerald-200/90 bg-card p-6 shadow-2xs dark:border-emerald-900/60"
+                className="civic-card-hover flex flex-col justify-between"
               >
-                <CardHeader className="p-0 gap-3">
+                <CardHeader>
                   {/* Badges & Timeline Duration Pill */}
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <Badge
-                      variant="secondary"
-                      className="bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200 font-bold"
-                    >
+                    <Badge variant="secondary">
                       BetterGov.ph • {rec.category}
                     </Badge>
                     <div className="flex flex-wrap items-center gap-1.5">
                       {rec.duration ? (
-                        <Badge
-                          variant="outline"
-                          className="gap-1 bg-blue-50/60 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200"
-                        >
-                          <Calendar className="size-3 text-blue-600 dark:text-blue-400" />
+                        <Badge variant="outline" className="gap-1">
+                          <Calendar className="size-3" />
                           <span>{rec.duration}</span>
                         </Badge>
                       ) : null}
-                      <Badge variant="outline" className="bg-muted text-foreground">
-                        {rec.status}
-                      </Badge>
+                      <Badge variant="outline">{rec.status}</Badge>
                     </div>
                   </div>
 
                   {/* Plain Language Title & Summary */}
                   <div>
-                    <CardTitle className="text-base font-bold text-foreground">
+                    <CardTitle className="text-base font-bold">
                       <Link
                         href={`/projects/${rec.id}`}
-                        className="transition hover:text-blue-600 dark:hover:text-blue-400"
+                        className="hover:underline transition-colors"
                       >
                         {rec.title}
                       </Link>
                     </CardTitle>
 
                     {rec.engineeringMarker ? (
-                      <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground font-mono">
-                        <Badge variant="outline" className="px-1.5 py-0 text-[10px] bg-muted/60">
-                          DPWH Station:
-                        </Badge>
+                      <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+                        <Badge variant="outline">DPWH Station:</Badge>
                         <span>{rec.engineeringMarker}</span>
                       </div>
                     ) : null}
                   </div>
 
-                  <CardDescription className="text-xs leading-relaxed text-muted-foreground">
+                  <CardDescription className="text-xs leading-relaxed">
                     {rec.plainSummary}
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent className="p-0 mt-4 space-y-3">
+                <CardContent className="flex flex-col gap-3">
                   {/* Emphasized High-Visibility Funding Spotlight Container */}
-                  <Card className="rounded-xl border border-emerald-200/90 bg-emerald-50/80 shadow-none dark:border-emerald-800/70 dark:bg-emerald-950/30">
-                    <CardContent className="p-4 space-y-2">
-                      <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
-                        <span className="font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
+                  <Card size="sm" className="bg-muted/40">
+                    <CardHeader className="pb-1">
+                      <div className="flex flex-wrap items-center justify-between gap-1.5">
+                        <CardDescription className="text-xs font-semibold uppercase tracking-wider">
                           Monitored Public Allocation
-                        </span>
-                        <Badge
-                          variant="secondary"
-                          className="bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 text-[11px]"
-                        >
-                          {rec.fundingSource}
-                        </Badge>
+                        </CardDescription>
+                        <Badge variant="secondary">{rec.fundingSource}</Badge>
                       </div>
-                      <div className="text-xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-300 sm:text-2xl">
+                    </CardHeader>
+                    <CardContent>
+                      <div className="font-mono text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                         {rec.amountDisplay}
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         <strong>Office / Proponent:</strong> {rec.contractorOrProponent}
                       </p>
                     </CardContent>
                   </Card>
 
                   {/* Location & District Details */}
-                  <Card className="rounded-xl border border-border/80 bg-muted/30 shadow-none">
-                    <CardContent className="grid gap-1.5 p-3 text-xs">
+                  <Card size="sm" className="bg-muted/20">
+                    <CardContent className="grid gap-1.5 text-xs">
                       <div className="flex items-start gap-2">
-                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
+                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
                         <span>
                           <strong>Location:</strong> {rec.location}
                         </span>
                       </div>
                       <div className="flex items-start gap-2">
-                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
+                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
                         <span>
                           <strong>District / Office:</strong> {rec.district}
                         </span>
@@ -700,12 +687,8 @@ export function ProjectsExplorer({
                 </CardContent>
 
                 {/* Card Actions & Citation */}
-                <CardFooter className="p-0 mt-5 flex-col gap-2.5 border-t border-border pt-4">
-                  <Button
-                    asChild
-                    variant="default"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs h-10 rounded-xl shadow-xs"
-                  >
+                <CardFooter className="flex flex-col gap-2.5">
+                  <Button asChild className="w-full">
                     <Link href={`/projects/${rec.id}`}>
                       <Layers className="size-3.5 mr-1.5" />
                       <span>View Dedicated Project Page & API Data →</span>
@@ -713,17 +696,13 @@ export function ProjectsExplorer({
                   </Button>
 
                   {rec.citation.archiveUrl ? (
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full text-xs font-semibold h-9 rounded-xl"
-                    >
+                    <Button asChild variant="outline" className="w-full">
                       <a
                         href={rec.citation.archiveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <ShieldCheck className="size-3.5 text-emerald-600 mr-1.5" />
+                        <ShieldCheck className="size-3.5 mr-1.5" />
                         <span>Open Official Legislative PDF / Award Archive ↗</span>
                       </a>
                     </Button>
@@ -765,86 +744,73 @@ export function ProjectsExplorer({
             {filteredLguProjects.map((project) => (
               <Card
                 key={project.id}
-                className="civic-card-hover flex flex-col justify-between rounded-2xl border-border bg-card p-6 shadow-2xs"
+                className="civic-card-hover flex flex-col justify-between"
               >
-                <CardHeader className="p-0 gap-3">
-                  {/* Category, Status & Timeline Duration Pill */}
+                <CardHeader>
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <Badge variant="secondary" className="bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-200 font-semibold">
-                      {project.category}
+                    <Badge variant="secondary">
+                      LGU Iriga • {project.category}
                     </Badge>
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <Badge variant="outline" className="gap-1 bg-blue-50/60 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200">
-                        <Calendar className="size-3 text-blue-600 dark:text-blue-400" />
+                      <Badge variant="outline" className="gap-1">
+                        <Calendar className="size-3" />
                         <span>{project.period}</span>
                       </Badge>
-                      <Badge
-                        variant="secondary"
-                        className={cn(
-                          "font-bold",
-                          project.status === "Completed"
-                            ? "bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200"
-                            : project.status === "Ongoing"
-                              ? "bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200"
-                              : "bg-purple-100 text-purple-900 dark:bg-purple-950 dark:text-purple-200"
-                        )}
-                      >
-                        {project.status}
-                      </Badge>
+                      <Badge variant="outline">{project.status}</Badge>
                     </div>
                   </div>
 
                   {/* Title & Summary */}
                   <div>
-                    <CardTitle className="text-lg font-bold text-foreground">
+                    <CardTitle className="text-base font-bold">
                       <Link
                         href={`/projects/${project.id}`}
-                        className="transition hover:text-blue-600 dark:hover:text-blue-400"
+                        className="hover:underline transition-colors"
                       >
                         {project.title}
                       </Link>
                     </CardTitle>
                   </div>
 
-                  <CardDescription className="text-xs leading-relaxed text-muted-foreground">
+                  <CardDescription className="text-xs leading-relaxed">
                     {project.summary}
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent className="p-0 mt-4 space-y-3">
-                  {/* Emphasized High-Visibility Funding Spotlight Container */}
-                  <Card className="rounded-xl border border-emerald-200/90 bg-emerald-50/80 shadow-none dark:border-emerald-800/70 dark:bg-emerald-950/30">
-                    <CardContent className="p-4 space-y-2">
-                      <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
-                        <span className="font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
+                <CardContent className="flex flex-col gap-3">
+                  {/* Disclosed Project Budget Container */}
+                  <Card size="sm" className="bg-muted/40">
+                    <CardHeader className="pb-1">
+                      <div className="flex flex-wrap items-center justify-between gap-1.5">
+                        <CardDescription className="text-xs font-semibold uppercase tracking-wider">
                           Disclosed Project Budget
-                        </span>
-                        <Badge variant="secondary" className="bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 text-[11px]">
-                          {project.implementingAgency}
-                        </Badge>
+                        </CardDescription>
+                        <Badge variant="secondary">{project.implementingAgency}</Badge>
                       </div>
-                      <div className="text-xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-300 sm:text-2xl">
+                    </CardHeader>
+                    <CardContent>
+                      <div className="font-mono text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                         {typeof project.amountPhp === "number"
                           ? formatPeso(project.amountPhp)
                           : "₱0 Disclosed"}
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {project.amountNote}
                       </p>
                     </CardContent>
                   </Card>
 
                   {/* Location, Agency, and Reference Details */}
-                  <Card className="rounded-xl border border-border/80 bg-muted/30 shadow-none">
-                    <CardContent className="grid gap-2 p-3 text-xs">
+                  <Card size="sm" className="bg-muted/20">
+                    <CardContent className="grid gap-2 text-xs">
                       <div className="flex items-start gap-2">
-                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-blue-600" />
+                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
                         <span>
                           <strong>Location:</strong> {project.location}
                         </span>
                       </div>
                       <div className="flex items-start gap-2">
-                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-blue-600" />
+                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
                         <span>
                           <strong>Office in Charge:</strong>{" "}
                           {project.implementingAgency}
@@ -871,29 +837,21 @@ export function ProjectsExplorer({
                 </CardContent>
 
                 {/* Primary Dedicated Action & Direct Verified Links */}
-                <CardFooter className="p-0 mt-5 flex-col gap-2.5 border-t border-border pt-4">
-                  <Button
-                    asChild
-                    variant="default"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs h-10 rounded-xl shadow-xs"
-                  >
+                <CardFooter className="flex flex-col gap-2.5">
+                  <Button asChild className="w-full">
                     <Link href={`/projects/${project.id}`}>
                       <Layers className="size-3.5 mr-1.5" />
                       <span>View Dedicated Project Page & Details →</span>
                     </Link>
                   </Button>
 
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full text-xs font-semibold h-9 rounded-xl"
-                  >
+                  <Button asChild variant="outline" className="w-full">
                     <a
                       href={project.citation.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <ExternalLink className="size-3.5 text-blue-600 mr-1.5" />
+                      <ExternalLink className="size-3.5 mr-1.5" />
                       <span>Open Official Department Page ↗</span>
                     </a>
                   </Button>

@@ -72,7 +72,7 @@ export function ProjectApiViewer({
                 type="button"
                 size="sm"
                 onClick={handleCopy}
-                className="gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs"
+                className="gap-1.5 text-xs font-semibold"
               >
                 {copied ? (
                   <>

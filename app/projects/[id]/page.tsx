@@ -349,15 +349,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
           {/* Direct Action Links in CardFooter */}
           <CardFooter className="flex flex-wrap items-center gap-3 border-t border-border p-5 sm:p-8 pt-4">
-            <Button
-              asChild
-              className={cn(
-                "rounded-xl px-5 py-2.5 text-xs font-bold text-white shadow-xs transition active:scale-[0.99]",
-                isLgu
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-emerald-600 hover:bg-emerald-700"
-              )}
-            >
+            <Button asChild>
               <a
                 href={citation.sourceUrl}
                 target="_blank"

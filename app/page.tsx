@@ -102,9 +102,8 @@ export default function HomePage() {
   return (
     <div className="w-full">
       {/* Covered Parallax Hero Section — Maxxed Out at ALL Breakpoints */}
-      <Reveal>
-        <HeroVideoBackground className="w-full border-b border-border/70 pt-10 pb-14 sm:pt-14 sm:pb-18 lg:pt-16 lg:pb-20">
-          <div className="mx-auto max-w-4xl text-center">
+      <HeroVideoBackground className="w-full border-b border-border/70 pt-10 pb-14 sm:pt-14 sm:pb-18 lg:pt-16 lg:pb-20">
+        <div className="mx-auto max-w-4xl text-center">
             {/* Enlarged Official Emblem */}
             <div className="mb-6 flex justify-center">
               <BetterIrigaLogo
@@ -236,7 +235,6 @@ export default function HomePage() {
             <CitationBadge citation={profile.citation} compact />
           </div>
         </HeroVideoBackground>
-      </Reveal>
 
       {/* Main Civic Container for subsequent homepage sections */}
       <CivicPageContainer className="space-y-16 py-8 sm:py-12 pb-16">

@@ -42,8 +42,7 @@ export function HeroVideoBackground({
   const videoRef = React.useRef<HTMLVideoElement | null>(null)
   const parallaxLayerRef = React.useRef<HTMLDivElement | null>(null)
   const parallaxY = React.useRef(0)
-  const targetY = React.useRef(0)
-  const rafId = React.useRef<number | null>(null)
+  const ticking = React.useRef(false)
 
   const isReducedMotion = React.useSyncExternalStore(
     subscribeReducedMotion,
@@ -60,64 +59,49 @@ export function HeroVideoBackground({
   const video1080p = "/hero-background-1080p.mp4"
   const poster = heroMedia?.poster ?? "/hero-video-poster-1080p.jpg"
 
-  // Automatically select high-definition 1080p video on desktop viewports
-  React.useEffect(() => {
-    if (videoRef.current && typeof window !== "undefined") {
-      if (window.innerWidth >= 1024) {
-        videoRef.current.src = video1080p
-      }
-      videoRef.current.play().catch(() => {})
-    }
-  }, [video1080p])
-
-  // Covered Parallax scroll listener with smooth damping (lerp) & zero React re-renders
+  // Responsive Parallax scroll listener across all breakpoints with hardware acceleration
   React.useEffect(() => {
     if (isReducedMotion) return
 
     const updateParallax = () => {
-      // Butter-smooth linear interpolation (lerp factor: 0.12)
-      const diff = targetY.current - parallaxY.current
-      if (Math.abs(diff) > 0.05) {
-        parallaxY.current += diff * 0.12
-        if (parallaxLayerRef.current) {
-          parallaxLayerRef.current.style.transform = `translate3d(0, ${parallaxY.current.toFixed(2)}px, 0) scale(1.08)`
-        }
-        rafId.current = requestAnimationFrame(updateParallax)
-      } else {
-        parallaxY.current = targetY.current
-        if (parallaxLayerRef.current) {
-          parallaxLayerRef.current.style.transform = `translate3d(0, ${parallaxY.current.toFixed(2)}px, 0) scale(1.08)`
-        }
-        rafId.current = null
+      if (!containerRef.current || !parallaxLayerRef.current) {
+        ticking.current = false
+        return
       }
+
+      const rect = containerRef.current.getBoundingClientRect()
+      // Only calculate while hero is visible in the viewport
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        const scrollY = window.scrollY || window.pageYOffset || 0
+        // Parallax speed: 0.35x scroll delta for natural cinematic depth
+        // Dynamically capped to 25% of container height to guarantee zero edge gaps across mobile, tablet, and desktop
+        const maxTranslation = Math.max(100, Math.min(220, rect.height * 0.25))
+        const offset = Math.min(maxTranslation, Math.max(0, scrollY * 0.35))
+        parallaxY.current = offset
+
+        parallaxLayerRef.current.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) scale(1.12)`
+      }
+      ticking.current = false
     }
 
     const handleScroll = () => {
-      if (!containerRef.current) return
-      const rect = containerRef.current.getBoundingClientRect()
-      // Only compute when hero is visible in viewport
-      if (rect.bottom > 0 && rect.top < window.innerHeight) {
-        // Parallax speed: 0.42x scroll delta for dynamic cinematic depth
-        targetY.current = Math.max(-100, Math.min(180, -rect.top * 0.42))
-        if (rafId.current === null) {
-          rafId.current = requestAnimationFrame(updateParallax)
-        }
+      if (!ticking.current) {
+        ticking.current = true
+        requestAnimationFrame(updateParallax)
       }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("resize", handleScroll, { passive: true })
     handleScroll()
 
     return () => {
       window.removeEventListener("scroll", handleScroll)
-      if (rafId.current !== null) {
-        cancelAnimationFrame(rafId.current)
-        rafId.current = null
-      }
+      window.removeEventListener("resize", handleScroll)
     }
   }, [isReducedMotion])
 
-  // Autoplay handler
+  // Autoplay and responsive video stream selection
   React.useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -129,8 +113,15 @@ export function HeroVideoBackground({
 
     video.defaultMuted = true
     video.muted = true
+
+    // Check if the video has loaded a source; if not or on mount, ensure source is resolved
+    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024
+    if (!video.currentSrc && !video.src) {
+      video.src = isDesktop ? video1080p : videoMp4
+    }
+
     video.play().catch(() => {})
-  }, [isReducedMotion])
+  }, [isReducedMotion, video1080p, videoMp4])
 
   const togglePlayback = () => {
     if (!videoRef.current) return
@@ -155,17 +146,16 @@ export function HeroVideoBackground({
       {/* Covered Parallax Video / Poster Layer */}
       <div
         ref={parallaxLayerRef}
-        className="pointer-events-none absolute -top-[20%] left-0 h-[140%] w-full will-change-transform"
+        className="pointer-events-none absolute -top-[15%] left-0 h-[130%] w-full will-change-transform"
         style={{
           transform: isReducedMotion
             ? "scale(1.02)"
-            : "translate3d(0, 0px, 0) scale(1.08)",
+            : "translate3d(0, 0px, 0) scale(1.12)",
         }}
       >
         {!isReducedMotion ? (
           <video
             ref={videoRef}
-            src={videoMp4}
             autoPlay
             muted
             loop
