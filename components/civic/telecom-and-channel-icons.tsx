@@ -222,3 +222,41 @@ export function CarrierIconOnly({
 
   return <LandlineLogo className={className} />
 }
+
+/**
+ * Official Facebook Blue Verified Badge.
+ * The authentic scalloped blue badge with white checkmark seen on verified Facebook pages.
+ */
+export function FacebookVerifiedBadge({
+  className = "size-4",
+  title = "Verified City Hall Page",
+}: {
+  className?: string
+  title?: string
+}) {
+  return (
+    <span
+      className={cn("inline-flex shrink-0 items-center justify-center", className)}
+      title={title}
+    >
+      <svg
+        viewBox="0 0 16 16"
+        fill="none"
+        className="size-full"
+        aria-label={title}
+      >
+        <path
+          d="M8 0c-.82 0-1.6.38-2.1.97-.67-.2-1.4-.1-1.98.27-.58.37-.96.98-1.02 1.67-.67.24-1.2.77-1.44 1.44-.24.67-.13 1.42.29 1.98-.44.53-.58 1.25-.38 1.92.2.67.73 1.2 1.4 1.4-.04.7.25 1.39.77 1.84.52.45 1.22.61 1.88.42.34.62.96 1.05 1.67 1.14.71.09 1.42-.16 1.91-.67.49.51 1.2.76 1.91.67.71-.09 1.33-.52 1.67-1.14.66.19 1.36.03 1.88-.42.52-.45.81-1.14.77-1.84.67-.2 1.2-.73 1.4-1.4.2-.67.06-1.39-.38-1.92.42-.56.53-1.31.29-1.98-.24-.67-.77-1.2-1.44-1.44-.06-.69-.44-1.3-1.02-1.67-.58-.37-1.31-.47-1.98-.27C9.6.38 8.82 0 8 0z"
+          fill="#0866FF"
+        />
+        <path
+          d="M4.6 8.1l2.4 2.4 4.8-4.8"
+          stroke="#FFFFFF"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  )
+}

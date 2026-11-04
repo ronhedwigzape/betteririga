@@ -38,6 +38,15 @@ import {
 } from "@/components/ui/tooltip"
 import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
 import { CarrierIconOnly } from "@/components/civic/telecom-and-channel-icons"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
 const NAV_ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -361,10 +370,51 @@ export function SiteHeader() {
       {/* 3. Community Guide & Live Info Strip (BetterLibmanan BottomUtilityBar style) */}
       <div className="w-full max-w-full overflow-hidden border-b border-blue-200/70 bg-blue-50/90 text-blue-950 dark:border-blue-900/50 dark:bg-blue-950/50 dark:text-blue-100">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-1.5 text-xs sm:px-6 lg:px-8">
-          <p className="flex min-w-0 flex-1 items-center gap-1.5">
-            <ShieldAlert className="size-3.5 shrink-0 text-blue-700 dark:text-blue-400" />
-            <span className="truncate">{brand.disclaimerBanner}</span>
-          </p>
+          {/* Left: Clickable Community Guide Notice opening a pure shadcn Modal */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <button
+                type="button"
+                className="group flex min-w-0 items-center gap-1.5 text-xs font-semibold text-blue-950 hover:text-blue-700 dark:text-blue-200 dark:hover:text-white transition-colors cursor-pointer text-left"
+                title="Click to read Community Guide & Civic Transparency Notice"
+              >
+                <ShieldAlert className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform" />
+                <span className="underline underline-offset-2 decoration-blue-400/60 group-hover:decoration-blue-700 font-bold">
+                  Community Guide
+                </span>
+                <span className="hidden sm:inline text-[11px] font-normal text-blue-800/80 dark:text-blue-300/80">
+                  • Independent Public Guide (Click to read)
+                </span>
+              </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-lg text-foreground">
+                  <ShieldAlert className="size-5 text-amber-600 shrink-0" />
+                  <span>About This Community Guide</span>
+                </DialogTitle>
+                <DialogDescription className="text-left text-sm text-muted-foreground pt-2 space-y-3 leading-relaxed">
+                  <span className="block">
+                    <strong>BetterIriga.org</strong> is an independent, volunteer-run civic transparency initiative organized under <strong>BetterGov.ph</strong>.
+                  </span>
+                  <span className="block">
+                    This website is <strong>not</strong> an official website of the City Government of Iriga. It is created by civic volunteers to help Irigueños easily access public services, budget disclosures, city officials, ordinances, and hotlines at <strong>₱0 cost to the people</strong>.
+                  </span>
+                  <span className="block">
+                    Every factual record published on this platform is cited directly from primary public sources (such as <em>iriga.gov.ph</em>, DBM, PSA, and DPWH).
+                  </span>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex-col sm:flex-row gap-2 pt-2 border-t border-border">
+                <Button asChild variant="outline" size="sm" className="rounded-xl">
+                  <Link href="/about">Learn More in About</Link>
+                </Button>
+                <Button asChild size="sm" className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+                  <Link href="/verification">View Verification Ledger</Link>
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <div className="flex shrink-0 flex-wrap items-center gap-2.5 sm:gap-3">
             <LiveWeatherTicker
               latitude={geo.latitude}

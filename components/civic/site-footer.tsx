@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import {
   ExternalLink,
@@ -8,8 +7,10 @@ import {
   FileText,
   MessageSquareHeart,
   Send,
+  Globe,
 } from "lucide-react"
 import { FacebookLogo } from "@/components/civic/telecom-and-channel-icons"
+import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
 import { getCivicSnapshot } from "@/lib/data/iriga-data"
 
 export function SiteFooter() {
@@ -28,20 +29,20 @@ export function SiteFooter() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Column 1: Brand & Plain-Language Disclaimer */}
           <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/BetterIriga-White-Foreground-Transparent.png"
-                alt={`${brand.fullDomain} Logo`}
-                width={44}
-                height={44}
-                className="size-11 shrink-0 object-contain"
-              />
-              <div>
-                <span className="text-lg font-bold text-white">
-                  {brand.fullDomain}
-                </span>
-                <p className="text-[11px] text-blue-300">{brand.regionBadge}</p>
-              </div>
+            <div>
+              <Link
+                href="/"
+                className="group inline-flex items-center gap-2"
+                aria-label={`${brand.fullDomain} - Home`}
+              >
+                <BetterIrigaLogo
+                  variant="horizontal"
+                  forceTheme="dark"
+                  alt={`${brand.fullDomain} Official Logo`}
+                  className="h-8 sm:h-9 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
+                />
+              </Link>
+              <p className="mt-1 text-[11px] text-blue-300">{brand.regionBadge}</p>
             </div>
             <p className="text-xs leading-relaxed text-slate-400">
               {brand.tagline}. Every service, official, budget figure, project,
@@ -203,7 +204,36 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-slate-800 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center">
+        {/* Sibling Better LGUs Civic Transparency Network */}
+        <div className="mt-10 border-t border-slate-800/80 pt-6">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
+                Better LGU Civic Network (Sister Portals under BetterGov.ph)
+              </span>
+              <span className="text-[11px] text-slate-400">
+                Independent, volunteer-run transparency portals across Philippine cities & municipalities
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {siblingPortals.map((portal) => (
+                <a
+                  key={portal.name}
+                  href={portal.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900/80 px-2.5 py-1 text-xs font-medium text-slate-300 transition-colors hover:border-blue-500/50 hover:bg-slate-800 hover:text-white"
+                >
+                  <Globe className="size-3 text-blue-400" />
+                  <span>{portal.name}</span>
+                  <ExternalLink className="size-2.5 text-slate-500" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-slate-800 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center">
           <div className="flex flex-wrap items-center gap-4">
             <span className="font-semibold text-white">
               &copy; 2026 {brand.fullDomain}

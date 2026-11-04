@@ -872,16 +872,56 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
 
     const projectsExplorerContent = fs.readFileSync("components/civic/projects-explorer.tsx", "utf8")
     assert.ok(
-      projectsExplorerContent.includes("relative h-10 lg:col-span-6"),
-      "projects-explorer.tsx must constrain search container to h-10 to prevent grid-stretch misalignment"
+      projectsExplorerContent.includes("relative h-10 md:col-span-8 lg:col-span-9"),
+      "projects-explorer.tsx must constrain search container to h-10 with generous col-span to prevent grid-stretch misalignment"
     )
     assert.ok(
       projectsExplorerContent.includes("inset-y-0 left-0 flex items-center pl-3.5"),
       "projects-explorer.tsx must center search icon vertically in inset-y-0 with pl-3.5"
     )
     assert.ok(
-      projectsExplorerContent.includes("grid gap-3 lg:grid-cols-12 items-center"),
-      "projects-explorer.tsx must align search input and filter buttons with items-center"
+      projectsExplorerContent.includes("grid gap-3 md:grid-cols-12 items-center"),
+      "projects-explorer.tsx must align search input and sort selector with items-center"
+    )
+    assert.ok(
+      projectsExplorerContent.includes("h-9 flex-none inline-flex items-center gap-2"),
+      "projects-explorer.tsx must give tabs explicit h-9 and flex-none to prevent warped stretching"
+    )
+    assert.ok(
+      projectsExplorerContent.includes("bg-amber-500") &&
+      projectsExplorerContent.includes("bg-emerald-500") &&
+      projectsExplorerContent.includes("bg-blue-500"),
+      "projects-explorer.tsx must render semantic indicator dots for statuses"
+    )
+
+    // Header pure shadcn Community Guide modal
+    const headerContent = fs.readFileSync("components/civic/site-header.tsx", "utf8")
+    assert.ok(
+      headerContent.includes("<Dialog>") &&
+      headerContent.includes("About This Community Guide"),
+      "site-header.tsx must implement a pure shadcn Dialog modal for the Community Guide notice"
+    )
+
+    // Section-wide live weather video
+    const livelySectionsContent = fs.readFileSync("components/civic/iriga-lively-sections.tsx", "utf8")
+    assert.ok(
+      livelySectionsContent.includes("videoRef") &&
+      livelySectionsContent.includes("id=\"weather-map\"") &&
+      livelySectionsContent.includes("absolute inset-0 z-0 overflow-hidden"),
+      "iriga-lively-sections.tsx must max out the live weather background video to cover the entire section"
+    )
+
+    // Footer matches navbar logo and lists other Better LGUs
+    const footerContent = fs.readFileSync("components/civic/site-footer.tsx", "utf8")
+    assert.ok(
+      footerContent.includes("<BetterIrigaLogo") &&
+      footerContent.includes("variant=\"horizontal\""),
+      "site-footer.tsx must use horizontal BetterIrigaLogo matching the navbar"
+    )
+    assert.ok(
+      footerContent.includes("Better LGU Civic Network") &&
+      footerContent.includes("siblingPortals"),
+      "site-footer.tsx must mention other Better LGUs from siblingPortals"
     )
 
     // 3. Button and Badge variants have explicit text-foreground
@@ -905,18 +945,21 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     assert.ok(fs.existsSync("public/weather/cloudy.mp4"), "cloudy.mp4 must exist")
     assert.ok(fs.existsSync("public/weather/rainy.mp4"), "rainy.mp4 must exist")
 
-    const livelySectionsContent = fs.readFileSync("components/civic/iriga-lively-sections.tsx", "utf8")
     assert.ok(
       livelySectionsContent.includes("video") &&
       livelySectionsContent.includes("WEATHER_VIDEO_ASSETS"),
       "iriga-lively-sections.tsx must implement live video weather background"
     )
 
-    // 6. Facebook section has profile picture and no preview timeline iframe
+    // 6. Facebook section has profile picture, official verified badge, and no preview timeline iframe
     assert.ok(fs.existsSync("public/iriga-facebook-profile.jpg"), "iriga-facebook-profile.jpg must exist")
     assert.ok(
       livelySectionsContent.includes("/iriga-facebook-profile.jpg"),
       "iriga-lively-sections.tsx must render the official Facebook profile picture"
+    )
+    assert.ok(
+      livelySectionsContent.includes("<FacebookVerifiedBadge"),
+      "iriga-lively-sections.tsx must render official FacebookVerifiedBadge matching Facebook"
     )
     assert.ok(
       !livelySectionsContent.includes("Preview Interactive Timeline"),

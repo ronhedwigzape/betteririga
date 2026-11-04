@@ -318,13 +318,13 @@ export function ProjectsExplorer({
       {/* Sticky Source Switcher & Filter Bar with shadcn UI */}
       <Card className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-4 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
         {/* Source Switcher Tabs using shadcn Tabs */}
-        <div className="border-b border-border pb-3">
+        <div className="border-b border-border/80 pb-3">
           <Tabs
             value={sourceTab}
             onValueChange={(val) => setSourceTab(val as typeof sourceTab)}
             className="w-full"
           >
-            <TabsList className="h-auto w-full flex-wrap justify-start gap-1.5 rounded-xl bg-muted/80 p-1">
+            <TabsList className="h-auto w-full flex-wrap justify-start gap-1.5 rounded-xl bg-muted/70 p-1 sm:h-11 sm:items-center">
               {sourceTabs.map((tab) => {
                 const currentCount =
                   tab.id === "all"
@@ -340,23 +340,35 @@ export function ProjectsExplorer({
                       ? totalLguTracked
                       : totalBetterGovTracked
 
+                const isActive = sourceTab === tab.id
+
                 return (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold transition data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-2xs"
+                    className={cn(
+                      "h-9 flex-none inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all select-none",
+                      isActive
+                        ? "bg-background text-foreground shadow-xs font-bold"
+                        : "text-muted-foreground hover:bg-background/50 hover:text-foreground"
+                    )}
                   >
                     {tab.id === "lgu-iriga" ? (
-                      <HardHat className="size-3.5 text-amber-600" />
+                      <HardHat className="size-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
                     ) : tab.id === "bettergov" ? (
-                      <Globe className="size-3.5 text-emerald-600" />
+                      <Globe className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                     ) : (
-                      <Layers className="size-3.5 text-blue-600" />
+                      <Layers className="size-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                     )}
-                    <span>{tab.label}</span>
+                    <span className="leading-none">{tab.label}</span>
                     <Badge
-                      variant={sourceTab === tab.id ? "default" : "secondary"}
-                      className="px-1.5 py-0 font-mono text-[10px]"
+                      variant={isActive ? "default" : "outline"}
+                      className={cn(
+                        "h-5 px-1.5 font-mono text-[10px] font-semibold leading-none shrink-0 inline-flex items-center justify-center",
+                        isActive
+                          ? "bg-primary text-primary-foreground shadow-2xs"
+                          : "border-border/80 bg-background/80 text-foreground/80"
+                      )}
                     >
                       {currentCount}
                       {isFiltered && currentCount !== baseCount ? ` of ${baseCount}` : ""}
@@ -368,10 +380,10 @@ export function ProjectsExplorer({
           </Tabs>
         </div>
 
-        {/* Search, Status, and Sort Controls with shadcn Input and Select */}
-        <div className="grid gap-3 lg:grid-cols-12 items-center">
+        {/* Search and Sort Row */}
+        <div className="grid gap-3 md:grid-cols-12 items-center">
           {/* Search Input */}
-          <div className="relative h-10 lg:col-span-6">
+          <div className="relative h-10 md:col-span-8 lg:col-span-9">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 z-10">
               <Search className="size-4 text-muted-foreground" />
             </div>
@@ -397,24 +409,8 @@ export function ProjectsExplorer({
             ) : null}
           </div>
 
-          {/* Status Filter Buttons */}
-          <div className="flex flex-wrap items-center gap-1.5 lg:col-span-3">
-            {projectStatuses.map((st) => (
-              <Button
-                key={st}
-                type="button"
-                variant={status === st ? "default" : "secondary"}
-                size="sm"
-                onClick={() => setStatus(st)}
-                className="h-8 rounded-lg text-xs font-semibold"
-              >
-                {st === "all" ? "All Statuses" : st}
-              </Button>
-            ))}
-          </div>
-
           {/* Sort Dropdown Selector using shadcn Select */}
-          <div className="lg:col-span-3">
+          <div className="md:col-span-4 lg:col-span-3">
             <Select
               value={sortBy}
               onValueChange={(val) =>
@@ -446,10 +442,72 @@ export function ProjectsExplorer({
           </div>
         </div>
 
-        {/* Category Pills & Dynamic Result Counter */}
+        {/* Status Filter Buttons Row */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1">
+              Status:
+            </span>
+            {projectStatuses.map((st) => (
+              <Button
+                key={st}
+                type="button"
+                variant={status === st ? "default" : "outline"}
+                size="sm"
+                onClick={() => setStatus(st)}
+                className={cn(
+                  "h-8 rounded-lg px-3 text-xs font-semibold transition-all inline-flex items-center gap-1.5",
+                  status === st
+                    ? "bg-primary text-primary-foreground shadow-xs font-bold"
+                    : "border-border/80 bg-background text-foreground hover:bg-muted hover:text-foreground"
+                )}
+              >
+                {st === "Ongoing" ? (
+                  <span className="size-2 rounded-full bg-amber-500 shrink-0" />
+                ) : st === "Completed" ? (
+                  <span className="size-2 rounded-full bg-emerald-500 shrink-0" />
+                ) : st === "Planning" ? (
+                  <span className="size-2 rounded-full bg-blue-500 shrink-0" />
+                ) : null}
+                <span>{st === "all" ? "All Statuses" : st}</span>
+              </Button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">
+              Showing <strong>{totalDisplayed}</strong> matching {totalDisplayed === 1 ? "work" : "works"}{" "}
+              {isFiltered ? (
+                <span className="font-semibold text-blue-600 dark:text-blue-400">
+                  (filtered from {totalAllTracked} total tracked)
+                </span>
+              ) : (
+                <span>(all {totalAllTracked} verified)</span>
+              )}
+            </span>
+
+            {isFiltered ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleResetFilters}
+                className="h-7 gap-1 rounded-lg px-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/50"
+              >
+                <RotateCcw className="size-3" />
+                Reset
+              </Button>
+            ) : null}
+          </div>
+        </div>
+
+        {/* Category Pills */}
+        <div className="border-t border-border/70 pt-2.5">
           {sourceTab !== "bettergov" ? (
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1">
+                Category:
+              </span>
               {projectCategories.map((cat) => (
                 <Button
                   key={cat}
@@ -457,7 +515,12 @@ export function ProjectsExplorer({
                   variant={category === cat ? "default" : "outline"}
                   size="sm"
                   onClick={() => setCategory(cat)}
-                  className="h-7 rounded-full px-3 text-xs font-semibold"
+                  className={cn(
+                    "h-7 rounded-lg px-2.5 text-xs font-semibold transition-all",
+                    category === cat
+                      ? "bg-primary text-primary-foreground shadow-xs font-bold"
+                      : "border-border/80 bg-background text-foreground hover:bg-muted hover:text-foreground"
+                  )}
                 >
                   {cat === "all" ? "All Categories" : cat}
                 </Button>
@@ -469,31 +532,6 @@ export function ProjectsExplorer({
               <span>DPWH Camarines Sur 5th District Engineering Office & GAA Portals</span>
             </div>
           )}
-
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-muted-foreground">
-              Showing <strong>{totalDisplayed}</strong> matching {totalDisplayed === 1 ? "work" : "works"}{" "}
-              {isFiltered ? (
-                <span className="font-semibold text-blue-600 dark:text-blue-400">
-                  (filtered from {totalAllTracked} total tracked)
-                </span>
-              ) : (
-                <span>across monitored sources</span>
-              )}
-            </span>
-            {isFiltered ? (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleResetFilters}
-                className="h-7 text-xs font-semibold text-destructive hover:bg-destructive/10 hover:text-destructive"
-              >
-                <RotateCcw className="size-3 mr-1" />
-                Reset
-              </Button>
-            ) : null}
-          </div>
         </div>
       </Card>
 
