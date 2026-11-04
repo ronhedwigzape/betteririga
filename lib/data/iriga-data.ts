@@ -35,6 +35,7 @@ import {
   type BetterGovRecord,
   type BetterGovDataset,
   type BrandLogos,
+  type BrandLicense,
   type BudgetDisclosureItem,
   type CarrierRegistry,
   type Citation,
@@ -1060,6 +1061,10 @@ export function detectCarrier(
 
 export function getBrandLogos(): BrandLogos | undefined {
   return defaultRepository.getSnapshot().siteContent.brand.logos
+}
+
+export function getBrandLicense(): BrandLicense | undefined {
+  return defaultRepository.getSnapshot().siteContent.brand.license
 }
 
 export function getHeroMedia(): HeroMedia | undefined {

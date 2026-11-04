@@ -622,6 +622,14 @@ export const DirectoryControlsSchema = z.object({
   }),
 })
 
+export const BrandLicenseSchema = z.object({
+  code: z.string().min(1),
+  codeUrl: z.string().url(),
+  data: z.string().min(1),
+  dataUrl: z.string().url(),
+  summary: z.string().min(1),
+})
+
 export const SiteContentSchema = z.object({
   metadata: SiteMetadataConfigSchema,
   brand: z.object({
@@ -639,6 +647,8 @@ export const SiteContentSchema = z.object({
     costToPeopleValue: z.string().min(1),
     volunteerEmail: z.string().min(1),
     communityUrl: z.string().url(),
+    repositoryUrl: z.string().url().optional(),
+    license: BrandLicenseSchema.optional(),
     logos: BrandLogosSchema.optional(),
   }),
   volunteerModal: z.object({
@@ -840,6 +850,7 @@ export type TabOption = z.infer<typeof TabOptionSchema>
 export type SortOption = z.infer<typeof SortOptionSchema>
 export type ValidCivicSection = z.infer<typeof ValidCivicSectionSchema>
 export type BrandLogos = z.infer<typeof BrandLogosSchema>
+export type BrandLicense = z.infer<typeof BrandLicenseSchema>
 export type CarrierItem = z.infer<typeof CarrierItemSchema>
 export type CarrierRegistry = z.infer<typeof CarrierRegistrySchema>
 export type HeroMedia = z.infer<typeof HeroMediaSchema>

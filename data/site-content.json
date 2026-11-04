@@ -80,6 +80,14 @@
     "costToPeopleValue": "₱0",
     "volunteerEmail": "volunteer@betteririga.org",
     "communityUrl": "https://bettergov.ph",
+    "repositoryUrl": "https://github.com/ronhedwigzape/betteririga",
+    "license": {
+      "code": "MIT License",
+      "codeUrl": "https://github.com/ronhedwigzape/betteririga/blob/main/LICENSE",
+      "data": "CC BY 4.0",
+      "dataUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "summary": "Code licensed under MIT • Civic Data & Content licensed under CC BY 4.0"
+    },
     "logos": {
       "lightMode": "/BetterIriga-Blue-Foreground-Transparent.png",
       "darkMode": "/BetterIriga-White-Foreground-Transparent.png",

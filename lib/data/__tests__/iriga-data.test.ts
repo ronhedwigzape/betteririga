@@ -1154,5 +1154,23 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       budgetPageContent.includes("OpenAPI 3.1 Spec"),
       "budget/page.tsx must visibly render OpenAPI Spec text and endpoint URL in developer card"
     )
+
+    // 8. License explicitly stated in footer and LICENSE file
+    const footerContent = fs.readFileSync("components/civic/site-footer.tsx", "utf8")
+    assert.ok(
+      footerContent.includes("MIT (Code)") &&
+      footerContent.includes("CC BY 4.0 (Data)") &&
+      footerContent.includes("Open Source &amp; Civic Data License:") &&
+      footerContent.includes("MIT License") &&
+      footerContent.includes("Creative Commons Attribution 4.0 International (CC BY 4.0)"),
+      "site-footer.tsx must explicitly state the MIT (Code) and CC BY 4.0 (Data) licenses"
+    )
+
+    const licenseFileContent = fs.readFileSync("LICENSE", "utf8")
+    assert.ok(
+      licenseFileContent.includes("MIT License") &&
+      licenseFileContent.includes("Creative Commons Attribution 4.0 International Public License (CC BY 4.0)"),
+      "LICENSE file must contain dual MIT and CC BY 4.0 licenses"
+    )
   })
 })

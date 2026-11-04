@@ -8,6 +8,7 @@ import {
   MessageSquareHeart,
   Send,
   Globe,
+  FileCode,
 } from "lucide-react"
 import { FacebookLogo } from "@/components/civic/telecom-and-channel-icons"
 import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
@@ -284,6 +285,13 @@ export function SiteFooter() {
               </Badge>
               <Badge
                 variant="outline"
+                className="border-blue-500/40 bg-blue-950/40 text-[11px] font-medium text-blue-300 gap-1.5"
+              >
+                <FileCode className="size-3.5 text-blue-400" />
+                License: MIT (Code) &amp; CC BY 4.0 (Data)
+              </Badge>
+              <Badge
+                variant="outline"
                 className="border-emerald-500/40 bg-emerald-950/40 text-[11px] font-medium text-emerald-300 gap-1.5"
               >
                 <ShieldCheck className="size-3.5" />
@@ -303,6 +311,52 @@ export function SiteFooter() {
                 Share an Official Document
               </Link>
             </p>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-slate-900 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-[11px] text-slate-400">
+            <p className="leading-relaxed">
+              <span className="font-semibold text-slate-300">Open Source &amp; Civic Data License:</span>{" "}
+              Software code is licensed under the{" "}
+              <a
+                href={brand.license?.codeUrl ?? "https://github.com/ronhedwigzape/betteririga/blob/main/LICENSE"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white font-medium underline hover:text-blue-300"
+              >
+                {brand.license?.code ?? "MIT License"}
+              </a>
+              . Curated civic records, datasets, and public documentation are licensed under{" "}
+              <a
+                href={brand.license?.dataUrl ?? "https://creativecommons.org/licenses/by/4.0/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white font-medium underline hover:text-blue-300"
+              >
+                {brand.license?.data ?? "Creative Commons Attribution 4.0 International (CC BY 4.0)"}
+              </a>
+              .
+            </p>
+            <div className="flex flex-wrap items-center gap-3 shrink-0 text-slate-400">
+              <a
+                href={brand.repositoryUrl ?? "https://github.com/ronhedwigzape/betteririga"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-slate-300 hover:text-white transition-colors"
+              >
+                <span>GitHub Repository</span>
+                <ExternalLink className="size-3" />
+              </a>
+              <span>•</span>
+              <a
+                href={brand.license?.codeUrl ?? "https://github.com/ronhedwigzape/betteririga/blob/main/LICENSE"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-slate-300 hover:text-white transition-colors"
+              >
+                <span>License Terms</span>
+                <ExternalLink className="size-3" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
