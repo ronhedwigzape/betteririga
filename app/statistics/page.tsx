@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import { BarChart3, CheckCircle2 } from "lucide-react"
 import {
@@ -27,7 +28,7 @@ export default function StatisticsPage() {
   const barangays = stats.barangayPopulations
 
   return (
-    <div className="space-y-10 py-4">
+    <CivicPageContainer className="space-y-10 py-4">
       {/* Hero Header */}
       <Reveal>
         <div className="rounded-2xl border border-border bg-gradient-to-br from-blue-50/70 via-card to-card p-4 sm:p-6 lg:p-8 dark:from-blue-950/25">
@@ -443,6 +444,6 @@ export default function StatisticsPage() {
           ))}
         </div>
       </section>
-    </div>
+    </CivicPageContainer>
   )
 }

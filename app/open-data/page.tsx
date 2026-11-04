@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Database, ArrowLeft, CheckCircle2 } from "lucide-react"
@@ -23,7 +24,7 @@ export default function OpenDataPage() {
   }
 
   return (
-    <div className="space-y-10 py-4">
+    <CivicPageContainer className="space-y-10 py-4">
       {/* Header Banner */}
       <Reveal>
         <div className="rounded-3xl border border-border bg-gradient-to-br from-blue-50/70 via-card to-card p-5 sm:p-8 dark:from-blue-950/25">
@@ -117,6 +118,6 @@ export default function OpenDataPage() {
           <OpenDataExplorer />
         </div>
       </Reveal>
-    </div>
+    </CivicPageContainer>
   )
 }

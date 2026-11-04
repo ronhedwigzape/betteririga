@@ -567,6 +567,8 @@ export const BrandLogosSchema = z.object({
   darkMode: z.string().min(1),
   horizontalLight: z.string().min(1).optional(),
   horizontalDark: z.string().min(1).optional(),
+  bannerOnBlue: z.string().min(1).optional(),
+  bannerOnWhite: z.string().min(1).optional(),
   badge: z.string().min(1),
   alt: z.string().min(1),
 })

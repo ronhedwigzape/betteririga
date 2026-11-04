@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import { ShieldCheck, CheckCircle2 } from "lucide-react"
 import { VerificationLedgerSidePanel } from "@/components/civic/verification-ledger-side-panel"
@@ -11,7 +12,7 @@ export default function VerificationPage() {
   const pageCopy = siteContent.pages.verification
 
   return (
-    <div className="space-y-8 py-4">
+    <CivicPageContainer className="space-y-8 py-4">
       <Reveal>
         <div className="rounded-2xl border border-border bg-gradient-to-br from-emerald-50/70 via-card to-card p-4 sm:p-6 lg:p-8 dark:from-emerald-950/25">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
@@ -34,6 +35,6 @@ export default function VerificationPage() {
       </Reveal>
 
       <VerificationLedgerSidePanel />
-    </div>
+    </CivicPageContainer>
   )
 }

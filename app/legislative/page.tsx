@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import {
   Scale,
@@ -44,7 +45,7 @@ export default function LegislativePage() {
   const ordinances = getOrdinancesAndResolutions()
 
   return (
-    <div className="space-y-10 py-4">
+    <CivicPageContainer className="space-y-10 py-4">
       {/* Hero */}
       <Reveal>
         <div className="rounded-2xl border border-border bg-gradient-to-br from-purple-50/70 via-card to-card p-4 sm:p-6 lg:p-8 dark:from-purple-950/25">
@@ -250,6 +251,6 @@ export default function LegislativePage() {
 
         <OrdinancesArchive measures={ordinances} />
       </section>
-    </div>
+    </CivicPageContainer>
   )
 }

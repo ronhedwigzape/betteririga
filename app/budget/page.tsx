@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import Link from "next/link"
 import {
@@ -74,7 +75,7 @@ export default function BudgetPage() {
   )
 
   return (
-    <div className="space-y-12 py-4">
+    <CivicPageContainer className="space-y-12 py-4">
       {/* Page Hero Header & Key Stats (No outer card container) */}
       <Reveal>
         <section className="space-y-6">
@@ -778,6 +779,6 @@ claude mcp add --transport http ph-budget https://budget.bettergov.ph/mcp
           </div>
         </section>
       </Reveal>
-    </div>
+    </CivicPageContainer>
   )
 }

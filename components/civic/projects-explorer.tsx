@@ -254,69 +254,78 @@ export function ProjectsExplorer({
         aria-label="Overview statistics of tracked works"
         className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4"
       >
-        <Card className="civic-card-hover border-amber-200/80 bg-gradient-to-br from-amber-500/10 via-card to-card p-4 shadow-2xs sm:p-5 dark:border-amber-900/60 rounded-2xl gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider dark:text-amber-300">
+        <Card className="civic-card-hover border-amber-200/80 bg-gradient-to-br from-amber-500/10 via-card to-card shadow-2xs dark:border-amber-900/60 rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
+            <CardDescription className="text-[11px] font-bold text-amber-900 uppercase tracking-wider dark:text-amber-300">
               Tracked Works
-            </span>
+            </CardDescription>
             <HardHat className="size-4 text-amber-600 dark:text-amber-400" />
-          </div>
-          <div className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
-            {totalAllTracked}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            10 City Hall + 36 DPWH 5th DEO
-          </p>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+            <CardTitle className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
+              {totalAllTracked}
+            </CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              10 City Hall + 36 DPWH 5th DEO
+            </p>
+          </CardContent>
         </Card>
 
-        <Card className="civic-card-hover border-emerald-200/80 bg-gradient-to-br from-emerald-500/10 via-card to-card p-4 shadow-2xs sm:p-5 dark:border-emerald-900/60 rounded-2xl gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
+        <Card className="civic-card-hover border-emerald-200/80 bg-gradient-to-br from-emerald-500/10 via-card to-card shadow-2xs dark:border-emerald-900/60 rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
+            <CardDescription className="text-[11px] font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
               Monitored Funds
-            </span>
+            </CardDescription>
             <Banknote className="size-4 text-emerald-600 dark:text-emerald-400" />
-          </div>
-          <div className="text-2xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-400 sm:text-3xl">
-            ₱397.92M+
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Verified appropriations & awards
-          </p>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+            <CardTitle className="text-2xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-400 sm:text-3xl">
+              ₱397.92M+
+            </CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Verified appropriations & awards
+            </p>
+          </CardContent>
         </Card>
 
-        <Card className="civic-card-hover border-blue-200/80 bg-gradient-to-br from-blue-500/10 via-card to-card p-4 shadow-2xs sm:p-5 dark:border-blue-900/60 rounded-2xl gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-blue-900 uppercase tracking-wider dark:text-blue-300">
+        <Card className="civic-card-hover border-blue-200/80 bg-gradient-to-br from-blue-500/10 via-card to-card shadow-2xs dark:border-blue-900/60 rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
+            <CardDescription className="text-[11px] font-bold text-blue-900 uppercase tracking-wider dark:text-blue-300">
               DPWH CamSur 5th
-            </span>
+            </CardDescription>
             <Globe className="size-4 text-blue-600 dark:text-blue-400" />
-          </div>
-          <div className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
-            {totalBetterGovTracked}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            National works via BetterGov.ph
-          </p>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+            <CardTitle className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
+              {totalBetterGovTracked}
+            </CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              National works via BetterGov.ph
+            </p>
+          </CardContent>
         </Card>
 
-        <Card className="civic-card-hover border-purple-200/80 bg-gradient-to-br from-purple-500/10 via-card to-card p-4 shadow-2xs sm:p-5 dark:border-purple-900/60 rounded-2xl gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-purple-900 uppercase tracking-wider dark:text-purple-300">
+        <Card className="civic-card-hover border-purple-200/80 bg-gradient-to-br from-purple-500/10 via-card to-card shadow-2xs dark:border-purple-900/60 rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-4 sm:p-5 sm:pb-2 space-y-0">
+            <CardDescription className="text-[11px] font-bold text-purple-900 uppercase tracking-wider dark:text-purple-300">
               LGU Iriga City
-            </span>
+            </CardDescription>
             <Building2 className="size-4 text-purple-600 dark:text-purple-400" />
-          </div>
-          <div className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
-            {totalLguTracked}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Local roads, health & welfare
-          </p>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+            <CardTitle className="text-2xl font-black font-mono tracking-tight text-foreground sm:text-3xl">
+              {totalLguTracked}
+            </CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Local roads, health & welfare
+            </p>
+          </CardContent>
         </Card>
       </section>
 
       {/* Sticky Source Switcher & Filter Bar with shadcn UI */}
-      <Card className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-4 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
+      <Card className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 rounded-2xl border border-border/90 bg-card/95 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85">
+        <CardContent className="p-3.5 sm:p-5 space-y-4">
         {/* Source Switcher Tabs using shadcn Tabs */}
         <div className="border-b border-border/80 pb-3">
           <Tabs
@@ -533,6 +542,7 @@ export function ProjectsExplorer({
             </div>
           )}
         </div>
+        </CardContent>
       </Card>
 
       {/* Empty State with shadcn Card */}
@@ -648,41 +658,45 @@ export function ProjectsExplorer({
 
                 <CardContent className="p-0 mt-4 space-y-3">
                   {/* Emphasized High-Visibility Funding Spotlight Container */}
-                  <div className="rounded-xl border border-emerald-200/90 bg-emerald-50/80 p-4 dark:border-emerald-800/70 dark:bg-emerald-950/30">
-                    <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
-                      <span className="font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
-                        Monitored Public Allocation
-                      </span>
-                      <Badge
-                        variant="secondary"
-                        className="bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 text-[11px]"
-                      >
-                        {rec.fundingSource}
-                      </Badge>
-                    </div>
-                    <div className="mt-2 text-xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-300 sm:text-2xl">
-                      {rec.amountDisplay}
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      <strong>Office / Proponent:</strong> {rec.contractorOrProponent}
-                    </p>
-                  </div>
+                  <Card className="rounded-xl border border-emerald-200/90 bg-emerald-50/80 shadow-none dark:border-emerald-800/70 dark:bg-emerald-950/30">
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
+                        <span className="font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
+                          Monitored Public Allocation
+                        </span>
+                        <Badge
+                          variant="secondary"
+                          className="bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 text-[11px]"
+                        >
+                          {rec.fundingSource}
+                        </Badge>
+                      </div>
+                      <div className="text-xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-300 sm:text-2xl">
+                        {rec.amountDisplay}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        <strong>Office / Proponent:</strong> {rec.contractorOrProponent}
+                      </p>
+                    </CardContent>
+                  </Card>
 
                   {/* Location & District Details */}
-                  <div className="grid gap-1.5 rounded-xl border border-border/80 bg-muted/30 p-3 text-xs">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
-                      <span>
-                        <strong>Location:</strong> {rec.location}
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Building2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
-                      <span>
-                        <strong>District / Office:</strong> {rec.district}
-                      </span>
-                    </div>
-                  </div>
+                  <Card className="rounded-xl border border-border/80 bg-muted/30 shadow-none">
+                    <CardContent className="grid gap-1.5 p-3 text-xs">
+                      <div className="flex items-start gap-2">
+                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
+                        <span>
+                          <strong>Location:</strong> {rec.location}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
+                        <span>
+                          <strong>District / Office:</strong> {rec.district}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </CardContent>
 
                 {/* Card Actions & Citation */}
@@ -799,49 +813,53 @@ export function ProjectsExplorer({
 
                 <CardContent className="p-0 mt-4 space-y-3">
                   {/* Emphasized High-Visibility Funding Spotlight Container */}
-                  <div className="rounded-xl border border-emerald-200/90 bg-emerald-50/80 p-4 dark:border-emerald-800/70 dark:bg-emerald-950/30">
-                    <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
-                      <span className="font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
-                        Disclosed Project Budget
-                      </span>
-                      <Badge variant="secondary" className="bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 text-[11px]">
-                        {project.implementingAgency}
-                      </Badge>
-                    </div>
-                    <div className="mt-2 text-xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-300 sm:text-2xl">
-                      {typeof project.amountPhp === "number"
-                        ? formatPeso(project.amountPhp)
-                        : "₱0 Disclosed"}
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {project.amountNote}
-                    </p>
-                  </div>
+                  <Card className="rounded-xl border border-emerald-200/90 bg-emerald-50/80 shadow-none dark:border-emerald-800/70 dark:bg-emerald-950/30">
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs">
+                        <span className="font-bold text-emerald-900 uppercase tracking-wider dark:text-emerald-300">
+                          Disclosed Project Budget
+                        </span>
+                        <Badge variant="secondary" className="bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900/70 dark:text-emerald-200 text-[11px]">
+                          {project.implementingAgency}
+                        </Badge>
+                      </div>
+                      <div className="text-xl font-black font-mono tracking-tight text-emerald-700 dark:text-emerald-300 sm:text-2xl">
+                        {typeof project.amountPhp === "number"
+                          ? formatPeso(project.amountPhp)
+                          : "₱0 Disclosed"}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {project.amountNote}
+                      </p>
+                    </CardContent>
+                  </Card>
 
                   {/* Location, Agency, and Reference Details */}
-                  <div className="grid gap-2 rounded-xl border border-border/80 bg-muted/30 p-3 text-xs">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 size-3.5 shrink-0 text-blue-600" />
-                      <span>
-                        <strong>Location:</strong> {project.location}
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Building2 className="mt-0.5 size-3.5 shrink-0 text-blue-600" />
-                      <span>
-                        <strong>Office in Charge:</strong>{" "}
-                        {project.implementingAgency}
-                      </span>
-                    </div>
-                    {project.contractOrReferenceId ? (
-                      <p className="font-mono text-[11px] text-muted-foreground">
-                        Reference: {project.contractOrReferenceId}
-                        {project.contractor
-                          ? ` • Contractor: ${project.contractor}`
-                          : ""}
-                      </p>
-                    ) : null}
-                  </div>
+                  <Card className="rounded-xl border border-border/80 bg-muted/30 shadow-none">
+                    <CardContent className="grid gap-2 p-3 text-xs">
+                      <div className="flex items-start gap-2">
+                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-blue-600" />
+                        <span>
+                          <strong>Location:</strong> {project.location}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-blue-600" />
+                        <span>
+                          <strong>Office in Charge:</strong>{" "}
+                          {project.implementingAgency}
+                        </span>
+                      </div>
+                      {project.contractOrReferenceId ? (
+                        <p className="font-mono text-[11px] text-muted-foreground">
+                          Reference: {project.contractOrReferenceId}
+                          {project.contractor
+                            ? ` • Contractor: ${project.contractor}`
+                            : ""}
+                        </p>
+                      ) : null}
+                    </CardContent>
+                  </Card>
 
                   {/* Honest Gap Disclosure Notice */}
                   {project.gaps ? (

@@ -3,6 +3,7 @@ import { HardHat, CheckCircle2 } from "lucide-react"
 import { getCivicSnapshot, getPageMetadata } from "@/lib/data/iriga-data"
 import { ProjectsExplorer } from "@/components/civic/projects-explorer"
 import { Reveal } from "@/components/civic/reveal"
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
@@ -13,10 +14,10 @@ export default function ProjectsPage() {
   const pageCopy = snapshot.siteContent.pages.projects
 
   return (
-    <div className="space-y-8 py-4">
+    <CivicPageContainer className="space-y-8 py-4">
       <Reveal>
-        <Card className="rounded-3xl border border-border bg-gradient-to-br from-amber-50/70 via-card to-card p-5 sm:p-8 dark:from-amber-950/25">
-          <CardHeader className="p-0 gap-2">
+        <Card className="rounded-3xl border border-border bg-gradient-to-br from-amber-50/70 via-card to-card shadow-xs dark:from-amber-950/25">
+          <CardHeader className="gap-2 p-6 sm:p-8">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="secondary" className="gap-1.5 bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200 font-bold">
                 <HardHat className="size-3.5" />
@@ -42,6 +43,6 @@ export default function ProjectsPage() {
         projects={snapshot.projectsAndPrograms}
         betterGovRecords={snapshot.betterGovRecords}
       />
-    </div>
+    </CivicPageContainer>
   )
 }

@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import { getCivicSnapshot, getPageMetadata } from "@/lib/data/iriga-data"
 import { FreedomWallBoard } from "@/components/civic/freedom-wall-board"
@@ -10,7 +11,7 @@ export default function FreedomWallPage() {
   const pageCopy = snapshot.siteContent.pages.freedomWall
 
   return (
-    <div className="space-y-6 pb-10">
+    <CivicPageContainer className="space-y-6 pb-10">
       <Reveal>
         <header className="rounded-3xl border border-border bg-gradient-to-br from-blue-50/80 via-background to-amber-50/30 p-4 sm:p-6 lg:p-8 shadow-2xs dark:from-blue-950/30 dark:to-amber-950/15">
           <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-bold tracking-wide text-blue-900 uppercase dark:bg-blue-950 dark:text-blue-200">
@@ -26,6 +27,6 @@ export default function FreedomWallPage() {
       </Reveal>
 
       <FreedomWallBoard />
-    </div>
+    </CivicPageContainer>
   )
 }

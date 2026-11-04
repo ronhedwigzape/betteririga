@@ -40,7 +40,10 @@ export function HeroVideoBackground({
 }: HeroVideoBackgroundProps) {
   const containerRef = React.useRef<HTMLElement | null>(null)
   const videoRef = React.useRef<HTMLVideoElement | null>(null)
-  const [parallaxY, setParallaxY] = React.useState(0)
+  const parallaxLayerRef = React.useRef<HTMLDivElement | null>(null)
+  const parallaxY = React.useRef(0)
+  const targetY = React.useRef(0)
+  const rafId = React.useRef<number | null>(null)
 
   const isReducedMotion = React.useSyncExternalStore(
     subscribeReducedMotion,
@@ -54,35 +57,63 @@ export function HeroVideoBackground({
 
   const videoWebm = heroMedia?.videoWebm ?? "/hero-background.webm"
   const videoMp4 = heroMedia?.videoMp4 ?? "/hero-background.mp4"
-  const poster = heroMedia?.poster ?? "/hero-video-poster.jpg"
+  const video1080p = "/hero-background-1080p.mp4"
+  const poster = heroMedia?.poster ?? "/hero-video-poster-1080p.jpg"
 
-  // Covered Parallax scroll listener
+  // Automatically select high-definition 1080p video on desktop viewports
+  React.useEffect(() => {
+    if (videoRef.current && typeof window !== "undefined") {
+      if (window.innerWidth >= 1024) {
+        videoRef.current.src = video1080p
+      }
+      videoRef.current.play().catch(() => {})
+    }
+  }, [video1080p])
+
+  // Covered Parallax scroll listener with smooth damping (lerp) & zero React re-renders
   React.useEffect(() => {
     if (isReducedMotion) return
 
-    let rafId: number
+    const updateParallax = () => {
+      // Butter-smooth linear interpolation (lerp factor: 0.12)
+      const diff = targetY.current - parallaxY.current
+      if (Math.abs(diff) > 0.05) {
+        parallaxY.current += diff * 0.12
+        if (parallaxLayerRef.current) {
+          parallaxLayerRef.current.style.transform = `translate3d(0, ${parallaxY.current.toFixed(2)}px, 0) scale(1.08)`
+        }
+        rafId.current = requestAnimationFrame(updateParallax)
+      } else {
+        parallaxY.current = targetY.current
+        if (parallaxLayerRef.current) {
+          parallaxLayerRef.current.style.transform = `translate3d(0, ${parallaxY.current.toFixed(2)}px, 0) scale(1.08)`
+        }
+        rafId.current = null
+      }
+    }
+
     const handleScroll = () => {
       if (!containerRef.current) return
       const rect = containerRef.current.getBoundingClientRect()
       // Only compute when hero is visible in viewport
       if (rect.bottom > 0 && rect.top < window.innerHeight) {
-        // Parallax speed: 0.4x scroll delta for visible dynamic depth
-        const offset = Math.max(-100, Math.min(180, -rect.top * 0.42))
-        setParallaxY(offset)
+        // Parallax speed: 0.42x scroll delta for dynamic cinematic depth
+        targetY.current = Math.max(-100, Math.min(180, -rect.top * 0.42))
+        if (rafId.current === null) {
+          rafId.current = requestAnimationFrame(updateParallax)
+        }
       }
     }
 
-    const onScroll = () => {
-      cancelAnimationFrame(rafId)
-      rafId = requestAnimationFrame(handleScroll)
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("scroll", handleScroll, { passive: true })
     handleScroll()
 
     return () => {
-      window.removeEventListener("scroll", onScroll)
-      cancelAnimationFrame(rafId)
+      window.removeEventListener("scroll", handleScroll)
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current)
+        rafId.current = null
+      }
     }
   }, [isReducedMotion])
 
@@ -123,12 +154,12 @@ export function HeroVideoBackground({
     >
       {/* Covered Parallax Video / Poster Layer */}
       <div
+        ref={parallaxLayerRef}
         className="pointer-events-none absolute -top-[20%] left-0 h-[140%] w-full will-change-transform"
         style={{
           transform: isReducedMotion
             ? "scale(1.02)"
-            : `translate3d(0, ${parallaxY}px, 0) scale(1.08)`,
-          transition: "transform 0.08s ease-out",
+            : "translate3d(0, 0px, 0) scale(1.08)",
         }}
       >
         {!isReducedMotion ? (
@@ -148,6 +179,13 @@ export function HeroVideoBackground({
             }}
             className="h-full w-full object-cover object-center opacity-90 transition-opacity duration-700 dark:opacity-70"
           >
+            {/* Crisp 1080p video for desktop & larger viewports */}
+            <source
+              src={video1080p}
+              media="(min-width: 1024px)"
+              type="video/mp4"
+            />
+            {/* Efficient 720p streams for mobile & tablet */}
             <source src={videoWebm} type="video/webm" />
             <source src={videoMp4} type="video/mp4" />
           </video>
@@ -174,8 +212,10 @@ export function HeroVideoBackground({
         aria-hidden="true"
       />
 
-      {/* Foreground Hero Content */}
-      <div className="relative z-10 mx-auto max-w-7xl">{children}</div>
+      {/* Foreground Hero Content (Centered within standard 7xl containment) */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {children}
+      </div>
 
       {/* Video Attribution & Controls */}
       <div className="absolute right-3.5 bottom-3.5 z-20 flex max-w-[calc(100%-2rem)] flex-wrap items-center justify-end gap-2">

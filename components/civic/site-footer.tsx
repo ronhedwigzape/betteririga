@@ -43,7 +43,7 @@ export function SiteFooter() {
                   variant="horizontal"
                   forceTheme="dark"
                   alt={`${brand.fullDomain} Official Logo`}
-                  className="h-8 sm:h-9 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
+                  className="h-12 sm:h-14 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
                 />
               </Link>
               <div className="mt-1">

@@ -6,7 +6,7 @@ import { useCivicStore } from "@/lib/store/civic-store"
 import { cn } from "@/lib/utils"
 
 export interface BetterIrigaLogoProps {
-  variant?: "horizontal" | "emblem"
+  variant?: "horizontal" | "emblem" | "banner"
   forceTheme?: "light" | "dark"
   size?: number
   width?: number
@@ -18,7 +18,8 @@ export interface BetterIrigaLogoProps {
 
 /**
  * Responsive BetterIriga Brand Logo:
- * - variant="horizontal": Uses the 1360x360 horizontal lockup (Blue for Light, White for Dark)
+ * - variant="horizontal": Uses the 1360x360 horizontal transparent lockup (Blue for Light, White for Dark)
+ * - variant="banner": Uses the 1360x360 banner lockup with solid background (OnWhite for Light, OnBlue for Dark)
  * - variant="emblem": Uses the square official emblem (Blue for Light, White for Dark)
  * - forceTheme: Forces "light" or "dark" variant regardless of current theme (e.g. for always-dark footers)
  *
@@ -37,11 +38,75 @@ export function BetterIrigaLogo({
 }: BetterIrigaLogoProps) {
   const logos = useCivicStore((state) => state.snapshot.siteContent.brand.logos)
 
+  if (variant === "banner") {
+    const lightSrc =
+      logos?.bannerOnWhite ?? "/BetterIriga-Clean-Banner-OnWhite.png"
+    const darkSrc =
+      logos?.bannerOnBlue ?? "/BetterIriga-Clean-Banner-OnBlue.png"
+    const renderedWidth = width ?? 180
+    const renderedHeight = height ?? 48
+
+    if (forceTheme === "dark") {
+      return (
+        <div className={cn("relative shrink-0 select-none", className)}>
+          <Image
+            src={darkSrc}
+            alt={alt}
+            width={renderedWidth}
+            height={renderedHeight}
+            priority={priority}
+            className="h-full w-auto max-w-full object-contain"
+          />
+        </div>
+      )
+    }
+
+    if (forceTheme === "light") {
+      return (
+        <div className={cn("relative shrink-0 select-none", className)}>
+          <Image
+            src={lightSrc}
+            alt={alt}
+            width={renderedWidth}
+            height={renderedHeight}
+            priority={priority}
+            className="h-full w-auto max-w-full object-contain"
+          />
+        </div>
+      )
+    }
+
+    return (
+      <div className={cn("relative shrink-0 select-none", className)}>
+        {/* Light Mode: Banner On White */}
+        <Image
+          src={lightSrc}
+          alt={alt}
+          width={renderedWidth}
+          height={renderedHeight}
+          priority={priority}
+          className="h-full w-auto max-w-full object-contain dark:hidden"
+        />
+        {/* Dark Mode: Banner On Blue */}
+        <Image
+          src={darkSrc}
+          alt={alt}
+          width={renderedWidth}
+          height={renderedHeight}
+          priority={priority}
+          className="hidden h-full w-auto max-w-full object-contain dark:block"
+        />
+      </div>
+    )
+  }
+
   if (variant === "horizontal") {
     const lightSrc =
-      logos?.horizontalLight ?? "/BetterIriga-Horizontal-LightMode-Blue.png"
+      logos?.horizontalLight ??
+      "/BetterIriga-Clean-LightMode-Blue-Transparent.png"
     const darkSrc =
-      logos?.horizontalDark ?? "/BetterIriga-Horizontal-DarkMode-White.png"
+      logos?.horizontalDark ??
+      "/BetterIriga-Clean-DarkMode-White-Transparent.png"
     const renderedWidth = width ?? 180
     const renderedHeight = height ?? 48
 

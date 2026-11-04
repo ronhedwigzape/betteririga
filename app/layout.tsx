@@ -62,11 +62,9 @@ export default function RootLayout({
           </a>
           <SiteHeader />
           <VolunteerModal />
-          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-x-clip px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
-            <main id="main-content" className="min-w-0 w-full flex-1">
-              {children}
-            </main>
-          </div>
+          <main id="main-content" className="min-w-0 w-full flex-1 overflow-x-clip">
+            {children}
+          </main>
           <SiteFooter />
           <Analytics />
         </ThemeProvider>

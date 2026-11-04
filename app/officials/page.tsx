@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import { Landmark, CheckCircle2 } from "lucide-react"
 import { getPageMetadata, getSiteContent } from "@/lib/data/iriga-data"
@@ -10,7 +11,7 @@ export default function OfficialsPage() {
   const pageCopy = getSiteContent().pages.officials
 
   return (
-    <div className="space-y-8 py-4">
+    <CivicPageContainer className="space-y-8 py-4">
       <Reveal>
         <div className="rounded-2xl border border-border bg-gradient-to-br from-blue-50/70 via-card to-card p-4 sm:p-6 lg:p-8 dark:from-blue-950/30">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-blue-700 dark:text-blue-400">
@@ -33,6 +34,6 @@ export default function OfficialsPage() {
       </Reveal>
 
       <OfficialsDirectory />
-    </div>
+    </CivicPageContainer>
   )
 }

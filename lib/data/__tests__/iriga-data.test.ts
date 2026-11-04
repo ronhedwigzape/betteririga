@@ -1009,4 +1009,109 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "app/contacts/page.tsx must render department badges instead of generic red pills"
     )
   })
+
+  it("verifies replaced clean brand logos, 100% shadcn UI across /projects, 1080p hero video, and full-width layout", () => {
+    // 1. Replaced Clean Brand Logos exist and are referenced in site content
+    const logos = getBrandLogos()
+    assert.ok(logos, "Brand logos must be defined")
+    assert.equal(
+      logos?.horizontalLight,
+      "/BetterIriga-Clean-LightMode-Blue-Transparent.png",
+      "horizontalLight must point to clean light mode transparent logo"
+    )
+    assert.equal(
+      logos?.horizontalDark,
+      "/BetterIriga-Clean-DarkMode-White-Transparent.png",
+      "horizontalDark must point to clean dark mode transparent logo"
+    )
+    assert.equal(
+      logos?.bannerOnBlue,
+      "/BetterIriga-Clean-Banner-OnBlue.png",
+      "bannerOnBlue must point to clean banner on blue"
+    )
+    assert.equal(
+      logos?.bannerOnWhite,
+      "/BetterIriga-Clean-Banner-OnWhite.png",
+      "bannerOnWhite must point to clean banner on white"
+    )
+
+    // Verify all brand logo assets physically exist on disk
+    assert.ok(
+      fs.existsSync("public/BetterIriga-Clean-LightMode-Blue-Transparent.png"),
+      "Clean light mode logo must exist in public/"
+    )
+    assert.ok(
+      fs.existsSync("public/BetterIriga-Clean-DarkMode-White-Transparent.png"),
+      "Clean dark mode logo must exist in public/"
+    )
+    assert.ok(
+      fs.existsSync("public/BetterIriga-Clean-Banner-OnBlue.png"),
+      "Clean banner on blue must exist in public/"
+    )
+    assert.ok(
+      fs.existsSync("public/BetterIriga-Clean-Banner-OnWhite.png"),
+      "Clean banner on white must exist in public/"
+    )
+    assert.ok(
+      fs.existsSync("public/BetterIriga-Blue-Foreground-Transparent.png"),
+      "Emblem blue foreground must exist in public/"
+    )
+    assert.ok(
+      fs.existsSync("public/BetterIriga-White-Foreground-Transparent.png"),
+      "Emblem white foreground must exist in public/"
+    )
+
+    // 2. 100% shadcn UI across projects route
+    const projectsExplorer = fs.readFileSync("components/civic/projects-explorer.tsx", "utf8")
+    assert.ok(
+      projectsExplorer.includes("CardHeader") &&
+      projectsExplorer.includes("CardTitle") &&
+      projectsExplorer.includes("CardDescription") &&
+      projectsExplorer.includes("CardContent") &&
+      projectsExplorer.includes("CardFooter"),
+      "projects-explorer.tsx must use full shadcn Card subcomponents"
+    )
+    const projectDetailPage = fs.readFileSync("app/projects/[id]/page.tsx", "utf8")
+    assert.ok(
+      projectDetailPage.includes("CardHeader") &&
+      projectDetailPage.includes("CardContent") &&
+      projectDetailPage.includes("CardFooter"),
+      "app/projects/[id]/page.tsx must use shadcn Card subcomponents"
+    )
+    const projectApiViewer = fs.readFileSync("components/civic/project-api-viewer.tsx", "utf8")
+    assert.ok(
+      projectApiViewer.includes("Card") && projectApiViewer.includes("CardContent"),
+      "project-api-viewer.tsx must use shadcn Card component"
+    )
+
+    // 3. 1080p video asset scaling
+    assert.ok(
+      fs.existsSync("public/hero-background-1080p.mp4"),
+      "hero-background-1080p.mp4 must exist in public/"
+    )
+    assert.ok(
+      fs.existsSync("public/hero-video-poster-1080p.jpg"),
+      "hero-video-poster-1080p.jpg must exist in public/"
+    )
+    const heroVideoBackground = fs.readFileSync(
+      "components/civic/hero-video-background.tsx",
+      "utf8"
+    )
+    assert.ok(
+      heroVideoBackground.includes("/hero-background-1080p.mp4") &&
+      heroVideoBackground.includes("min-width: 1024px"),
+      "hero-video-background.tsx must conditionally load 1080p stream for high-res breakpoints"
+    )
+
+    // 4. Viewport layout & CivicPageContainer
+    const layoutContent = fs.readFileSync("app/layout.tsx", "utf8")
+    assert.ok(
+      layoutContent.includes('id="main-content" className="min-w-0 w-full flex-1 overflow-x-clip"'),
+      "app/layout.tsx must allow full-width main container"
+    )
+    assert.ok(
+      fs.existsSync("components/civic/civic-page-container.tsx"),
+      "civic-page-container.tsx must exist"
+    )
+  })
 })

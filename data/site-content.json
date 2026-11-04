@@ -83,8 +83,10 @@
     "logos": {
       "lightMode": "/BetterIriga-Blue-Foreground-Transparent.png",
       "darkMode": "/BetterIriga-White-Foreground-Transparent.png",
-      "horizontalLight": "/BetterIriga-Horizontal-LightMode-Blue.png",
-      "horizontalDark": "/BetterIriga-Horizontal-DarkMode-White.png",
+      "horizontalLight": "/BetterIriga-Clean-LightMode-Blue-Transparent.png",
+      "horizontalDark": "/BetterIriga-Clean-DarkMode-White-Transparent.png",
+      "bannerOnBlue": "/BetterIriga-Clean-Banner-OnBlue.png",
+      "bannerOnWhite": "/BetterIriga-Clean-Banner-OnWhite.png",
       "badge": "/BetterIriga-Badge-BlueAndWhite-Transparent.png",
       "alt": "BetterIriga.org Official Emblem"
     }

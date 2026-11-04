@@ -1,3 +1,4 @@
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import type { Metadata } from "next"
 import Link from "next/link"
 import {
@@ -29,7 +30,7 @@ export default function AboutPage() {
   const validation = validateCivicDataset()
 
   return (
-    <div className="space-y-10 py-4">
+    <CivicPageContainer className="space-y-10 py-4">
       {/* Hero */}
       <Reveal>
         <div className="rounded-2xl border border-border bg-gradient-to-br from-blue-50/70 via-card to-card p-4 sm:p-6 lg:p-8 dark:from-blue-950/25">
@@ -292,6 +293,6 @@ export default function AboutPage() {
           </div>
         </section>
       </Reveal>
-    </div>
+    </CivicPageContainer>
   )
 }

@@ -27,6 +27,7 @@ import { GlobalCivicSearch } from "@/components/civic/global-civic-search"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { Reveal } from "@/components/civic/reveal"
 import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
+import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import { HeroVideoBackground } from "@/components/civic/hero-video-background"
 import { AnimatedHeroTitle } from "@/components/civic/animated-hero-title"
 import { IrigaLivelySections } from "@/components/civic/iriga-lively-sections"
@@ -99,10 +100,10 @@ export default function HomePage() {
   )
 
   return (
-    <div className="space-y-16 pb-12">
-      {/* Covered Parallax Hero Section (Max Width Edge-to-Edge Breakout) */}
+    <div className="w-full">
+      {/* Covered Parallax Hero Section — Maxxed Out at ALL Breakpoints */}
       <Reveal>
-        <HeroVideoBackground className="-mx-3 sm:-mx-6 lg:-mx-8 w-[calc(100%+1.5rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] -mt-4 sm:-mt-6 pt-10 pb-14 sm:pt-14 sm:pb-18 lg:pt-16 lg:pb-20">
+        <HeroVideoBackground className="w-full border-b border-border/70 pt-10 pb-14 sm:pt-14 sm:pb-18 lg:pt-16 lg:pb-20">
           <div className="mx-auto max-w-4xl text-center">
             {/* Enlarged Official Emblem */}
             <div className="mb-6 flex justify-center">
@@ -237,8 +238,10 @@ export default function HomePage() {
         </HeroVideoBackground>
       </Reveal>
 
-      {/* Popular Municipal Services Section (Natural Surface Cards - No Outer Card Wrapper) */}
-      <Reveal delayMs={40}>
+      {/* Main Civic Container for subsequent homepage sections */}
+      <CivicPageContainer className="space-y-16 py-8 sm:py-12 pb-16">
+        {/* Popular Municipal Services Section (Natural Surface Cards - No Outer Card Wrapper) */}
+        <Reveal delayMs={40}>
         <section className="space-y-6">
           <div className="flex flex-col justify-between gap-3 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
@@ -679,6 +682,7 @@ export default function HomePage() {
           </Card>
         </section>
       </Reveal>
+      </CivicPageContainer>
     </div>
   )
 }
