@@ -21,6 +21,15 @@ export async function GET(
   context: { params: Promise<{ section: string }> }
 ) {
   const { section } = await context.params
+
+  // Guard against path traversal, null bytes or malformed inputs
+  if (!section || typeof section !== "string" || section.includes("..") || /[\x00-\x1F]/.test(section)) {
+    return NextResponse.json(
+      { error: "Invalid section parameter format" },
+      { status: 400 }
+    )
+  }
+
   const repo = createCivicRepository()
   const snapshot = repo.getSnapshot()
   const ledger = getVerificationLedgerSummary()

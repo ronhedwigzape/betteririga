@@ -9,6 +9,12 @@ import {
   mapRowToFreedomWallNote,
   type SupabaseFreedomWallNoteRow,
 } from "@/lib/supabase/freedom-wall"
+import {
+  checkFreedomWallQuota,
+  recordFreedomWallPost,
+  checkDragRateLimit,
+  sanitizeText,
+} from "@/lib/security/rate-limiter"
 
 export const dynamic = "force-dynamic"
 
@@ -84,6 +90,44 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const config = getSupabaseConfig()
 
+  // 1. Enforce payload size limit (max 10KB)
+  const contentLength = Number(req.headers.get("content-length") || 0)
+  if (contentLength > 10_240) {
+    return NextResponse.json(
+      { success: false, error: "Payload too large (max 10KB)" },
+      { status: 413 }
+    )
+  }
+
+  // 2. Client identification & rate limit / daily quota check (5 notes/day, 10s burst)
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown-ip"
+  const sessionId =
+    req.headers.get("x-session-id") ||
+    req.cookies?.get?.("betteririga_fw_session")?.value ||
+    "anon"
+
+  const quota = checkFreedomWallQuota(ip, sessionId)
+  if (!quota.allowed) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: quota.message,
+        reason: quota.reason,
+        remaining: quota.remaining,
+        retryAfterSeconds: quota.retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: quota.retryAfterSeconds
+          ? { "Retry-After": String(quota.retryAfterSeconds) }
+          : undefined,
+      }
+    )
+  }
+
   let rawBody: unknown
   try {
     rawBody = await req.json()
@@ -99,14 +143,20 @@ export async function POST(req: NextRequest) {
     unknown
   >
 
+  // 3. Strict Input Sanitization (strip HTML/scripts/control characters)
+  const rawContent = typeof body.content === "string" ? body.content : ""
+  const sanitizedContent = sanitizeText(rawContent, 280)
+  const rawAuthor = typeof body.authorLabel === "string" ? body.authorLabel : "Anonymous"
+  const sanitizedAuthor = sanitizeText(rawAuthor, 40) || "Anonymous"
+
   const candidate = {
     id:
-      typeof body.id === "string" && body.id.trim()
+      typeof body.id === "string" && body.id.trim() && /^[a-zA-Z0-9_-]{1,64}$/.test(body.id.trim())
         ? body.id.trim()
         : `note-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-    content: typeof body.content === "string" ? body.content.trim() : "",
-    x: typeof body.x === "number" ? body.x : 2500,
-    y: typeof body.y === "number" ? body.y : 2500,
+    content: sanitizedContent,
+    x: typeof body.x === "number" ? Math.max(80, Math.min(5600, body.x)) : 2500,
+    y: typeof body.y === "number" ? Math.max(80, Math.min(5600, body.y)) : 2500,
     color:
       typeof body.color === "string"
         ? body.color
@@ -119,10 +169,7 @@ export async function POST(req: NextRequest) {
       typeof body.createdAt === "string"
         ? body.createdAt
         : new Date().toISOString(),
-    authorLabel:
-      typeof body.authorLabel === "string" && body.authorLabel.trim()
-        ? body.authorLabel.trim()
-        : "Anonymous",
+    authorLabel: sanitizedAuthor,
   }
 
   const parsed = FreedomWallStickyNoteSchema.safeParse(candidate)
@@ -140,6 +187,7 @@ export async function POST(req: NextRequest) {
   const validNote = parsed.data
 
   if (!config.isConfigured) {
+    const remaining = recordFreedomWallPost(ip, sessionId)
     return NextResponse.json(
       {
         success: false,
@@ -148,6 +196,7 @@ export async function POST(req: NextRequest) {
         error:
           "Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY) are not set in Vercel.",
         note: validNote,
+        remaining,
       },
       { status: 200 }
     )
@@ -155,6 +204,7 @@ export async function POST(req: NextRequest) {
 
   const supabase = getSupabaseClient()
   if (!supabase) {
+    const remaining = recordFreedomWallPost(ip, sessionId)
     return NextResponse.json(
       {
         success: false,
@@ -162,6 +212,7 @@ export async function POST(req: NextRequest) {
         reason: "client_init_failed",
         error: "Failed to initialize Supabase client.",
         note: validNote,
+        remaining,
       },
       { status: 200 }
     )
@@ -198,6 +249,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  const remaining = recordFreedomWallPost(ip, sessionId)
   const savedNote = mapRowToFreedomWallNote(data as SupabaseFreedomWallNoteRow)
 
   return NextResponse.json(
@@ -205,12 +257,26 @@ export async function POST(req: NextRequest) {
       success: true,
       storage: "supabase",
       note: savedNote ?? validNote,
+      remaining,
     },
     { status: 201 }
   )
 }
 
 export async function PATCH(req: NextRequest) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown-ip"
+
+  // Rate limit note drag/position updates (max 60/min)
+  if (!checkDragRateLimit(ip)) {
+    return NextResponse.json(
+      { success: false, error: "Too many position updates. Please slow down." },
+      { status: 429 }
+    )
+  }
+
   const config = getSupabaseConfig()
   if (!config.isConfigured) {
     return NextResponse.json(
@@ -234,9 +300,15 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
 
-  if (!body.id || typeof body.x !== "number" || typeof body.y !== "number") {
+  if (
+    !body.id ||
+    typeof body.id !== "string" ||
+    !/^[a-zA-Z0-9_-]{1,64}$/.test(body.id.trim()) ||
+    typeof body.x !== "number" ||
+    typeof body.y !== "number"
+  ) {
     return NextResponse.json(
-      { error: "Missing id, x, or y in body" },
+      { error: "Invalid id, x, or y in body" },
       { status: 400 }
     )
   }

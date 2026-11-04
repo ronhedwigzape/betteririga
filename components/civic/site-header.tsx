@@ -32,6 +32,7 @@ import {
 } from "lucide-react"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import {
   Tooltip,
   TooltipTrigger,
@@ -224,19 +225,23 @@ export function SiteHeader() {
               {primaryHotlines.map((hotline) => (
                 <Tooltip key={hotline.id}>
                   <TooltipTrigger asChild>
-                    <a
-                      href={hotline.telHref}
-                      className="inline-flex shrink-0 items-center gap-1 rounded-md border border-slate-800 bg-slate-900/90 px-2 py-0.5 text-[11px] font-medium text-slate-200 transition-colors hover:border-amber-500/50 hover:bg-slate-800 hover:text-amber-300"
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="xs"
+                      className="h-6 shrink-0 gap-1 rounded-md border-slate-800 bg-slate-900/90 px-2 text-[11px] font-medium text-slate-200 transition-all hover:border-amber-500/50 hover:bg-slate-800 hover:text-amber-300 active:scale-95"
                     >
-                      <CarrierIconOnly
-                        number={hotline.number}
-                        networkOrType={hotline.networkOrType}
-                        className="size-3"
-                      />
-                      <span className="font-mono font-semibold text-slate-100">
-                        {hotline.number}
-                      </span>
-                    </a>
+                      <a href={hotline.telHref}>
+                        <CarrierIconOnly
+                          number={hotline.number}
+                          networkOrType={hotline.networkOrType}
+                          className="size-3"
+                        />
+                        <span className="font-mono font-semibold text-slate-100">
+                          {hotline.number}
+                        </span>
+                      </a>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" className="text-xs bg-slate-900 text-slate-100 border-slate-800">
                     <p className="font-bold text-amber-300">{hotline.agency}</p>
@@ -250,22 +255,31 @@ export function SiteHeader() {
 
           {/* Upper Right: Official LGU Portal Redirection & City Details */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <span className="hidden md:inline-block rounded-md border border-slate-700/60 bg-slate-900 px-2 py-0.5 text-[11px] font-medium text-slate-300">
-              {brand.cityQuickBadge}
-            </span>
-            <a
-              href={officialWebsite}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full border border-blue-600/70 bg-blue-950/90 px-2.5 py-0.5 text-[11px] font-semibold text-blue-200 shadow-xs transition-colors hover:border-blue-500 hover:bg-blue-900 hover:text-white"
-              title="Visit Official City Government of Iriga Website (iriga.gov.ph)"
+            <Badge
+              variant="outline"
+              className="hidden md:inline-flex border-slate-700/60 bg-slate-900 px-2 py-0.5 text-[11px] font-medium text-slate-300 rounded-md"
             >
-              <span className="hidden sm:inline text-slate-300">Official Portal:</span>
-              <span className="font-bold underline-offset-2 hover:underline">
-                iriga.gov.ph
-              </span>
-              <ExternalLink className="size-3 text-blue-400" />
-            </a>
+              {brand.cityQuickBadge}
+            </Badge>
+            <Button
+              asChild
+              variant="outline"
+              size="xs"
+              className="h-6 gap-1.5 rounded-full border-blue-600/70 bg-blue-950/90 px-2.5 text-[11px] font-semibold text-blue-200 shadow-xs transition-all hover:border-blue-500 hover:bg-blue-900 hover:text-white active:scale-95"
+            >
+              <a
+                href={officialWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Visit Official City Government of Iriga Website (iriga.gov.ph)"
+              >
+                <span className="hidden sm:inline text-slate-300">Official Portal:</span>
+                <span className="font-bold underline-offset-2 hover:underline">
+                  iriga.gov.ph
+                </span>
+                <ExternalLink className="size-3 text-blue-400" />
+              </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -294,7 +308,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          {/* Desktop Nav — One-word labels allow clean display on lg+ screens */}
+          {/* Desktop Nav — 100% shadcn UI Navigation Controls */}
           <nav
             aria-label="Main navigation"
             className="hidden items-center gap-0.5 lg:flex xl:gap-1"
@@ -305,18 +319,22 @@ export function SiteHeader() {
                   ? pathname === "/"
                   : pathname?.startsWith(item.href)
               return (
-                <Link
+                <Button
                   key={item.href}
-                  href={item.href}
+                  asChild
+                  variant={active ? "default" : "ghost"}
+                  size="sm"
                   className={cn(
-                    "rounded-lg px-2 py-1.5 text-xs font-semibold transition-all xl:px-2.5",
+                    "h-8 rounded-lg px-2 text-xs font-semibold xl:px-2.5 transition-all active:scale-95",
                     active
-                      ? "bg-blue-600 text-white shadow-xs"
+                      ? "bg-blue-600 text-white shadow-xs hover:bg-blue-500 hover:text-white"
                       : "text-foreground/80 hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  {item.label}
-                </Link>
+                  <Link href={item.href}>
+                    {item.label}
+                  </Link>
+                </Button>
               )
             })}
 
@@ -324,14 +342,15 @@ export function SiteHeader() {
             {transparencyPortals.length > 0 ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className="group flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-foreground/80 outline-hidden transition-all hover:bg-muted hover:text-foreground data-[state=open]:bg-muted data-[state=open]:text-foreground xl:px-2.5"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 gap-1 rounded-lg px-2 text-xs font-semibold text-foreground/80 hover:bg-muted hover:text-foreground data-[state=open]:bg-muted data-[state=open]:text-foreground xl:px-2.5 cursor-pointer transition-all active:scale-95"
                     aria-label="Transparency Portals"
                   >
                     <span>Transparency</span>
                     <ChevronDown className="size-3 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                  </button>
+                  </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
@@ -402,7 +421,7 @@ export function SiteHeader() {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer (100% shadcn UI) */}
         {mobileOpen ? (
           <div className="animate-civic-fade-up border-t border-border bg-background px-4 py-3 lg:hidden">
             <nav className="grid grid-cols-2 gap-1.5" aria-label="Mobile navigation">
@@ -413,20 +432,25 @@ export function SiteHeader() {
                     ? pathname === "/"
                     : pathname?.startsWith(item.href)
                 return (
-                  <Link
+                  <Button
                     key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
+                    asChild
+                    variant={active ? "default" : "outline"}
                     className={cn(
-                      "flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold",
+                      "h-10 justify-start gap-2.5 rounded-lg px-3 text-sm font-semibold transition-all active:scale-95",
                       active
-                        ? "bg-blue-600 text-white"
-                        : "text-foreground/80 hover:bg-muted"
+                        ? "bg-blue-600 text-white shadow-xs hover:bg-blue-500 hover:text-white"
+                        : "border-border/70 bg-card/60 text-foreground/85 hover:bg-muted hover:text-foreground"
                     )}
                   >
-                    <Icon className="size-4 shrink-0" />
-                    {item.label}
-                  </Link>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <Icon className="size-4 shrink-0" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </Button>
                 )
               })}
             </nav>
@@ -436,32 +460,37 @@ export function SiteHeader() {
               <div className="mt-3 border-t border-border/80 pt-3">
                 <div className="mb-2 flex items-center justify-between px-1 text-xs font-bold text-foreground">
                   <span>Transparency Portals</span>
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                  <Badge variant="outline" className="text-[10px] font-semibold uppercase tracking-wider">
                     External Portals
-                  </span>
+                  </Badge>
                 </div>
                 <div className="space-y-1.5">
                   {transparencyPortals.map((portal) => (
-                    <a
+                    <Button
                       key={portal.href}
-                      href={portal.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center justify-between rounded-lg border border-border/70 bg-card/60 px-3 py-2.5 text-xs font-semibold text-foreground/90 transition-colors hover:bg-muted hover:text-foreground"
+                      asChild
+                      variant="outline"
+                      className="h-auto w-full justify-between rounded-lg border-border/70 bg-card/60 px-3 py-2.5 text-xs transition-colors hover:bg-muted hover:text-foreground active:scale-98"
                     >
-                      <div className="flex min-w-0 flex-col pr-2">
-                        <span className="truncate font-semibold text-foreground">
-                          {portal.label}
-                        </span>
-                        {portal.description ? (
-                          <span className="truncate text-[11px] font-normal text-muted-foreground">
-                            {portal.description}
+                      <a
+                        href={portal.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <div className="flex min-w-0 flex-col text-left pr-2">
+                          <span className="truncate font-semibold text-foreground">
+                            {portal.label}
                           </span>
-                        ) : null}
-                      </div>
-                      <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
-                    </a>
+                          {portal.description ? (
+                            <span className="truncate text-[11px] font-normal text-muted-foreground">
+                              {portal.description}
+                            </span>
+                          ) : null}
+                        </div>
+                        <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
+                      </a>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -476,19 +505,20 @@ export function SiteHeader() {
           {/* Left: Clickable Community Guide Notice opening a pure shadcn Modal */}
           <Dialog open={guideOpen} onOpenChange={setGuideOpen}>
             <DialogTrigger asChild>
-              <button
-                type="button"
-                className="group flex min-w-0 items-center gap-1.5 text-xs font-semibold text-blue-950 hover:text-blue-700 dark:text-blue-200 dark:hover:text-white transition-colors cursor-pointer text-left"
+              <Button
+                variant="ghost"
+                size="xs"
+                className="group h-auto -ml-1 gap-1.5 p-1 text-left text-xs font-semibold text-blue-950 hover:bg-blue-100/70 hover:text-blue-700 dark:text-blue-200 dark:hover:bg-blue-900/40 dark:hover:text-white"
                 title="Click to read Community Guide & Civic Transparency Notice"
               >
-                <ShieldAlert className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform" />
-                <span className="underline underline-offset-2 decoration-blue-400/60 group-hover:decoration-blue-700 font-bold">
+                <ShieldAlert className="size-3.5 shrink-0 text-amber-600 transition-transform group-hover:scale-110 dark:text-amber-400" />
+                <span className="font-bold underline underline-offset-2 decoration-blue-400/60 group-hover:decoration-blue-700">
                   Community Guide
                 </span>
-                <span className="hidden sm:inline text-[11px] font-normal text-blue-800/80 dark:text-blue-300/80">
+                <span className="hidden text-[11px] font-normal text-blue-800/80 sm:inline dark:text-blue-300/80">
                   • Independent Public Guide (Click to read)
                 </span>
-              </button>
+              </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>

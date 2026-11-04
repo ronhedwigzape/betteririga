@@ -140,6 +140,28 @@ export default function HomePage() {
                 {homeCopy.heroSubtitle}
               </p>
             </div>
+
+            {/* Community Freedom Wall Shortcut (100% shadcn UI) */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="group h-8 gap-2 rounded-full border-amber-500/40 bg-amber-50/90 text-amber-950 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-amber-500/70 hover:bg-amber-100/90 hover:scale-[1.02] active:scale-95 dark:border-amber-500/40 dark:bg-amber-950/40 dark:text-amber-200 dark:hover:bg-amber-950/60"
+              >
+                <Link href="/freedom-wall">
+                  <MessageSquareHeart className="size-3.5 text-amber-600 transition-transform duration-200 group-hover:scale-110 dark:text-amber-400" />
+                  <span className="font-semibold text-xs">Community Freedom Wall</span>
+                  <Badge
+                    variant="secondary"
+                    className="h-4.5 rounded-full bg-amber-200/80 px-1.5 text-[10px] font-bold text-amber-800 transition-colors group-hover:bg-amber-300 dark:bg-amber-900/60 dark:text-amber-200"
+                  >
+                    Post a Note
+                  </Badge>
+                  <ArrowRight className="size-3 text-amber-700 transition-transform duration-200 group-hover:translate-x-0.5 dark:text-amber-300" />
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Search Engine */}

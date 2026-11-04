@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Plus, RotateCcw, X, Move } from "lucide-react"
+import { Plus, RotateCcw, X, Move, AlertCircle } from "lucide-react"
 import { createClient } from "@supabase/supabase-js"
 import { formatNoteTimestamp } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -49,6 +49,32 @@ export function FreedomWallBoard() {
   )
   const [submitting, setSubmitting] = React.useState(false)
   const [postError, setPostError] = React.useState<string | null>(null)
+
+  // Daily quota limitation per browser session (max 5 notes per day)
+  const DAILY_LIMIT = 5
+  const [dailyPostsCount, setDailyPostsCount] = React.useState<number>(() => {
+    if (typeof window === "undefined") return 0
+    try {
+      const todayDate = new Date().toISOString().slice(0, 10)
+      return Number(localStorage.getItem(`betteririga_fw_quota_${todayDate}`) || 0)
+    } catch {
+      return 0
+    }
+  })
+
+  const [sessionToken] = React.useState<string>(() => {
+    if (typeof window === "undefined") return ""
+    try {
+      let sess = sessionStorage.getItem("betteririga_fw_session")
+      if (!sess) {
+        sess = `fw_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
+        sessionStorage.setItem("betteririga_fw_session", sess)
+      }
+      return sess
+    } catch {
+      return ""
+    }
+  })
 
   // Real-time remote poll: fetches exclusively from database API
   const refreshRemoteNotes = React.useCallback(async () => {
@@ -220,6 +246,15 @@ export function FreedomWallBoard() {
   const handlePostNote = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!noteContent.trim() || submitting) return
+
+    // Enforce daily quota limitation (max 5 notes/day per browser session)
+    if (dailyPostsCount >= DAILY_LIMIT) {
+      setPostError(
+        `Daily limit reached (${DAILY_LIMIT} of ${DAILY_LIMIT} notes posted today). To keep the community wall protected and prevent database overload, each browser can post up to ${DAILY_LIMIT} notes per day. Please return tomorrow to share more thoughts.`
+      )
+      return
+    }
+
     setSubmitting(true)
     setPostError(null)
 
@@ -254,21 +289,36 @@ export function FreedomWallBoard() {
     try {
       const res = await fetch("/api/freedom-wall", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-session-id": sessionToken || "anon",
+        },
         body: JSON.stringify(newCandidate),
       })
       const json = await res.json()
 
       if (json.success && json.note) {
-        // Confirmed saved in database! Now and only now show on the board
-        syncFreedomWallNotes([json.note as FreedomWallStickyNote, ...notes.filter((n) => n.id !== (json.note as FreedomWallStickyNote).id)])
+        // Confirmed saved in database! Update local daily quota count
+        const newCount = dailyPostsCount + 1
+        setDailyPostsCount(newCount)
+        try {
+          const todayDate = new Date().toISOString().slice(0, 10)
+          localStorage.setItem(`betteririga_fw_quota_${todayDate}`, String(newCount))
+        } catch {
+          // Ignore storage write error
+        }
+
+        syncFreedomWallNotes([
+          json.note as FreedomWallStickyNote,
+          ...notes.filter((n) => n.id !== (json.note as FreedomWallStickyNote).id),
+        ])
         setNoteContent("")
         setIsComposeOpen(false)
       } else {
-        // Database insert failed! Do NOT show on board
+        // Database insert failed or limit reached!
         setPostError(
           json.error ||
-          "Unable to post note to the board right now. Please ensure your database table is ready, then try again."
+            "Unable to post note to the board right now. Please ensure your database table is ready, then try again."
         )
       }
     } catch (err) {
@@ -475,6 +525,35 @@ export function FreedomWallBoard() {
             </div>
 
             <form onSubmit={handlePostNote} className="mt-4">
+              {/* Daily Quota Indicator */}
+              <div className="mb-3 flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-xs">
+                <span className="text-slate-400 font-medium">Daily Browser Quota</span>
+                <Badge
+                  variant={dailyPostsCount < DAILY_LIMIT ? "secondary" : "destructive"}
+                  className={cn(
+                    "text-[11px] font-semibold",
+                    dailyPostsCount < DAILY_LIMIT
+                      ? "bg-blue-900/60 text-blue-200 border-blue-700/50"
+                      : "bg-amber-900/60 text-amber-200 border-amber-700/50"
+                  )}
+                >
+                  {Math.max(0, DAILY_LIMIT - dailyPostsCount)} of {DAILY_LIMIT} notes remaining today
+                </Badge>
+              </div>
+
+              {/* Warning if Quota Exhausted */}
+              {dailyPostsCount >= DAILY_LIMIT ? (
+                <div className="mb-3 flex items-start gap-2.5 rounded-xl border border-amber-500/50 bg-amber-950/40 p-3 text-xs text-amber-200">
+                  <AlertCircle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="font-semibold text-amber-300">Daily Posting Limit Reached</p>
+                    <p className="text-[11px] text-amber-200/90 leading-relaxed">
+                      To keep the community freedom wall open and prevent database overload, each browser can post up to {DAILY_LIMIT} notes per day. Thank you for sharing your voice — please come back tomorrow to post again!
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+
               {/* Error Notice if Database Insert Failed */}
               {postError ? (
                 <div className="mb-3 rounded-xl border border-rose-500/50 bg-rose-950/60 p-3 text-xs text-rose-200">
@@ -508,7 +587,8 @@ export function FreedomWallBoard() {
                 maxLength={canvasConfig.maxMessageLength}
                 rows={4}
                 autoFocus
-                className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none"
+                disabled={dailyPostsCount >= DAILY_LIMIT}
+                className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"
               />
               <div className="mt-1 text-right text-xs text-slate-500">
                 {noteContent.length}/{canvasConfig.maxMessageLength}
@@ -549,10 +629,12 @@ export function FreedomWallBoard() {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={!noteContent.trim() || submitting}
+                  disabled={!noteContent.trim() || submitting || dailyPostsCount >= DAILY_LIMIT}
                   className="flex-1 rounded-xl bg-blue-600 font-bold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-45"
                 >
-                  {submitting
+                  {dailyPostsCount >= DAILY_LIMIT
+                    ? "Daily Limit Reached"
+                    : submitting
                     ? uiCopy.submittingButtonLabel
                     : uiCopy.submitButtonLabel}
                 </Button>

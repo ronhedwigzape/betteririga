@@ -48,6 +48,12 @@ import {
   getTransparencyPortals,
 } from "../iriga-data"
 import { useCivicStore } from "../../store/civic-store"
+import {
+  checkFreedomWallQuota,
+  recordFreedomWallPost,
+  sanitizeText,
+  resetRateLimitsForTesting,
+} from "../../security/rate-limiter"
 
 describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-0003, ADR-0004)", () => {
   it("loads all Records from dedicated JSON files (not hardcoded in TS) and computes a deterministic SHA-256 dataset digest", () => {
@@ -1254,6 +1260,75 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
         },
       ],
       "site-content.json must specify all 3 verified transparency portal redirects"
+    )
+    // 12. Top navigation bar is 100% shadcn UI (Button, Badge, DropdownMenu, Dialog)
+    assert.ok(
+      siteHeaderContent.includes("@/components/ui/button") &&
+      siteHeaderContent.includes("@/components/ui/badge") &&
+      siteHeaderContent.includes("@/components/ui/dropdown-menu") &&
+      siteHeaderContent.includes("@/components/ui/dialog") &&
+      siteHeaderContent.includes("<Button") &&
+      siteHeaderContent.includes("variant={active ? \"default\" : \"ghost\"}") &&
+      siteHeaderContent.includes("variant={active ? \"default\" : \"outline\"}"),
+      "site-header.tsx must use 100% shadcn UI components across all navigation tiers, desktop links, and mobile drawer"
+    )
+
+    // 13. Hero home shortcut to Community Freedom Wall
+    assert.ok(
+      homePageContent.includes("Community Freedom Wall") &&
+      homePageContent.includes("href=\"/freedom-wall\"") &&
+      homePageContent.includes("MessageSquareHeart"),
+      "app/page.tsx must provide a prominent Community Freedom Wall shortcut in the Hero section"
+    )
+
+    // 14. Freedom Wall Daily Session & IP Quota (max 5 notes/day, 10s burst protection)
+    resetRateLimitsForTesting()
+    const testIp = "192.168.1.100"
+    const testSession = "test-session-abc"
+
+    // Initial check: 5 remaining
+    const q0 = checkFreedomWallQuota(testIp, testSession)
+    assert.equal(q0.allowed, true)
+    assert.equal(q0.remaining, 5)
+
+    // Simulate 5 posts with simulated delay
+    for (let i = 1; i <= 5; i++) {
+      recordFreedomWallPost(testIp, testSession)
+    }
+
+    // 6th post attempt must be blocked by daily limit
+    const qExceeded = checkFreedomWallQuota(testIp, testSession)
+    assert.equal(qExceeded.allowed, false)
+    assert.equal(qExceeded.reason, "daily_limit")
+    assert.equal(qExceeded.remaining, 0)
+    assert.ok(qExceeded.message?.includes("Daily limit reached"))
+
+    // Input sanitization: strips HTML, script tags, javascript: protocols
+    const maliciousInput = "<script>alert('pwned')</script>Hello <b>Iriga</b>! <a href=\"javascript:evil()\">click</a>"
+    const cleanOutput = sanitizeText(maliciousInput)
+    assert.equal(cleanOutput, "Hello Iriga! click")
+    assert.ok(!cleanOutput.includes("<script>"))
+    assert.ok(!cleanOutput.includes("javascript:"))
+
+    // Client board tracks quota and displays limit
+    const fwBoardContent = fs.readFileSync("components/civic/freedom-wall-board.tsx", "utf8")
+    assert.ok(
+      fwBoardContent.includes("DAILY_LIMIT = 5") &&
+      fwBoardContent.includes("dailyPostsCount") &&
+      fwBoardContent.includes("Daily Browser Quota") &&
+      fwBoardContent.includes("x-session-id"),
+      "freedom-wall-board.tsx must enforce and display the 5-note daily session quota"
+    )
+
+    // 15. Production HTTP Security Headers in next.config.ts
+    const nextConfigContent = fs.readFileSync("next.config.ts", "utf8")
+    assert.ok(
+      nextConfigContent.includes("Content-Security-Policy") &&
+      nextConfigContent.includes("Strict-Transport-Security") &&
+      nextConfigContent.includes("Permissions-Policy") &&
+      nextConfigContent.includes("Cross-Origin-Opener-Policy") &&
+      nextConfigContent.includes("nosniff"),
+      "next.config.ts must enforce complete OWASP security headers (CSP, HSTS, Permissions-Policy, nosniff, COOP)"
     )
   })
 })
