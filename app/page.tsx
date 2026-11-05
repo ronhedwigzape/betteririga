@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import {
   Landmark,
@@ -25,13 +26,23 @@ import {
 } from "@/lib/data/iriga-data"
 import { GlobalCivicSearch } from "@/components/civic/global-civic-search"
 import { CitationBadge } from "@/components/civic/citation-badge"
-import { Reveal } from "@/components/civic/reveal"
 import { BetterIrigaLogo } from "@/components/civic/better-iriga-logo"
 import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import { HeroVideoBackground } from "@/components/civic/hero-video-background"
 import { AnimatedHeroTitle } from "@/components/civic/animated-hero-title"
-import { IrigaLivelySections } from "@/components/civic/iriga-lively-sections"
 import { FreedomWallCtaSection } from "@/components/civic/freedom-wall-cta"
+
+const IrigaLivelySections = dynamic(
+  () =>
+    import("@/components/civic/iriga-lively-sections").then(
+      (m) => m.IrigaLivelySections
+    ),
+  {
+    loading: () => (
+      <div className="h-[360px] w-full animate-pulse rounded-2xl bg-muted/20" />
+    ),
+  }
+)
 import {
   Card,
   CardHeader,
@@ -43,8 +54,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip"
 
 export const metadata: Metadata = getPageMetadata("home")
@@ -122,6 +133,7 @@ export default function HomePage() {
               <span className="text-muted-foreground">•</span>
               <Link
                 href="/verification"
+                prefetch={false}
                 className="font-bold text-blue-700 underline underline-offset-2 hover:text-blue-800 dark:text-blue-300"
               >
                 100% Checked Sources
@@ -149,7 +161,7 @@ export default function HomePage() {
                 size="sm"
                 className="group h-8 gap-2 rounded-full border-amber-500/40 bg-amber-50/90 text-amber-950 shadow-2xs backdrop-blur-md transition-all duration-200 hover:border-amber-500/70 hover:bg-amber-100/90 hover:scale-[1.02] active:scale-95 dark:border-amber-500/40 dark:bg-amber-950/40 dark:text-amber-200 dark:hover:bg-amber-950/60"
               >
-                <Link href="/freedom-wall">
+                <Link href="/freedom-wall" prefetch={false}>
                   <MessageSquareHeart className="size-3.5 text-amber-600 transition-transform duration-200 group-hover:scale-110 dark:text-amber-400" />
                   <span className="font-semibold text-xs">Community Freedom Wall</span>
                   <Badge
@@ -183,7 +195,7 @@ export default function HomePage() {
               </p>
             </Card>
 
-            <Link href="/budget" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+            <Link href="/budget" prefetch={false} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
               <Card className="civic-card-hover h-full border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs hover:border-blue-500/50 transition-colors">
                 <p className="text-[11px] font-medium text-muted-foreground uppercase">
                   {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
@@ -261,7 +273,6 @@ export default function HomePage() {
       {/* Main Civic Container for subsequent homepage sections */}
       <CivicPageContainer className="space-y-16 py-8 sm:py-12 pb-16">
         {/* Popular Municipal Services Section (Natural Surface Cards - No Outer Card Wrapper) */}
-        <Reveal delayMs={40}>
         <section className="space-y-6">
           <div className="flex flex-col justify-between gap-3 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
@@ -277,7 +288,7 @@ export default function HomePage() {
               </p>
             </div>
             <Button asChild className="rounded-xl shadow-xs">
-              <Link href="/services">
+              <Link href="/services" prefetch={false}>
                 View All {snapshot.services.length} City Services
                 <ArrowRight className="ml-1.5 size-4" />
               </Link>
@@ -292,6 +303,7 @@ export default function HomePage() {
               >
                 <Link
                   href={`/services#${service.id}`}
+                  prefetch={false}
                   className="flex flex-1 flex-col justify-between p-5"
                 >
                   <div>
@@ -322,6 +334,7 @@ export default function HomePage() {
             <Card className="civic-card-hover group border-blue-300/80 bg-gradient-to-br from-blue-600 to-indigo-800 text-white shadow-sm">
               <Link
                 href="/services"
+                prefetch={false}
                 className="flex h-full flex-col justify-between p-5 text-white"
               >
                 <div>
@@ -351,12 +364,10 @@ export default function HomePage() {
             </Card>
           </div>
         </section>
-      </Reveal>
 
       {/* Civic Pillar Cards (100% shadcn UI Cards) */}
-      <Reveal delayMs={60}>
-        <section className="space-y-6">
-          <div className="flex flex-col justify-between gap-2 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
+      <section className="civic-section-defer space-y-6">
+        <div className="flex flex-col justify-between gap-2 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
               <Badge variant="outline" className="font-semibold text-muted-foreground">
                 Core Transparency Framework
@@ -369,7 +380,7 @@ export default function HomePage() {
               </p>
             </div>
             <Button asChild variant="outline" size="sm" className="rounded-xl">
-              <Link href="/verification">
+              <Link href="/verification" prefetch={false}>
                 See How We Check Our Facts
                 <ArrowRight className="ml-1.5 size-3.5" />
               </Link>
@@ -401,7 +412,7 @@ export default function HomePage() {
                     </CardDescription>
                   </CardHeader>
                   <CardFooter className="border-t border-border/70 pt-3 text-xs font-semibold text-blue-600 dark:text-blue-400">
-                    <Link href={pillar.href} className="inline-flex w-full items-center justify-between">
+                    <Link href={pillar.href} prefetch={false} className="inline-flex w-full items-center justify-between">
                       <span>{pillar.cta}</span>
                       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                     </Link>
@@ -411,12 +422,10 @@ export default function HomePage() {
             })}
           </div>
         </section>
-      </Reveal>
 
       {/* Dedicated BetterGov.ph Open Data Showcase Section (Natural Surface Cards - No Outer Card Wrapper) */}
-      <Reveal delayMs={100}>
-        <section className="space-y-6">
-          <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 lg:flex-row lg:items-center">
+      <section className="civic-section-defer space-y-6">
+        <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 lg:flex-row lg:items-center">
             <div className="space-y-1.5">
               <Badge variant="default" className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5">
                 <Globe className="size-3.5" />
@@ -504,18 +513,16 @@ export default function HomePage() {
               public records for Iriga City & Camarines Sur 5th District.
             </span>
             <Button asChild size="sm" className="rounded-xl">
-              <Link href="/projects">
+              <Link href="/projects" prefetch={false}>
                 Browse All {betterGovRecords.length} BetterGov.ph Records →
               </Link>
             </Button>
           </div>
         </section>
-      </Reveal>
 
       {/* Executive & Legislative Leadership (Natural Surface Cards - No Outer Card Wrapper) */}
-      <Reveal delayMs={120}>
-        <section className="space-y-6">
-          <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 sm:flex-row sm:items-center">
+      <section className="civic-section-defer space-y-6">
+        <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 sm:flex-row sm:items-center">
             <div>
               <Badge variant="secondary" className="font-semibold text-blue-700 dark:text-blue-300">
                 Current City Leadership (2025–2028 Term)
@@ -529,7 +536,7 @@ export default function HomePage() {
               </p>
             </div>
             <Button asChild className="rounded-xl shadow-xs">
-              <Link href="/officials">
+              <Link href="/officials" prefetch={false}>
                 See All {elected2025.length + appointed.length} Officials & 36
                 Barangays
                 <ArrowRight className="ml-1.5 size-4" />
@@ -607,101 +614,103 @@ export default function HomePage() {
             </div>
           ) : null}
         </section>
-      </Reveal>
 
       {/* Lively Sections: Live Weather + Interactive Map, History of Iriga, and Live Facebook Page */}
-      <IrigaLivelySections />
+      <div className="civic-section-defer">
+        <IrigaLivelySections />
+      </div>
 
       {/* Community Freedom Wall Sticky-Note CTA */}
-      <Reveal delayMs={130}>
+      <div className="civic-section-defer">
         <FreedomWallCtaSection />
-      </Reveal>
+      </div>
 
       {/* Emergency Hotlines & Plain-Language Accuracy Section (Natural Surface Cards) */}
-      <Reveal delayMs={140}>
-        <section className="grid gap-6 lg:grid-cols-3">
-          {/* Emergency Hotlines Cards */}
-          <div className="space-y-4 lg:col-span-2">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/80 pb-3">
-              <div>
-                <Badge variant="destructive" className="bg-rose-600 text-white text-xs font-bold">
-                  24/7 Emergency & Rescue Numbers
-                </Badge>
-                <h2 className="mt-1.5 text-xl font-bold text-foreground">
-                  Need Immediate Help in Iriga City?
-                </h2>
-              </div>
-              <Button asChild variant="link" size="sm" className="text-rose-600 hover:text-rose-700 p-0 h-auto">
-                <Link href="/contacts">
-                  See All {offices.length} City Hall Offices →
-                </Link>
-              </Button>
+      <section className="civic-section-defer grid gap-6 lg:grid-cols-3">
+        {/* Emergency Hotlines Cards */}
+        <div className="space-y-4 lg:col-span-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/80 pb-3">
+            <div>
+              <Badge variant="destructive" className="bg-rose-600 text-white text-xs font-bold">
+                24/7 Emergency & Rescue Numbers
+              </Badge>
+              <h2 className="mt-1.5 text-xl font-bold text-foreground">
+                Need Immediate Help in Iriga City?
+              </h2>
             </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-              {hotlines.slice(0, 6).map((h) => (
-                <Tooltip key={h.id}>
-                  <TooltipTrigger asChild>
-                    <Card className="civic-card-hover border-rose-200/80 bg-card p-4 shadow-xs transition-all hover:border-rose-500 hover:shadow-sm dark:border-rose-900/60 cursor-pointer">
-                      <a href={h.telHref} className="block space-y-1">
-                        <p className="text-[11px] font-medium text-muted-foreground truncate">
-                          {h.label}
-                        </p>
-                        <p className="font-mono text-base font-bold text-rose-700 dark:text-rose-400">
-                          {h.number}
-                        </p>
-                        <p className="text-[11px] text-muted-foreground">
-                          Tap to Call • {h.networkOrType}
-                        </p>
-                      </a>
-                    </Card>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" className="text-xs max-w-xs">
-                    <p className="font-bold text-foreground">{h.label} ({h.agency})</p>
-                    <p className="text-muted-foreground font-mono">{h.number} • {h.networkOrType}</p>
-                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Click / Tap to dial immediately</p>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
+            <Button asChild variant="link" size="sm" className="text-rose-600 hover:text-rose-700 p-0 h-auto">
+              <Link href="/contacts" prefetch={false}>
+                See All {offices.length} City Hall Offices →
+              </Link>
+            </Button>
           </div>
 
-          {/* Honest Gap Reporting Card */}
-          <Card className="flex flex-col justify-between border-amber-300/80 bg-amber-50/50 p-6 shadow-xs dark:border-amber-900/60 dark:bg-amber-950/25">
-            <div>
-              <Badge variant="outline" className="bg-amber-200/80 text-amber-950 border-amber-400 dark:bg-amber-900 dark:text-amber-100 gap-1.5">
-                <AlertTriangle className="size-3.5" />
-                Our Honest Data Promise
-              </Badge>
-              <h3 className="mt-3.5 text-lg font-bold text-foreground">
-                We Never Guess or Make Up Numbers
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                If a specific phone number, barangay hall email, or contract
-                amount is not yet posted on an official government website, we
-                mark it clearly as <strong>&ldquo;Data not yet available&rdquo;</strong>{" "}
-                instead of guessing. You can review all{" "}
-                <strong>{ledger.totalRecords}</strong> checked public records on
-                our source checklist page.
-              </p>
-            </div>
-            <div className="mt-6 flex flex-col gap-2.5">
-              <Button asChild className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs">
-                <Link href="/verification" className="gap-1.5">
-                  <ShieldCheck className="size-4" />
-                  See Our Source Checklist
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="border-amber-400 text-amber-950 hover:bg-amber-100 rounded-xl dark:text-amber-200 dark:hover:bg-amber-950/50">
-                <Link href="/about#contribute" className="gap-1.5">
-                  <CheckCircle2 className="size-4 text-amber-600" />
-                  Share an Official Document
-                </Link>
-              </Button>
-            </div>
-          </Card>
-        </section>
-      </Reveal>
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+            {hotlines.slice(0, 6).map((h) => (
+              <Tooltip key={h.id}>
+                <TooltipTrigger asChild>
+                  <Card
+                    title={`${h.label} (${h.agency}) • ${h.number} • Tap to call immediately`}
+                    className="civic-card-hover border-rose-200/80 bg-card p-4 shadow-xs transition-all hover:border-rose-500 hover:shadow-sm dark:border-rose-900/60 cursor-pointer"
+                  >
+                    <a href={h.telHref} className="block space-y-1">
+                      <p className="text-[11px] font-medium text-muted-foreground truncate">
+                        {h.label}
+                      </p>
+                      <p className="font-mono text-base font-bold text-rose-700 dark:text-rose-400">
+                        {h.number}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground">
+                        Tap to Call • {h.networkOrType}
+                      </p>
+                    </a>
+                  </Card>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="text-xs max-w-xs">
+                  <p className="font-bold text-foreground">{h.label} ({h.agency})</p>
+                  <p className="text-muted-foreground font-mono">{h.number} • {h.networkOrType}</p>
+                  <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Click / Tap to dial immediately</p>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        </div>
+
+        {/* Honest Gap Reporting Card */}
+        <Card className="flex flex-col justify-between border-amber-300/80 bg-amber-50/50 p-6 shadow-xs dark:border-amber-900/60 dark:bg-amber-950/25">
+          <div>
+            <Badge variant="outline" className="bg-amber-200/80 text-amber-950 border-amber-400 dark:bg-amber-900 dark:text-amber-100 gap-1.5">
+              <AlertTriangle className="size-3.5" />
+              Our Honest Data Promise
+            </Badge>
+            <h3 className="mt-3.5 text-lg font-bold text-foreground">
+              We Never Guess or Make Up Numbers
+            </h3>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              If a specific phone number, barangay hall email, or contract
+              amount is not yet posted on an official government website, we
+              mark it clearly as <strong>&ldquo;Data not yet available&rdquo;</strong>{" "}
+              instead of guessing. You can review all{" "}
+              <strong>{ledger.totalRecords}</strong> checked public records on
+              our source checklist page.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-col gap-2.5">
+            <Button asChild className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs">
+              <Link href="/verification" prefetch={false} className="gap-1.5">
+                <ShieldCheck className="size-4" />
+                See Our Source Checklist
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="border-amber-400 text-amber-950 hover:bg-amber-100 rounded-xl dark:text-amber-200 dark:hover:bg-amber-950/50">
+              <Link href="/about#contribute" prefetch={false} className="gap-1.5">
+                <CheckCircle2 className="size-4 text-amber-600" />
+                Share an Official Document
+              </Link>
+            </Button>
+          </div>
+        </Card>
+      </section>
       </CivicPageContainer>
     </div>
   )

@@ -27,8 +27,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export function GlobalCivicSearch() {
-  const snapshot = useCivicStore((state) => state.snapshot)
-  const quickFilters = snapshot.siteContent.searchFilters
+  const quickFilters = useCivicStore(
+    (state) => state.snapshot.siteContent.searchFilters
+  )
+  const homeCopy = useCivicStore((state) => state.snapshot.siteContent.home)
   const query = useCivicStore((state) => state.searchQuery)
   const section = useCivicStore((state) => state.searchSection)
   const verificationFilter = useCivicStore((state) => state.verificationFilter)
@@ -42,17 +44,15 @@ export function GlobalCivicSearch() {
   const inputRef = React.useRef<HTMLInputElement | null>(null)
   const [isResetting, setIsResetting] = React.useState(false)
 
-  const homeCopy = snapshot.siteContent.home
-
-  const results = React.useMemo(
-    () => searchCivicRecords(query, section, verificationFilter),
-    [query, section, verificationFilter]
-  )
-
   const hasActiveSearch =
     query.trim().length > 0 ||
     section !== "all" ||
     verificationFilter !== "all"
+
+  const results = React.useMemo(
+    () => (hasActiveSearch ? searchCivicRecords(query, section, verificationFilter) : []),
+    [hasActiveSearch, query, section, verificationFilter]
+  )
 
   const displayedResults = hasActiveSearch ? results.slice(0, 12) : []
 

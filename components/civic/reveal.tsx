@@ -9,6 +9,22 @@ interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
+function subscribeReducedMotion(callback: () => void) {
+  if (typeof window === "undefined") return () => {}
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+  mediaQuery.addEventListener("change", callback)
+  return () => mediaQuery.removeEventListener("change", callback)
+}
+
+function getReducedMotionSnapshot() {
+  if (typeof window === "undefined") return false
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
+function getReducedMotionServerSnapshot() {
+  return false
+}
+
 /**
  * Smooth entrance & scroll-reveal wrapper for non-technical civic presentation.
  * Uses IntersectionObserver asynchronously so it respects React 19 hook rules
@@ -21,58 +37,55 @@ export function Reveal({
   ...props
 }: RevealProps) {
   const ref = React.useRef<HTMLDivElement | null>(null)
-  const [visible, setVisible] = React.useState(false)
+  const isReducedMotion = React.useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
+  )
+  const [inView, setInView] = React.useState(false)
+
+  const visible = isReducedMotion || inView
 
   React.useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      const raf = window.requestAnimationFrame(() => setVisible(true))
-      return () => window.cancelAnimationFrame(raf)
-    }
+    if (isReducedMotion) return
 
     const element = ref.current
     if (!element) return
 
     if (typeof IntersectionObserver === "undefined") {
-      const raf = window.requestAnimationFrame(() => setVisible(true))
-      return () => window.cancelAnimationFrame(raf)
+      queueMicrotask(() => setInView(true))
+      return
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setVisible(true)
+            setInView(true)
             observer.disconnect()
             break
           }
         }
       },
       {
-        rootMargin: "50px 0px 50px 0px",
+        rootMargin: "80px 0px 80px 0px",
         threshold: 0,
       }
     )
 
     observer.observe(element)
 
-    // Safety fallback: guaranteed visibility after 350ms even if observer doesn't fire
-    const fallbackTimer = window.setTimeout(() => setVisible(true), 350)
-
     return () => {
       observer.disconnect()
-      window.clearTimeout(fallbackTimer)
     }
-  }, [])
+  }, [isReducedMotion])
 
   return (
     <div
       ref={ref}
-      style={delayMs > 0 ? { transitionDelay: `${delayMs}ms` } : undefined}
+      style={delayMs > 0 && visible ? { transitionDelay: `${delayMs}ms` } : undefined}
       className={cn(
-        "transition-all duration-700 ease-out will-change-[opacity,transform] motion-reduce:translate-y-0 motion-reduce:opacity-100",
+        "transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100",
         visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
         className
       )}

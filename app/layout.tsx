@@ -53,8 +53,10 @@ export default function RootLayout({
       )}
     >
       <head>
-        <link rel="preconnect" href="https://api.open-meteo.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://psgc.gitlab.io" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.open-meteo.com" />
+        <link rel="preconnect" href="https://psgc.gitlab.io" />
+        <link rel="dns-prefetch" href="https://api.open-meteo.com" />
+        <link rel="dns-prefetch" href="https://psgc.gitlab.io" />
         <link rel="dns-prefetch" href="https://open.er-api.com" />
         <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
       </head>

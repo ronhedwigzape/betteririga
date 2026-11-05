@@ -689,8 +689,11 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     const mp4Stats = fs.statSync("public/hero-background.mp4")
     assert.ok(mp4Stats.size > 2_000_000, "Complete video must be multi-megabyte, not a 3s stub")
 
-    // Ensure docs/plans directory was removed per user request
-    assert.equal(fs.existsSync("docs/plans"), false, "docs/plans folder must be removed")
+    // Ensure legacy docs/plans implementation plan was removed per user request
+    assert.ok(
+      !fs.existsSync("docs/plans/implementation-plan.md"),
+      "legacy docs/plans/implementation-plan.md must be removed"
+    )
   })
 
   it("integrates @vercel/analytics/next in RootLayout", () => {

@@ -1,8 +1,6 @@
-"use client"
-
 import * as React from "react"
 import Image from "next/image"
-import { useCivicStore } from "@/lib/store/civic-store"
+import { getCivicSnapshot } from "@/lib/data/iriga-data"
 import { cn } from "@/lib/utils"
 
 export interface BetterIrigaLogoProps {
@@ -36,7 +34,7 @@ export function BetterIrigaLogo({
   priority = false,
   alt = "BetterIriga official logo",
 }: BetterIrigaLogoProps) {
-  const logos = useCivicStore((state) => state.snapshot.siteContent.brand.logos)
+  const logos = getCivicSnapshot().siteContent.brand.logos
 
   if (variant === "banner") {
     const lightSrc =
@@ -87,13 +85,12 @@ export function BetterIrigaLogo({
           priority={priority}
           className="h-full w-auto max-w-full object-contain dark:hidden"
         />
-        {/* Dark Mode: Banner On Blue */}
+        {/* Dark Mode: Banner On Blue (Lazy loaded on default light SSR) */}
         <Image
           src={darkSrc}
           alt={alt}
           width={renderedWidth}
           height={renderedHeight}
-          priority={priority}
           className="hidden h-full w-auto max-w-full object-contain dark:block"
         />
       </div>
@@ -151,13 +148,12 @@ export function BetterIrigaLogo({
           priority={priority}
           className="h-full w-auto max-w-full object-contain dark:hidden"
         />
-        {/* Dark Mode: Horizontal White Lockup */}
+        {/* Dark Mode: Horizontal White Lockup (Lazy loaded on default light SSR) */}
         <Image
           src={darkSrc}
           alt={alt}
           width={renderedWidth}
           height={renderedHeight}
-          priority={priority}
           className="hidden h-full w-auto max-w-full object-contain dark:block"
         />
       </div>
@@ -218,15 +214,15 @@ export function BetterIrigaLogo({
         width={size}
         height={size}
         priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         className="h-full w-full object-contain dark:hidden"
       />
-      {/* Dark Mode: White Foreground Emblem */}
+      {/* Dark Mode: White Foreground Emblem (Lazy loaded on default light SSR) */}
       <Image
         src={darkSrc}
         alt={alt}
         width={size}
         height={size}
-        priority={priority}
         className="hidden h-full w-full object-contain dark:block"
       />
     </div>

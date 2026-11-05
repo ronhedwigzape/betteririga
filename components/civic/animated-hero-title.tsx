@@ -40,16 +40,48 @@ export function AnimatedHeroTitle({
   const [fadeState, setFadeState] = React.useState<"in" | "out">("in")
 
   React.useEffect(() => {
-    const interval = window.setInterval(() => {
-      setFadeState("out")
-      const timeout = window.setTimeout(() => {
-        setPillarIndex((prev) => (prev + 1) % pillars.length)
-        setFadeState("in")
-      }, 350)
-      return () => window.clearTimeout(timeout)
-    }, 4500)
+    let interval: number | null = null
+    let timeout: number | null = null
 
-    return () => window.clearInterval(interval)
+    const startAnimation = () => {
+      interval = window.setInterval(() => {
+        setFadeState("out")
+        timeout = window.setTimeout(() => {
+          setPillarIndex((prev) => (prev + 1) % pillars.length)
+          setFadeState("in")
+        }, 350)
+      }, 7000)
+    }
+
+    const win =
+      typeof window !== "undefined"
+        ? (window as unknown as Window & {
+            requestIdleCallback?: (
+              cb: () => void,
+              opts: { timeout: number }
+            ) => number
+            cancelIdleCallback?: (id: number) => void
+          })
+        : null
+
+    const idleId =
+      win && typeof win.requestIdleCallback === "function"
+        ? win.requestIdleCallback(startAnimation, { timeout: 5000 })
+        : setTimeout(startAnimation, 4500)
+
+    return () => {
+      if (interval) clearInterval(interval)
+      if (timeout) clearTimeout(timeout)
+      if (
+        typeof idleId === "number" &&
+        win &&
+        typeof win.cancelIdleCallback === "function"
+      ) {
+        win.cancelIdleCallback(idleId)
+      } else if (typeof idleId === "number") {
+        clearTimeout(idleId)
+      }
+    }
   }, [pillars])
 
   return (

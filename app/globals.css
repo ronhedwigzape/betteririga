@@ -221,7 +221,6 @@
 
 .civic-card-hover {
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
-  will-change: transform, box-shadow;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -272,4 +271,10 @@ body[data-scroll-locked][data-scroll-locked] {
 
 .width-before-scroll-bar {
   margin-right: 0px !important;
+}
+
+/* Content visibility optimization for below-the-fold civic sections */
+.civic-section-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
 }

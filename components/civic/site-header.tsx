@@ -83,26 +83,44 @@ const LivePhtClock = React.memo(function LivePhtClock() {
   })
 
   React.useEffect(() => {
+    // On mobile screens (< 768px), the clock is hidden (hidden md:inline-flex).
+    // Avoid running 1s tick intervals on mobile devices completely.
+    if (typeof window === "undefined" || window.innerWidth < 768) return
+
+    const dateFormatter = new Intl.DateTimeFormat("en-PH", {
+      timeZone: "Asia/Manila",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+
+    const timeFormatter = new Intl.DateTimeFormat("en-PH", {
+      timeZone: "Asia/Manila",
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    })
+
     const updateClock = () => {
       const now = new Date()
-      const dateStr = new Intl.DateTimeFormat("en-PH", {
-        timeZone: "Asia/Manila",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }).format(now)
-      const timeStr = new Intl.DateTimeFormat("en-PH", {
-        timeZone: "Asia/Manila",
-        hour: "numeric",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-      }).format(now)
+      const dateStr = dateFormatter.format(now)
+      const timeStr = timeFormatter.format(now)
       setPhtDateTime({ date: dateStr, time: `${timeStr} PHT` })
     }
-    updateClock()
-    const timer = window.setInterval(updateClock, 1000)
-    return () => window.clearInterval(timer)
+
+    let interval: number | null = null
+    const startClock = () => {
+      updateClock()
+      interval = window.setInterval(updateClock, 1000)
+    }
+
+    const timer = setTimeout(startClock, 6000)
+
+    return () => {
+      clearTimeout(timer)
+      if (interval) clearInterval(interval)
+    }
   }, [])
 
   return (
@@ -129,32 +147,39 @@ const LiveWeatherTicker = React.memo(function LiveWeatherTicker({
 
   React.useEffect(() => {
     let active = true
-    fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=Asia%2FManila`
-    )
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!active || !data?.current) return
-        const temp = Math.round(Number(data.current.temperature_2m))
-        if (!Number.isNaN(temp)) {
-          setWeatherSummary(`${temp}°C • Iriga City`)
-        }
-      })
-      .catch(() => {})
 
-    fetch("https://open.er-api.com/v6/latest/USD")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!active || !data?.rates?.PHP) return
-        const php = Number(data.rates.PHP)
-        if (!Number.isNaN(php)) {
-          setUsdPhpRate(`1 USD = ₱${php.toFixed(2)}`)
-        }
-      })
-      .catch(() => {})
+    const fetchTickerData = () => {
+      fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=Asia%2FManila`
+      )
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (!active || !data?.current) return
+          const temp = Math.round(Number(data.current.temperature_2m))
+          if (!Number.isNaN(temp)) {
+            setWeatherSummary(`${temp}°C • Iriga City`)
+          }
+        })
+        .catch(() => {})
+
+      fetch("https://open.er-api.com/v6/latest/USD")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (!active || !data?.rates?.PHP) return
+          const php = Number(data.rates.PHP)
+          if (!Number.isNaN(php)) {
+            setUsdPhpRate(`1 USD = ₱${php.toFixed(2)}`)
+          }
+        })
+        .catch(() => {})
+    }
+
+    // Defer non-critical background fetches until well after initial load
+    const timer = setTimeout(fetchTickerData, 8000)
 
     return () => {
       active = false
+      clearTimeout(timer)
     }
   }, [latitude, longitude])
 
@@ -207,6 +232,11 @@ export function SiteHeader() {
     if (typeof document === "undefined") return
 
     const resetScrollLockGaps = () => {
+      const isLocked =
+        document.body.hasAttribute("data-scroll-locked") ||
+        document.documentElement.hasAttribute("data-scroll-locked")
+      if (!isLocked) return
+
       if (document.body.style.marginRight && document.body.style.marginRight !== "0px") {
         document.body.style.marginRight = "0px"
       }
@@ -268,6 +298,7 @@ export function SiteHeader() {
                       asChild
                       variant="outline"
                       size="xs"
+                      title={`${hotline.agency} • ${hotline.label} • Click to call ${hotline.number}`}
                       className="h-6 shrink-0 gap-1 rounded-md border-slate-800 bg-slate-900/90 px-2 text-[11px] font-medium text-slate-200 transition-all hover:border-amber-500/50 hover:bg-slate-800 hover:text-amber-300 active:scale-95"
                     >
                       <a href={hotline.telHref}>
@@ -333,12 +364,12 @@ export function SiteHeader() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-2.5 sm:gap-3 sm:py-3 sm:px-6 lg:px-8">
           <Link
             href="/"
+            prefetch={false}
             className="group flex min-w-0 shrink items-center gap-2 sm:gap-2.5"
             aria-label={`${brand.fullDomain} - Home`}
           >
             <BetterIrigaLogo
               variant="horizontal"
-              priority
               alt={`${brand.fullDomain} Official Logo`}
               className="h-8 sm:h-9 md:h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
             />
@@ -370,7 +401,7 @@ export function SiteHeader() {
                       : "text-foreground/80 hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <Link href={item.href}>
+                  <Link href={item.href} prefetch={false}>
                     {item.label}
                   </Link>
                 </Button>
@@ -484,6 +515,7 @@ export function SiteHeader() {
                   >
                     <Link
                       href={item.href}
+                      prefetch={false}
                       onClick={() => setMobileOpen(false)}
                     >
                       <Icon className="size-4 shrink-0" />
@@ -590,7 +622,7 @@ export function SiteHeader() {
                   className="rounded-xl"
                   onClick={() => setGuideOpen(false)}
                 >
-                  <Link href="/about">Learn More in About</Link>
+                  <Link href="/about" prefetch={false}>Learn More in About</Link>
                 </Button>
                 <Button
                   asChild
@@ -598,7 +630,7 @@ export function SiteHeader() {
                   className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
                   onClick={() => setGuideOpen(false)}
                 >
-                  <Link href="/verification">View Verification Ledger</Link>
+                  <Link href="/verification" prefetch={false}>View Verification Ledger</Link>
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -615,6 +647,7 @@ export function SiteHeader() {
               <CheckCircle2 className="size-3.5" />
               <Link
                 href="/verification"
+                prefetch={false}
                 className="font-semibold underline underline-offset-2 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 {brand.verifyLinkLabel}

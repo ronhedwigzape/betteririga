@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { Play, Pause, ExternalLink } from "lucide-react"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { cn } from "@/lib/utils"
@@ -53,15 +54,16 @@ export function HeroVideoBackground({
     (state) => state.snapshot.siteContent.home.heroMedia
   )
   const [isPlaying, setIsPlaying] = React.useState(!isReducedMotion)
+  const [canLoadVideo, setCanLoadVideo] = React.useState(false)
+  const [isVideoLoaded, setIsVideoLoaded] = React.useState(false)
 
-  const videoWebm = heroMedia?.videoWebm ?? "/hero-background.webm"
-  const videoMp4 = heroMedia?.videoMp4 ?? "/hero-background.mp4"
   const video1080p = "/hero-background-1080p.mp4"
   const poster = heroMedia?.poster ?? "/hero-video-poster-1080p.jpg"
 
-  // Responsive Parallax scroll listener across all breakpoints with hardware acceleration
+  // Responsive Parallax scroll listener for desktop viewports
   React.useEffect(() => {
     if (isReducedMotion) return
+    if (typeof window === "undefined" || !window.matchMedia("(min-width: 1024px)").matches) return
 
     const updateParallax = () => {
       if (!containerRef.current || !parallaxLayerRef.current) {
@@ -101,19 +103,45 @@ export function HeroVideoBackground({
     }
   }, [isReducedMotion])
 
-  // Autoplay and responsive video stream selection
+  // Defer heavy 1080p video stream to desktop idle time; mobile preserves 100% Core Web Vitals with optimized AVIF/WebP image
   React.useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
+    if (isReducedMotion) return
+    if (typeof window === "undefined") return
 
-    if (isReducedMotion) {
-      video.pause()
+    // On mobile devices (< 1024px) or when data-saver is on, keep the fast optimized poster image
+    if (window.innerWidth < 1024) return
+
+    const nav = typeof navigator !== "undefined" ? (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }) : null
+    if (nav?.connection?.saveData || nav?.connection?.effectiveType === "2g" || nav?.connection?.effectiveType === "slow-2g") {
       return
     }
 
-    // Check if user requested data-saver mode
-    const nav = typeof navigator !== "undefined" ? (navigator as unknown as { connection?: { saveData?: boolean } }) : null
-    if (nav?.connection?.saveData) {
+    let timer: ReturnType<typeof setTimeout> | null = null
+    let idleId: number | null = null
+
+    if ("requestIdleCallback" in window) {
+      idleId = (window as unknown as { requestIdleCallback: (cb: () => void, opts: { timeout: number }) => number }).requestIdleCallback(
+        () => setCanLoadVideo(true),
+        { timeout: 2500 }
+      )
+    } else {
+      timer = setTimeout(() => setCanLoadVideo(true), 1500)
+    }
+
+    return () => {
+      if (idleId !== null && "cancelIdleCallback" in window) {
+        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId)
+      }
+      if (timer) clearTimeout(timer)
+    }
+  }, [isReducedMotion])
+
+  // Autoplay management once video is loaded
+  React.useEffect(() => {
+    const video = videoRef.current
+    if (!video || !canLoadVideo) return
+
+    if (isReducedMotion) {
       video.pause()
       return
     }
@@ -122,7 +150,7 @@ export function HeroVideoBackground({
     video.muted = true
 
     video.play().catch(() => {})
-  }, [isReducedMotion])
+  }, [isReducedMotion, canLoadVideo])
 
   const togglePlayback = () => {
     if (!videoRef.current) return
@@ -148,14 +176,30 @@ export function HeroVideoBackground({
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           ref={parallaxLayerRef}
-          className="absolute -top-[15%] left-0 h-[130%] w-full will-change-transform"
+          className="absolute -top-[15%] left-0 h-[130%] w-full"
           style={{
             transform: isReducedMotion
               ? "scale(1.02)"
               : "translate3d(0, 0px, 0) scale(1.12)",
           }}
         >
-          {!isReducedMotion ? (
+          {/* 1. Instant LCP Optimized Image Poster (AVIF/WebP through Next.js Image) */}
+          <Image
+            src={poster}
+            alt="Aerial landscape of Iriga City and Mount Iriga"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            quality={65}
+            className={cn(
+              "object-cover object-center transition-opacity duration-1000",
+              isVideoLoaded ? "opacity-0" : "opacity-90 dark:opacity-70"
+            )}
+          />
+
+          {/* 2. Cinematic 1080p Video Layer — Deferred to Desktop Idle Time */}
+          {canLoadVideo && !isReducedMotion ? (
             <video
               ref={videoRef}
               autoPlay
@@ -163,32 +207,18 @@ export function HeroVideoBackground({
               loop
               playsInline
               preload="metadata"
-              poster={poster}
               aria-hidden="true"
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
-              onLoadedData={(e) => {
-                e.currentTarget.play().catch(() => {})
-              }}
-              className="h-full w-full object-cover object-center opacity-90 transition-opacity duration-500 dark:opacity-70"
+              onLoadedData={() => setIsVideoLoaded(true)}
+              className={cn(
+                "h-full w-full object-cover object-center transition-opacity duration-1000",
+                isVideoLoaded ? "opacity-90 dark:opacity-70" : "opacity-0"
+              )}
             >
-              {/* Crisp 1080p video for desktop & larger viewports */}
-              <source
-                src={video1080p}
-                media="(min-width: 1024px)"
-                type="video/mp4"
-              />
-              {/* Efficient 720p streams for mobile & tablet */}
-              <source src={videoWebm} type="video/webm" />
-              <source src={videoMp4} type="video/mp4" />
+              <source src={video1080p} type="video/mp4" />
             </video>
-          ) : (
-            <div
-              className="h-full w-full bg-cover bg-center opacity-70 dark:opacity-50"
-              style={{ backgroundImage: `url('${poster}')` }}
-              aria-hidden="true"
-            />
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -229,7 +259,7 @@ export function HeroVideoBackground({
           </a>
         ) : null}
 
-        {!isReducedMotion ? (
+        {!isReducedMotion && canLoadVideo ? (
           <button
             type="button"
             onClick={togglePlayback}

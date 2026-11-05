@@ -114,6 +114,7 @@ export function IrigaLivelySections() {
     hourly: weatherBaseline.hourly,
   })
   const [refreshingWeather, setRefreshingWeather] = React.useState(false)
+  const [canPlayVideo, setCanPlayVideo] = React.useState(false)
 
   const weatherTheme = resolveWeatherTheme(
     weather.weatherCode,
@@ -121,16 +122,74 @@ export function IrigaLivelySections() {
   )
   const currentVideo = WEATHER_VIDEO_ASSETS[weatherTheme]
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  const mapContainerRef = React.useRef<HTMLDivElement | null>(null)
+  const [shouldLoadMap, setShouldLoadMap] = React.useState(false)
+
+  // Only load the heavy external OpenStreetMap embed when scrolled into view
+  React.useEffect(() => {
+    const el = mapContainerRef.current
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setShouldLoadMap(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setShouldLoadMap(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "300px" }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Defer desktop video playback to idle time; mobile preserves 100% performance with lightweight poster
+  React.useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 1024) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    let idleId: number | null = null
+    const enableVideo = () => setCanPlayVideo(true)
+
+    const win = window as unknown as Window & {
+      requestIdleCallback?: (
+        cb: () => void,
+        opts: { timeout: number }
+      ) => number
+      cancelIdleCallback?: (id: number) => void
+    }
+
+    if (typeof win.requestIdleCallback === "function") {
+      idleId = win.requestIdleCallback(enableVideo, { timeout: 5000 })
+    } else {
+      idleId = setTimeout(enableVideo, 4000) as unknown as number
+    }
+
+    return () => {
+      if (
+        idleId !== null &&
+        typeof win.cancelIdleCallback === "function"
+      ) {
+        win.cancelIdleCallback(idleId)
+      } else if (idleId !== null) {
+        clearTimeout(idleId)
+      }
+    }
+  }, [])
 
   React.useEffect(() => {
-    if (videoRef.current) {
+    if (canPlayVideo && videoRef.current) {
       videoRef.current.muted = true
       const playPromise = videoRef.current.play()
       if (playPromise !== undefined) {
         playPromise.catch(() => {})
       }
     }
-  }, [weatherTheme])
+  }, [canPlayVideo, weatherTheme])
 
   const fetchLiveWeather = React.useCallback(async () => {
     setRefreshingWeather(true)
@@ -183,10 +242,13 @@ export function IrigaLivelySections() {
   }, [geo.latitude, geo.longitude, weatherBaseline.hourly])
 
   React.useEffect(() => {
-    const timer = window.setTimeout(() => {
+    const timer = setTimeout(() => {
       void fetchLiveWeather()
-    }, 1500)
-    return () => window.clearTimeout(timer)
+    }, 8500)
+
+    return () => {
+      clearTimeout(timer)
+    }
   }, [fetchLiveWeather])
 
   return (
@@ -223,23 +285,28 @@ export function IrigaLivelySections() {
             <Card className="relative overflow-hidden flex flex-col justify-between border-border bg-slate-950 p-6 text-white shadow-md lg:col-span-5 min-h-[480px] rounded-2xl">
               {/* Maxxed Out Background Live Weather Video directly inside the Weather Card */}
               <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-                <video
-                  ref={videoRef}
-                  key={weatherTheme}
-                  src={currentVideo.mp4}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster={currentVideo.poster}
-                  onLoadedData={(e) => {
-                    e.currentTarget.play().catch(() => {})
-                  }}
-                  className="h-full w-full object-cover object-center scale-105 transition-opacity duration-700 motion-reduce:hidden"
-                >
-                  <source src={currentVideo.mp4} type="video/mp4" />
-                  <source src={currentVideo.webm} type="video/webm" />
-                </video>
+                {canPlayVideo ? (
+                  <video
+                    ref={videoRef}
+                    key={weatherTheme}
+                    src={currentVideo.mp4}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="none"
+                    poster={currentVideo.poster}
+                    className="h-full w-full object-cover object-center scale-105 transition-opacity duration-700 motion-reduce:hidden"
+                  >
+                    <source src={currentVideo.mp4} type="video/mp4" />
+                    <source src={currentVideo.webm} type="video/webm" />
+                  </video>
+                ) : (
+                  <div
+                    className="h-full w-full bg-cover bg-center opacity-80"
+                    style={{ backgroundImage: `url(${currentVideo.poster})` }}
+                  />
+                )}
                 {/* Fallback image for prefers-reduced-motion */}
                 <div
                   className="hidden h-full w-full bg-cover bg-center opacity-70 motion-reduce:block"
@@ -370,14 +437,24 @@ export function IrigaLivelySections() {
 
             {/* Right Column: Interactive OpenStreetMap of Iriga City (Natural Standalone Card) */}
             <Card className="flex flex-col justify-between border-border bg-card p-4 sm:p-5 text-card-foreground shadow-xs lg:col-span-7 rounded-2xl">
-              <div className="overflow-hidden rounded-xl border border-border bg-muted/40 shadow-inner">
-                <iframe
-                  src={geo.osmEmbedUrl}
-                  title="Interactive Map of Iriga City, Camarines Sur"
-                  loading="lazy"
-                  className="h-72 w-full border-0 sm:h-80"
-                  aria-label="OpenStreetMap showing Iriga City Hall and Mt. Iriga in Camarines Sur"
-                />
+              <div
+                ref={mapContainerRef}
+                className="overflow-hidden rounded-xl border border-border bg-muted/40 shadow-inner min-h-[18rem]"
+              >
+                {shouldLoadMap ? (
+                  <iframe
+                    src={geo.osmEmbedUrl}
+                    title="Interactive Map of Iriga City, Camarines Sur"
+                    loading="lazy"
+                    className="h-72 w-full border-0 sm:h-80"
+                    aria-label="OpenStreetMap showing Iriga City Hall and Mt. Iriga in Camarines Sur"
+                  />
+                ) : (
+                  <div className="flex h-72 w-full flex-col items-center justify-center gap-2 bg-muted/20 text-muted-foreground sm:h-80">
+                    <MapPin className="size-6 text-muted-foreground/60 animate-pulse" />
+                    <span className="text-xs font-medium">Iriga City Interactive Map</span>
+                  </div>
+                )}
               </div>
 
               <div className="mt-4 space-y-2.5">

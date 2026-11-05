@@ -54,12 +54,25 @@ export {
   getNationalBudget,
   getBetterGovDatasets,
 }
-import {
-  fetchSupabaseFreedomWallNotes,
-  insertSupabaseFreedomWallNote,
-  isSupabaseFreedomWallConfigured,
-  updateSupabaseFreedomWallNotePosition,
-} from "@/lib/supabase/freedom-wall"
+
+function isSupabaseConfiguredFast(): boolean {
+  if (typeof process === "undefined" || !process.env) return false
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    (typeof window === "undefined" ? process.env.SUPABASE_ANON_KEY : undefined)
+  return Boolean(
+    url &&
+      key &&
+      url.startsWith("https://") &&
+      !url.includes("your-project-id") &&
+      !url.includes("your-project-ref") &&
+      !key.includes("your-publishable-key") &&
+      !key.includes("your-anon-key") &&
+      !key.includes("your-supabase-service-role-key")
+  )
+}
 
 export interface LiveVerificationResult {
   status: "idle" | "checking" | "verified" | "offline-fallback"
@@ -176,7 +189,7 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
     getCarrierRegistry,
 
     freedomWallHydrated: false,
-    freedomWallStorageMode: isSupabaseFreedomWallConfigured()
+    freedomWallStorageMode: isSupabaseConfiguredFast()
       ? "supabase"
       : "local-fallback",
     freedomWallNotes: [],
@@ -254,6 +267,9 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
 
   hydrateFreedomWall: async () => {
     try {
+      const { fetchSupabaseFreedomWallNotes } = await import(
+        "@/lib/supabase/freedom-wall"
+      )
       const remoteNotes = await fetchSupabaseFreedomWallNotes()
       set({
         freedomWallHydrated: true,
@@ -318,6 +334,9 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
 
     void (async () => {
       try {
+        const { insertSupabaseFreedomWallNote } = await import(
+          "@/lib/supabase/freedom-wall"
+        )
         const res = await insertSupabaseFreedomWallNote(validated)
         if (res.storage === "supabase" && res.note) {
           set((state) => ({
@@ -355,7 +374,12 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
     set({ freedomWallNotes: updated })
 
     if (persistRemote) {
-      void updateSupabaseFreedomWallNotePosition(noteId, clampedX, clampedY)
+      void (async () => {
+        const { updateSupabaseFreedomWallNotePosition } = await import(
+          "@/lib/supabase/freedom-wall"
+        )
+        void updateSupabaseFreedomWallNotePosition(noteId, clampedX, clampedY)
+      })()
     }
   },
   }

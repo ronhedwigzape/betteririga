@@ -37,6 +37,7 @@ export function SiteFooter() {
             <div>
               <Link
                 href="/"
+                prefetch={false}
                 className="group inline-flex items-center gap-2"
                 aria-label={`${brand.fullDomain} - Home`}
               >
@@ -111,6 +112,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    prefetch={false}
                     className="transition hover:text-white hover:underline"
                   >
                     {item.label}
@@ -236,7 +238,7 @@ export function SiteFooter() {
                 variant="outline"
                 className="rounded-xl border-slate-700 bg-slate-900 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white"
               >
-                <Link href="/freedom-wall?compose=true">
+                <Link href="/freedom-wall?compose=true" prefetch={false}>
                   <MessageSquareHeart className="size-4 text-amber-400" />
                   Leave a Note on the Freedom Wall
                 </Link>
@@ -249,7 +251,7 @@ export function SiteFooter() {
                   size="sm"
                   className="rounded-lg border-emerald-500/40 bg-emerald-950/60 text-[11px] font-medium text-emerald-300 hover:bg-emerald-900/60 hover:text-emerald-200"
                 >
-                  <Link href="/verification">
+                  <Link href="/verification" prefetch={false}>
                     <ShieldCheck className="size-3.5" />
                     Check Sources
                   </Link>
@@ -260,7 +262,7 @@ export function SiteFooter() {
                   size="sm"
                   className="rounded-lg border-blue-500/40 bg-blue-950/60 text-[11px] font-medium text-blue-300 hover:bg-blue-900/60 hover:text-blue-200"
                 >
-                  <Link href="/about#contribute">
+                  <Link href="/about#contribute" prefetch={false}>
                     <Send className="size-3.5" />
                     Share Update
                   </Link>

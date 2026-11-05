@@ -58,9 +58,10 @@ export function VolunteerModal() {
       // Ignore storage error
     }
 
+    // Polite, non-intrusive delay for civic volunteer modal (12s)
     const timer = window.setTimeout(() => {
       setOpen(true)
-    }, 900)
+    }, 12000)
 
     return () => window.clearTimeout(timer)
   }, [])
