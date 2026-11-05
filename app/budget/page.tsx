@@ -65,7 +65,10 @@ function BudgetChartsSkeleton() {
 }
 
 const BudgetCharts = dynamic(
-  () => import("@/components/civic/budget-charts").then((mod) => mod.BudgetCharts),
+  () =>
+    import("@/components/civic/budget-charts-lazy").then(
+      (mod) => mod.BudgetChartsLazy
+    ),
   {
     loading: () => <BudgetChartsSkeleton />,
   }

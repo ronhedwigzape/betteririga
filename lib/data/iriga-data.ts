@@ -1010,54 +1010,10 @@ export function getDirectoryControls(): DirectoryControls {
   return defaultRepository.getSnapshot().siteContent.directoryControls
 }
 
-export type CarrierType = "smart" | "globe" | "landline"
+export { detectCarrier, type CarrierType } from "./carrier-utils"
 
 export function getCarrierRegistry(): CarrierRegistry | undefined {
   return defaultRepository.getSnapshot().siteContent.directoryControls.carriers
-}
-
-export function detectCarrier(
-  number?: string,
-  networkOrType?: string
-): CarrierType {
-  const text = `${networkOrType ?? ""} ${number ?? ""}`.toLowerCase()
-  const registry = getCarrierRegistry()
-
-  if (registry) {
-    if (
-      registry.smart.prefixes.some((p: string) => text.includes(p.toLowerCase()))
-    ) {
-      return "smart"
-    }
-    if (
-      registry.globe.prefixes.some((p: string) => text.includes(p.toLowerCase()))
-    ) {
-      return "globe"
-    }
-  } else {
-    if (
-      text.includes("smart") ||
-      text.includes("0921") ||
-      text.includes("0928") ||
-      text.includes("0918") ||
-      text.includes("0919") ||
-      text.includes("0998")
-    ) {
-      return "smart"
-    }
-    if (
-      text.includes("globe") ||
-      text.includes("0956") ||
-      text.includes("0917") ||
-      text.includes("0927") ||
-      text.includes("0915") ||
-      text.includes("0916")
-    ) {
-      return "globe"
-    }
-  }
-
-  return "landline"
 }
 
 export function getBrandLogos(): BrandLogos | undefined {

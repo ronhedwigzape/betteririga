@@ -5,8 +5,11 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import { cn } from "@/lib/utils"
 
+const TooltipContext = React.createContext<boolean>(false)
+
 function TooltipProvider({
   delayDuration = 0,
+  children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return (
@@ -14,13 +17,21 @@ function TooltipProvider({
       data-slot="tooltip-provider"
       delayDuration={delayDuration}
       {...props}
-    />
+    >
+      <TooltipContext.Provider value={true}>
+        {children}
+      </TooltipContext.Provider>
+    </TooltipPrimitive.Provider>
   )
 }
 
 function Tooltip({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  const hasProvider = React.useContext(TooltipContext)
+  if (hasProvider) {
+    return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+  }
   return (
     <TooltipProvider>
       <TooltipPrimitive.Root data-slot="tooltip" {...props} />

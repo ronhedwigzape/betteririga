@@ -1,6 +1,6 @@
 import * as React from "react"
 import Image from "next/image"
-import { detectCarrier } from "@/lib/data/iriga-data"
+import { detectCarrier } from "@/lib/data/carrier-utils"
 import { cn } from "@/lib/utils"
 
 /**
@@ -28,6 +28,8 @@ export function SmartLogo({
           alt="Smart Communications"
           width={56}
           height={18}
+          loading="lazy"
+          decoding="async"
           className="h-3.5 w-auto object-contain"
         />
       </span>
@@ -46,6 +48,8 @@ export function SmartLogo({
         alt="Smart Communications"
         width={20}
         height={20}
+        loading="lazy"
+        decoding="async"
         className="size-full object-contain"
       />
     </span>
@@ -77,6 +81,8 @@ export function GlobeTelecomLogo({
           alt="Globe Telecom"
           width={50}
           height={18}
+          loading="lazy"
+          decoding="async"
           className="h-3.5 w-auto object-contain"
         />
       </span>
@@ -95,6 +101,8 @@ export function GlobeTelecomLogo({
         alt="Globe Telecom"
         width={20}
         height={20}
+        loading="lazy"
+        decoding="async"
         className="size-full object-contain"
       />
     </span>

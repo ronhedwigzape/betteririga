@@ -1,6 +1,5 @@
 import * as React from "react"
 import Image from "next/image"
-import { getCivicSnapshot } from "@/lib/data/iriga-data"
 import { cn } from "@/lib/utils"
 
 export interface BetterIrigaLogoProps {
@@ -12,6 +11,27 @@ export interface BetterIrigaLogoProps {
   className?: string
   priority?: boolean
   alt?: string
+  logos?: {
+    lightMode?: string
+    darkMode?: string
+    horizontalLight?: string
+    horizontalDark?: string
+    bannerOnBlue?: string
+    bannerOnWhite?: string
+    badge?: string
+    alt?: string
+  }
+}
+
+const DEFAULT_LOGOS = {
+  lightMode: "/BetterIriga-Blue-Foreground-Transparent.png",
+  darkMode: "/BetterIriga-White-Foreground-Transparent.png",
+  horizontalLight: "/BetterIriga-Clean-LightMode-Blue-Transparent.png",
+  horizontalDark: "/BetterIriga-Clean-DarkMode-White-Transparent.png",
+  bannerOnBlue: "/BetterIriga-Clean-Banner-OnBlue.png",
+  bannerOnWhite: "/BetterIriga-Clean-Banner-OnWhite.png",
+  badge: "/BetterIriga-Badge-BlueAndWhite-Transparent.png",
+  alt: "BetterIriga.org Official Emblem",
 }
 
 /**
@@ -33,8 +53,9 @@ export function BetterIrigaLogo({
   className,
   priority = false,
   alt = "BetterIriga official logo",
+  logos: customLogos,
 }: BetterIrigaLogoProps) {
-  const logos = getCivicSnapshot().siteContent.brand.logos
+  const logos = customLogos ?? DEFAULT_LOGOS
 
   if (variant === "banner") {
     const lightSrc =
@@ -145,7 +166,12 @@ export function BetterIrigaLogo({
           alt={alt}
           width={renderedWidth}
           height={renderedHeight}
+          quality={50}
+          sizes="(max-width: 640px) 140px, (max-width: 1024px) 160px, 180px"
           priority={priority}
+          fetchPriority={priority ? "high" : undefined}
+          loading={priority ? "eager" : "lazy"}
+          decoding={priority ? "sync" : "async"}
           className="h-full w-auto max-w-full object-contain dark:hidden"
         />
         {/* Dark Mode: Horizontal White Lockup (Lazy loaded on default light SSR) */}
@@ -154,6 +180,8 @@ export function BetterIrigaLogo({
           alt={alt}
           width={renderedWidth}
           height={renderedHeight}
+          quality={50}
+          sizes="(max-width: 640px) 140px, (max-width: 1024px) 160px, 180px"
           className="hidden h-full w-auto max-w-full object-contain dark:block"
         />
       </div>
@@ -213,8 +241,12 @@ export function BetterIrigaLogo({
         alt={alt}
         width={size}
         height={size}
+        quality={45}
+        sizes="(max-width: 640px) 96px, (max-width: 1024px) 144px, 192px"
         priority={priority}
         fetchPriority={priority ? "high" : undefined}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
         className="h-full w-full object-contain dark:hidden"
       />
       {/* Dark Mode: White Foreground Emblem (Lazy loaded on default light SSR) */}
@@ -223,6 +255,8 @@ export function BetterIrigaLogo({
         alt={alt}
         width={size}
         height={size}
+        quality={45}
+        sizes="(max-width: 640px) 96px, (max-width: 1024px) 144px, 192px"
         className="hidden h-full w-full object-contain dark:block"
       />
     </div>

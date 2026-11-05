@@ -30,7 +30,6 @@ import {
   Coins,
   ChevronDown,
 } from "lucide-react"
-import { useCivicStore } from "@/lib/store/civic-store"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -200,22 +199,152 @@ const LiveWeatherTicker = React.memo(function LiveWeatherTicker({
   )
 })
 
-export function SiteHeader() {
+import type {
+  SiteContent,
+  EmergencyHotline,
+  CityProfile,
+  TransparencyPortal,
+} from "@/lib/data/schemas"
+
+export interface SiteHeaderData {
+  brand: SiteContent["brand"]
+  navItems: SiteContent["navigation"]
+  transparencyPortals: TransparencyPortal[]
+  primaryHotlines: EmergencyHotline[]
+  weatherBaseline: CityProfile["weatherBaseline"]
+  geo: CityProfile["geo"]
+  officialWebsite?: string
+}
+
+const DEFAULT_BRAND: SiteContent["brand"] = {
+  name: "Iriga City",
+  domainSuffix: "org",
+  fullDomain: "BetterIriga.org",
+  regionBadge: "Bicol Region V",
+  tagline: "The People's Guide to Iriga City",
+  hotlineBarLabel: "Emergency Hotlines",
+  cityQuickBadge: "Component City of Camarines Sur",
+  disclaimerBanner: "Independent civic initiative",
+  verifiedPillText: "Verified Civic Data",
+  costToPeopleLabel: "Cost to the People of Iriga",
+  costToPeopleValue: "₱0 (Free Forever)",
+  volunteerEmail: "volunteer@bettergov.ph",
+  communityUrl: "https://bettergov.ph",
+  verifyLinkLabel: "Transparency Ledger",
+}
+
+const DEFAULT_NAV: SiteContent["navigation"] = [
+  { label: "Home", href: "/", iconKey: "home" },
+  { label: "Services", href: "/services", iconKey: "services" },
+  { label: "Officials", href: "/officials", iconKey: "officials" },
+  { label: "Laws", href: "/legislative", iconKey: "legislative" },
+  { label: "Budget", href: "/budget", iconKey: "budget" },
+  { label: "Stats", href: "/statistics", iconKey: "statistics" },
+  { label: "Projects", href: "/projects", iconKey: "projects" },
+  { label: "Contacts", href: "/contacts", iconKey: "contacts" },
+  { label: "Wall", href: "/freedom-wall", iconKey: "freedom-wall" },
+  { label: "About", href: "/about", iconKey: "about" },
+]
+
+const DEFAULT_PORTALS: TransparencyPortal[] = [
+  {
+    label: "Iriga, Camarines Sur",
+    href: "https://transparency-portal-iriga.betteririga.org/",
+    description: "City LGU Public Disclosures",
+  },
+  {
+    label: "BetterGov.ph Network",
+    href: "https://bettergov.ph/",
+    description: "Open Data & Transparency",
+  },
+  {
+    label: "DPWH CamSur 5th DEO",
+    href: "https://bettergov.ph/infrastructure/camsur-5th",
+    description: "District Public Works Tracker",
+  },
+]
+
+const DEFAULT_HOTLINES: EmergencyHotline[] = [
+  {
+    id: "cdrmo-landline",
+    agency: "CDRRMO",
+    label: "CDRRMO Rescue Landline",
+    number: "(054) 299 9918",
+    telHref: "tel:0542999918",
+    networkOrType: "Landline (054)",
+    priority: "primary",
+    citation: {
+      sourceUrl: "https://iriga.gov.ph",
+      sourceName: "City of Iriga",
+      retrievedAt: "2025-01-01",
+    },
+  },
+  {
+    id: "cdrmo-smart",
+    agency: "CDRRMO",
+    label: "CDRRMO Rescue Smart",
+    number: "0921 636 4018",
+    telHref: "tel:09216364018",
+    networkOrType: "Smart Mobile",
+    priority: "primary",
+    citation: {
+      sourceUrl: "https://iriga.gov.ph",
+      sourceName: "City of Iriga",
+      retrievedAt: "2025-01-01",
+    },
+  },
+  {
+    id: "national-emergency",
+    agency: "911",
+    label: "National Emergency Hotline",
+    number: "911",
+    telHref: "tel:911",
+    networkOrType: "National Emergency",
+    priority: "primary",
+    citation: {
+      sourceUrl: "https://iriga.gov.ph",
+      sourceName: "City of Iriga",
+      retrievedAt: "2025-01-01",
+    },
+  },
+]
+
+const DEFAULT_WEATHER_BASELINE: CityProfile["weatherBaseline"] = {
+  temperatureC: 30,
+  conditionLabel: "Partly Cloudy",
+  humidityPct: 75,
+  windKmh: 12,
+  usdPhpFallback: "₱58.50",
+  hourly: [
+    { timeLabel: "8:00 AM", tempC: 28, isRainy: false },
+    { timeLabel: "12:00 PM", tempC: 32, isRainy: false },
+    { timeLabel: "4:00 PM", tempC: 30, isRainy: false },
+  ],
+}
+
+const DEFAULT_GEO: CityProfile["geo"] = {
+  latitude: 13.4167,
+  longitude: 123.4167,
+  postalCode: "4431",
+  osmEmbedUrl: "https://www.openstreetmap.org",
+  osmLinkUrl: "https://www.openstreetmap.org",
+  landmarks: ["Mount Iriga"],
+}
+
+export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {}) {
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const [guideOpen, setGuideOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
-  const snapshot = useCivicStore((state) => state.snapshot)
-  const brand = snapshot.siteContent.brand
-  const navItems = snapshot.siteContent.navigation
-  const transparencyPortals = snapshot.siteContent.transparencyPortals ?? []
-  const primaryHotlines = snapshot.emergencyHotlines.slice(0, 6)
-  const weatherBaseline = snapshot.cityProfile.weatherBaseline
-  const geo = snapshot.cityProfile.geo
-  const officialWebsite =
-    snapshot.officialChannels.find((c) => c.platform === "Official Website")
-      ?.url ?? "https://iriga.gov.ph"
+
+  const brand = initialData?.brand ?? DEFAULT_BRAND
+  const navItems = initialData?.navItems ?? DEFAULT_NAV
+  const transparencyPortals = initialData?.transparencyPortals ?? DEFAULT_PORTALS
+  const primaryHotlines = initialData?.primaryHotlines ?? DEFAULT_HOTLINES
+  const weatherBaseline = initialData?.weatherBaseline ?? DEFAULT_WEATHER_BASELINE
+  const geo = initialData?.geo ?? DEFAULT_GEO
+  const officialWebsite = initialData?.officialWebsite ?? "https://iriga.gov.ph"
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -370,6 +499,7 @@ export function SiteHeader() {
           >
             <BetterIrigaLogo
               variant="horizontal"
+              priority
               alt={`${brand.fullDomain} Official Logo`}
               className="h-8 sm:h-9 md:h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
             />
@@ -591,49 +721,51 @@ export function SiteHeader() {
                 </span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2 text-lg text-foreground">
-                  <ShieldAlert className="size-5 text-amber-600 shrink-0" />
-                  <span>About This Community Guide</span>
-                </DialogTitle>
-                <DialogDescription className="text-left text-sm text-muted-foreground pt-2 space-y-3 leading-relaxed">
-                  <span className="block">
-                    <strong>BetterIriga.org</strong> is an independent, volunteer-run civic transparency initiative organized under <strong>BetterGov.ph</strong>.
-                  </span>
-                  <span className="block">
-                    This website is <strong>not</strong> an official website of the City Government of Iriga. It is created by civic volunteers to help Irigueños easily access public services, budget disclosures, city officials, ordinances, and hotlines at <strong>₱0 cost to the people</strong>.
-                  </span>
-                  <span className="block">
-                    Every factual record published on this platform is cited directly from primary public sources (such as <em>iriga.gov.ph</em>, DBM, PSA, and DPWH).
-                  </span>
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="flex-col sm:flex-row gap-2 pt-2 border-t border-border">
-                <DialogClose asChild>
-                  <Button variant="outline" size="sm" className="rounded-xl">
-                    Close
+            {guideOpen ? (
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-lg text-foreground">
+                    <ShieldAlert className="size-5 text-amber-600 shrink-0" />
+                    <span>About This Community Guide</span>
+                  </DialogTitle>
+                  <DialogDescription className="text-left text-sm text-muted-foreground pt-2 space-y-3 leading-relaxed">
+                    <span className="block">
+                      <strong>BetterIriga.org</strong> is an independent, volunteer-run civic transparency initiative organized under <strong>BetterGov.ph</strong>.
+                    </span>
+                    <span className="block">
+                      This website is <strong>not</strong> an official website of the City Government of Iriga. It is created by civic volunteers to help Irigueños easily access public services, budget disclosures, city officials, ordinances, and hotlines at <strong>₱0 cost to the people</strong>.
+                    </span>
+                    <span className="block">
+                      Every factual record published on this platform is cited directly from primary public sources (such as <em>iriga.gov.ph</em>, DBM, PSA, and DPWH).
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="flex-col sm:flex-row gap-2 pt-2 border-t border-border">
+                  <DialogClose asChild>
+                    <Button variant="outline" size="sm" className="rounded-xl">
+                      Close
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="rounded-xl"
+                    onClick={() => setGuideOpen(false)}
+                  >
+                    <Link href="/about" prefetch={false}>Learn More in About</Link>
                   </Button>
-                </DialogClose>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="rounded-xl"
-                  onClick={() => setGuideOpen(false)}
-                >
-                  <Link href="/about" prefetch={false}>Learn More in About</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={() => setGuideOpen(false)}
-                >
-                  <Link href="/verification" prefetch={false}>View Verification Ledger</Link>
-                </Button>
-              </DialogFooter>
-            </DialogContent>
+                  <Button
+                    asChild
+                    size="sm"
+                    className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => setGuideOpen(false)}
+                  >
+                    <Link href="/verification" prefetch={false}>View Verification Ledger</Link>
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            ) : null}
           </Dialog>
           <div className="flex shrink-0 flex-wrap items-center gap-2.5 sm:gap-3">
             <LiveWeatherTicker

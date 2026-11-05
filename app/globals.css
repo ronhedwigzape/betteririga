@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
@@ -215,8 +214,7 @@
 }
 
 .animate-shimmer-text {
-  background-size: 220% auto;
-  animation: shimmer-text 6s ease-in-out infinite;
+  background-size: 100% auto;
 }
 
 .civic-card-hover {

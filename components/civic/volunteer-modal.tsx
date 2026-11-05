@@ -13,9 +13,47 @@ import {
   HeartHandshake,
   MessageSquareHeart,
 } from "lucide-react"
-import { useCivicStore } from "@/lib/store/civic-store"
+import type { SiteContent } from "@/lib/data/schemas"
 
 const DISMISSED_STORAGE_KEY = "betteririga:volunteer-popup:dismissed:v1"
+
+interface VolunteerModalProps {
+  brand?: SiteContent["brand"]
+  modalCopy?: SiteContent["volunteerModal"]
+}
+
+const DEFAULT_BRAND: SiteContent["brand"] = {
+  name: "Iriga City",
+  domainSuffix: "org",
+  fullDomain: "BetterIriga.org",
+  regionBadge: "Bicol Region V",
+  tagline: "The People's Guide to Iriga City",
+  hotlineBarLabel: "Emergency Hotlines",
+  cityQuickBadge: "Component City of Camarines Sur",
+  disclaimerBanner: "Independent civic initiative",
+  verifiedPillText: "Verified Civic Data",
+  costToPeopleLabel: "Cost to the People of Iriga",
+  costToPeopleValue: "₱0 (Free Forever)",
+  volunteerEmail: "volunteer@bettergov.ph",
+  communityUrl: "https://bettergov.ph",
+  verifyLinkLabel: "Transparency Ledger",
+}
+
+const DEFAULT_MODAL_COPY: SiteContent["volunteerModal"] = {
+  title: "Be Part of Something Greater",
+  subtitle: "Iriga City, Camarines Sur deserves a clear, honest, and easy-to-use public guide. Help us keep it growing for every Irigueño.",
+  lead: "We welcome fellow Irigueños and Bicolanos who want to help their community through their skills:",
+  roles: [
+    "Community Writers",
+    "Visual & Print Guides",
+    "Public Records Research",
+    "Bicol / Rinconada Translation",
+    "Barangay Outreach",
+  ],
+  primaryCtaLabel: "I Want to Volunteer",
+  secondaryCtaLabel: "Visit Freedom Wall",
+  skipLabel: "Maybe Later",
+}
 
 function getRoleIcon(index: number) {
   switch (index) {
@@ -32,11 +70,10 @@ function getRoleIcon(index: number) {
   }
 }
 
-export function VolunteerModal() {
-  const snapshot = useCivicStore((state) => state.snapshot)
-  const brand = snapshot.siteContent.brand
-  const modalCopy = snapshot.siteContent.volunteerModal
-
+export function VolunteerModal({
+  brand = DEFAULT_BRAND,
+  modalCopy = DEFAULT_MODAL_COPY,
+}: VolunteerModalProps) {
   const [open, setOpen] = React.useState(false)
 
   const dismiss = React.useCallback(() => {

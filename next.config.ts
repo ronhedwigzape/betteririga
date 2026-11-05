@@ -14,10 +14,13 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-tabs",
       "@radix-ui/react-select",
       "@radix-ui/react-separator",
+      "@radix-ui/react-navigation-menu",
     ],
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [45, 50, 60, 75],
+    minimumCacheTTL: 31536000,
     deviceSizes: [360, 412, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 180, 256, 384],
   },
@@ -79,6 +82,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/carriers/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:file(BetterIriga-.*)",
         headers: [
           {
             key: "Cache-Control",

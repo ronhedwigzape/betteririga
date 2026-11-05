@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import dynamic from "next/dynamic"
 import Link from "next/link"
+import { Suspense } from "react"
 import {
   Landmark,
   FileSpreadsheet,
@@ -32,17 +32,7 @@ import { HeroVideoBackground } from "@/components/civic/hero-video-background"
 import { AnimatedHeroTitle } from "@/components/civic/animated-hero-title"
 import { FreedomWallCtaSection } from "@/components/civic/freedom-wall-cta"
 
-const IrigaLivelySections = dynamic(
-  () =>
-    import("@/components/civic/iriga-lively-sections").then(
-      (m) => m.IrigaLivelySections
-    ),
-  {
-    loading: () => (
-      <div className="h-[360px] w-full animate-pulse rounded-2xl bg-muted/20" />
-    ),
-  }
-)
+import { LivelySectionsLazy } from "@/components/civic/lively-sections-lazy"
 import {
   Card,
   CardHeader,
@@ -55,6 +45,7 @@ import { Button } from "@/components/ui/button"
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
@@ -144,6 +135,7 @@ export default function HomePage() {
               <AnimatedHeroTitle
                 highlight={homeCopy.heroTitleHighlight}
                 title={homeCopy.heroTitleMain}
+                pillars={snapshot.siteContent.home.civicPillars}
               />
             </div>
 
@@ -178,102 +170,108 @@ export default function HomePage() {
 
           {/* Search Engine */}
           <div className="mx-auto mt-8 max-w-4xl">
-            <GlobalCivicSearch />
+            <GlobalCivicSearch
+              quickFilters={snapshot.siteContent.searchFilters}
+              homeCopy={homeCopy}
+            />
           </div>
 
           {/* Key City Facts Cards (Natural Standalone Cards) */}
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
-              <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                Residents (2024 Census)
-              </p>
-              <p className="mt-1 text-xl font-bold text-foreground">
-                {profile.population2024.toLocaleString()}
-              </p>
-              <p className="mt-0.5 text-[11px] text-emerald-700 dark:text-emerald-400">
-                Up from {profile.population2020.toLocaleString()} in 2020
-              </p>
-            </Card>
-
-            <Link href="/budget" prefetch={false} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
-              <Card className="civic-card-hover h-full border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs hover:border-blue-500/50 transition-colors">
+          <Suspense fallback={null}>
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
                 <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                  {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
-                    ? `${latestDistrictWork.fy} Public Works (GAA)`
-                    : `${latestNta.fiscalYear} National Allotment`}
+                  Residents (2024 Census)
                 </p>
-                <p className="mt-1 text-xl font-bold text-blue-700 dark:text-blue-400">
-                  {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
-                    ? latestDistrictWork.displayAmount
-                    : formatPesoCompact(latestNta.amountPhp)}
+                <p className="mt-1 text-xl font-bold text-foreground">
+                  {profile.population2024.toLocaleString()}
                 </p>
-                <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
-                    ? `CamSur 5th DEO • ₱${(latestNta.amountPhp / 1_000_000).toFixed(1)}M NTA`
-                    : `DBM LBM No. 90 (${latestNta.yoyChangePct ? `+${latestNta.yoyChangePct}%` : "Allocated"})`}
+                <p className="mt-0.5 text-[11px] text-emerald-700 dark:text-emerald-400">
+                  Up from {profile.population2020.toLocaleString()} in 2020
                 </p>
               </Card>
-            </Link>
 
-            <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
-              <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                Total Barangays
-              </p>
-              <p className="mt-1 text-xl font-bold text-foreground">
-                {barangays.length} Barangays
-              </p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">
-                {profile.urbanPopulationPct}% Urban •{" "}
-                {profile.ruralPopulationPct}% Rural
-              </p>
-            </Card>
+              <Link href="/budget" prefetch={false} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+                <Card className="civic-card-hover h-full border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs hover:border-blue-500/50 transition-colors">
+                  <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                    {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
+                      ? `${latestDistrictWork.fy} Public Works (GAA)`
+                      : `${latestNta.fiscalYear} National Allotment`}
+                  </p>
+                  <p className="mt-1 text-xl font-bold text-blue-700 dark:text-blue-400">
+                    {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
+                      ? latestDistrictWork.displayAmount
+                      : formatPesoCompact(latestNta.amountPhp)}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">
+                    {latestDistrictWork && latestDistrictWork.fy > latestNta.fiscalYear
+                      ? `CamSur 5th DEO • ₱${(latestNta.amountPhp / 1_000_000).toFixed(1)}M NTA`
+                      : `DBM LBM No. 90 (${latestNta.yoyChangePct ? `+${latestNta.yoyChangePct}%` : "Allocated"})`}
+                  </p>
+                </Card>
+              </Link>
 
-            <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
-              <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                Land Area
-              </p>
-              <p className="mt-1 text-xl font-bold text-foreground">
-                {profile.landAreaSqKm} sq. km
-              </p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">
-                {profile.landUseBreakdown.agriculturalPct}% Agricultural Land
-              </p>
-            </Card>
+              <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
+                <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                  Total Barangays
+                </p>
+                <p className="mt-1 text-xl font-bold text-foreground">
+                  {barangays.length} Barangays
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  {profile.urbanPopulationPct}% Urban •{" "}
+                  {profile.ruralPopulationPct}% Rural
+                </p>
+              </Card>
 
-            <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
-              <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                City Hall Offices
-              </p>
-              <p className="mt-1 text-xl font-bold text-foreground">
-                {offices.length} Offices
-              </p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">
-                Landline (054) 299-xxxx
-              </p>
-            </Card>
+              <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
+                <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                  Land Area
+                </p>
+                <p className="mt-1 text-xl font-bold text-foreground">
+                  {profile.landAreaSqKm} sq. km
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  {profile.landUseBreakdown.agriculturalPct}% Agricultural Land
+                </p>
+              </Card>
 
-            <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
-              <p className="text-[11px] font-medium text-muted-foreground uppercase">
-                Postal / ZIP Code
-              </p>
-              <p className="mt-1 font-mono text-xl font-bold text-foreground">
-                {profile.geo.postalCode}
-              </p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">
-                5th District (Rinconada)
-              </p>
-            </Card>
-          </div>
+              <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
+                <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                  City Hall Offices
+                </p>
+                <p className="mt-1 text-xl font-bold text-foreground">
+                  {offices.length} Offices
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Landline (054) 299-xxxx
+                </p>
+              </Card>
 
-          <div className="mt-4">
-            <CitationBadge citation={profile.citation} compact />
-          </div>
+              <Card className="civic-card-hover border-border bg-card/90 backdrop-blur-xs p-3.5 shadow-2xs">
+                <p className="text-[11px] font-medium text-muted-foreground uppercase">
+                  Postal / ZIP Code
+                </p>
+                <p className="mt-1 font-mono text-xl font-bold text-foreground">
+                  {profile.geo.postalCode}
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  5th District (Rinconada)
+                </p>
+              </Card>
+            </div>
+
+            <div className="mt-4">
+              <CitationBadge citation={profile.citation} compact />
+            </div>
+          </Suspense>
         </HeroVideoBackground>
 
       {/* Main Civic Container for subsequent homepage sections */}
       <CivicPageContainer className="space-y-16 py-8 sm:py-12 pb-16">
         {/* Popular Municipal Services Section (Natural Surface Cards - No Outer Card Wrapper) */}
-        <section className="space-y-6">
+        <Suspense fallback={null}>
+          <section className="space-y-6">
           <div className="flex flex-col justify-between gap-3 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
               <Badge variant="secondary" className="font-semibold text-blue-700 dark:text-blue-300">
@@ -364,9 +362,11 @@ export default function HomePage() {
             </Card>
           </div>
         </section>
+      </Suspense>
 
       {/* Civic Pillar Cards (100% shadcn UI Cards) */}
-      <section className="civic-section-defer space-y-6">
+      <Suspense fallback={null}>
+        <section className="civic-section-defer space-y-6">
         <div className="flex flex-col justify-between gap-2 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
               <Badge variant="outline" className="font-semibold text-muted-foreground">
@@ -422,9 +422,11 @@ export default function HomePage() {
             })}
           </div>
         </section>
+      </Suspense>
 
       {/* Dedicated BetterGov.ph Open Data Showcase Section (Natural Surface Cards - No Outer Card Wrapper) */}
-      <section className="civic-section-defer space-y-6">
+      <Suspense fallback={null}>
+        <section className="civic-section-defer space-y-6">
         <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 lg:flex-row lg:items-center">
             <div className="space-y-1.5">
               <Badge variant="default" className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5">
@@ -519,9 +521,11 @@ export default function HomePage() {
             </Button>
           </div>
         </section>
+      </Suspense>
 
       {/* Executive & Legislative Leadership (Natural Surface Cards - No Outer Card Wrapper) */}
-      <section className="civic-section-defer space-y-6">
+      <Suspense fallback={null}>
+        <section className="civic-section-defer space-y-6">
         <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 sm:flex-row sm:items-center">
             <div>
               <Badge variant="secondary" className="font-semibold text-blue-700 dark:text-blue-300">
@@ -614,19 +618,25 @@ export default function HomePage() {
             </div>
           ) : null}
         </section>
+      </Suspense>
 
       {/* Lively Sections: Live Weather + Interactive Map, History of Iriga, and Live Facebook Page */}
-      <div className="civic-section-defer">
-        <IrigaLivelySections />
-      </div>
+      <Suspense fallback={null}>
+        <div className="civic-section-defer">
+          <LivelySectionsLazy />
+        </div>
+      </Suspense>
 
       {/* Community Freedom Wall Sticky-Note CTA */}
-      <div className="civic-section-defer">
-        <FreedomWallCtaSection />
-      </div>
+      <Suspense fallback={null}>
+        <div className="civic-section-defer">
+          <FreedomWallCtaSection />
+        </div>
+      </Suspense>
 
       {/* Emergency Hotlines & Plain-Language Accuracy Section (Natural Surface Cards) */}
-      <section className="civic-section-defer grid gap-6 lg:grid-cols-3">
+      <Suspense fallback={null}>
+        <section className="civic-section-defer grid gap-6 lg:grid-cols-3">
         {/* Emergency Hotlines Cards */}
         <div className="space-y-4 lg:col-span-2">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/80 pb-3">
@@ -645,35 +655,37 @@ export default function HomePage() {
             </Button>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-            {hotlines.slice(0, 6).map((h) => (
-              <Tooltip key={h.id}>
-                <TooltipTrigger asChild>
-                  <Card
-                    title={`${h.label} (${h.agency}) • ${h.number} • Tap to call immediately`}
-                    className="civic-card-hover border-rose-200/80 bg-card p-4 shadow-xs transition-all hover:border-rose-500 hover:shadow-sm dark:border-rose-900/60 cursor-pointer"
-                  >
-                    <a href={h.telHref} className="block space-y-1">
-                      <p className="text-[11px] font-medium text-muted-foreground truncate">
-                        {h.label}
-                      </p>
-                      <p className="font-mono text-base font-bold text-rose-700 dark:text-rose-400">
-                        {h.number}
-                      </p>
-                      <p className="text-[11px] text-muted-foreground">
-                        Tap to Call • {h.networkOrType}
-                      </p>
-                    </a>
-                  </Card>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="text-xs max-w-xs">
-                  <p className="font-bold text-foreground">{h.label} ({h.agency})</p>
-                  <p className="text-muted-foreground font-mono">{h.number} • {h.networkOrType}</p>
-                  <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Click / Tap to dial immediately</p>
-                </TooltipContent>
-              </Tooltip>
-            ))}
-          </div>
+          <TooltipProvider delayDuration={300}>
+            <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+              {hotlines.slice(0, 6).map((h) => (
+                <Tooltip key={h.id}>
+                  <TooltipTrigger asChild>
+                    <Card
+                      title={`${h.label} (${h.agency}) • ${h.number} • Tap to call immediately`}
+                      className="civic-card-hover border-rose-200/80 bg-card p-4 shadow-xs transition-all hover:border-rose-500 hover:shadow-sm dark:border-rose-900/60 cursor-pointer"
+                    >
+                      <a href={h.telHref} className="block space-y-1">
+                        <p className="text-[11px] font-medium text-muted-foreground truncate">
+                          {h.label}
+                        </p>
+                        <p className="font-mono text-base font-bold text-rose-700 dark:text-rose-400">
+                          {h.number}
+                        </p>
+                        <p className="text-[11px] text-muted-foreground">
+                          Tap to Call • {h.networkOrType}
+                        </p>
+                      </a>
+                    </Card>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="text-xs max-w-xs">
+                    <p className="font-bold text-foreground">{h.label} ({h.agency})</p>
+                    <p className="text-muted-foreground font-mono">{h.number} • {h.networkOrType}</p>
+                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Click / Tap to dial immediately</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </TooltipProvider>
         </div>
 
         {/* Honest Gap Reporting Card */}
@@ -711,6 +723,7 @@ export default function HomePage() {
           </div>
         </Card>
       </section>
+      </Suspense>
       </CivicPageContainer>
     </div>
   )

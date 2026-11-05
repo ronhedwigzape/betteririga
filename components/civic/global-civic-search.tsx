@@ -11,8 +11,7 @@ import {
   AlertTriangle,
   RotateCcw,
 } from "lucide-react"
-import { searchCivicRecords } from "@/lib/data/iriga-data"
-import { useCivicStore } from "@/lib/store/civic-store"
+import type { SearchableCivicRecord } from "@/lib/data/iriga-data"
 import { cn } from "@/lib/utils"
 import {
   Card,
@@ -26,35 +25,77 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-export function GlobalCivicSearch() {
-  const quickFilters = useCivicStore(
-    (state) => state.snapshot.siteContent.searchFilters
-  )
-  const homeCopy = useCivicStore((state) => state.snapshot.siteContent.home)
-  const query = useCivicStore((state) => state.searchQuery)
-  const section = useCivicStore((state) => state.searchSection)
-  const verificationFilter = useCivicStore((state) => state.verificationFilter)
-  const setQuery = useCivicStore((state) => state.setSearchQuery)
-  const setSection = useCivicStore((state) => state.setSearchSection)
-  const setVerificationFilter = useCivicStore(
-    (state) => state.setVerificationFilter
-  )
+interface SearchFilterOption {
+  section: SearchableCivicRecord["section"] | "all"
+  label: string
+  description?: string
+  icon?: string
+}
+
+interface GlobalCivicSearchProps {
+  quickFilters?: SearchFilterOption[]
+  homeCopy?: {
+    searchPlaceholder?: string
+    searchHeading?: string
+    searchSubtitle?: string
+    popularSearches?: string[]
+    [key: string]: unknown
+  }
+}
+
+const DEFAULT_FILTERS: SearchFilterOption[] = [
+  { section: "all", label: "All Records", description: "Search all verified civic data" },
+  { section: "services", label: "Services", description: "Citizen's Charter & permits" },
+  { section: "officials", label: "Officials", description: "Elected & appointed leadership" },
+  { section: "budget", label: "Budget", description: "National Tax Allotment & funds" },
+  { section: "projects", label: "Projects", description: "LGU & DPWH infrastructure" },
+  { section: "ordinances", label: "Ordinances", description: "City laws & resolutions" },
+  { section: "contacts", label: "Offices", description: "City Hall departments" },
+  { section: "barangays", label: "36 Barangays", description: "Barangay leadership & profiles" },
+]
+
+const DEFAULT_HOME_COPY = {
+  searchPlaceholder: "Search city services, officials, projects, budget, or 36 barangays...",
+  searchHeading: "Global Civic Search",
+  searchSubtitle: "Instant lookup across all verified Iriga City records.",
+  popularSearches: [
+    "Mayor",
+    "Vice Mayor",
+    "Business Permit",
+    "Real Property Tax",
+    "National Tax Allotment",
+    "San Francisco",
+    "Emergency Hotlines",
+    "Citizen's Charter",
+  ],
+}
+
+export function GlobalCivicSearch({
+  quickFilters = DEFAULT_FILTERS,
+  homeCopy = DEFAULT_HOME_COPY,
+}: GlobalCivicSearchProps) {
+  const [query, setQuery] = React.useState("")
+  const [section, setSection] = React.useState<
+    SearchableCivicRecord["section"] | "all"
+  >("all")
+  const [verificationFilter, setVerificationFilter] = React.useState<
+    "all" | "verified-only" | "open-gaps"
+  >("all")
 
   const resultsRef = React.useRef<HTMLDivElement | null>(null)
   const inputRef = React.useRef<HTMLInputElement | null>(null)
   const [isResetting, setIsResetting] = React.useState(false)
+  const [results, setResults] = React.useState<SearchableCivicRecord[]>([])
 
   const hasActiveSearch =
     query.trim().length > 0 ||
     section !== "all" ||
     verificationFilter !== "all"
 
-  const results = React.useMemo(
-    () => (hasActiveSearch ? searchCivicRecords(query, section, verificationFilter) : []),
-    [hasActiveSearch, query, section, verificationFilter]
-  )
-
-  const displayedResults = hasActiveSearch ? results.slice(0, 12) : []
+  // Prewarm search module in idle or focus
+  const prewarmSearch = React.useCallback(() => {
+    import("@/lib/data/iriga-data")
+  }, [])
 
   // Smoothly scrolls enough to show the contents of the suggestion/search at any breakpoint
   // Only scrolls if there is actual content/data rendered in resultsRef
@@ -78,6 +119,44 @@ export function GlobalCivicSearch() {
     })
   }, [])
 
+  // Execute on-demand search without bloating initial hydration bundle
+  const executeSearch = React.useCallback(
+    async (
+      q: string,
+      s: SearchableCivicRecord["section"] | "all",
+      v: "all" | "verified-only" | "open-gaps",
+      shouldScroll = false
+    ) => {
+      const { searchCivicRecords } = await import("@/lib/data/iriga-data")
+      const matching = searchCivicRecords(q, s, v)
+      setResults(matching)
+      if (shouldScroll && matching.length > 0) {
+        scrollToResults()
+      }
+      return matching
+    },
+    [scrollToResults]
+  )
+
+  // Reactive search on state changes
+  React.useEffect(() => {
+    if (!hasActiveSearch) return
+
+    let active = true
+    import("@/lib/data/iriga-data").then(({ searchCivicRecords }) => {
+      if (active) {
+        const matching = searchCivicRecords(query, section, verificationFilter)
+        setResults(matching)
+      }
+    })
+
+    return () => {
+      active = false
+    }
+  }, [hasActiveSearch, query, section, verificationFilter])
+
+  const displayedResults = hasActiveSearch ? results.slice(0, 12) : []
+
   const handleQueryChange = (val: string) => {
     if (isResetting) setIsResetting(false)
     setQuery(val)
@@ -86,11 +165,7 @@ export function GlobalCivicSearch() {
   const handleSuggestionClick = (sample: string) => {
     if (isResetting) setIsResetting(false)
     setQuery(sample)
-    const matching = searchCivicRecords(sample, section, verificationFilter)
-    // Only scroll if there is data/content
-    if (matching.length > 0) {
-      scrollToResults()
-    }
+    executeSearch(sample, section, verificationFilter, true)
   }
 
   const handleSectionClick = (
@@ -98,11 +173,8 @@ export function GlobalCivicSearch() {
   ) => {
     if (isResetting) setIsResetting(false)
     setSection(sect)
-    const matching = searchCivicRecords(query, sect, verificationFilter)
-    // Only scroll if there is data/content and active search
-    if (matching.length > 0 && (sect !== "all" || query.trim().length > 0)) {
-      scrollToResults()
-    }
+    const shouldScroll = sect !== "all" || query.trim().length > 0
+    executeSearch(query, sect, verificationFilter, shouldScroll)
   }
 
   const handleVerificationClick = (
@@ -110,11 +182,8 @@ export function GlobalCivicSearch() {
   ) => {
     if (isResetting) setIsResetting(false)
     setVerificationFilter(filter)
-    const matching = searchCivicRecords(query, section, filter)
-    // Only scroll if there is data/content
-    if (matching.length > 0 && (query.trim().length > 0 || section !== "all" || filter !== "all")) {
-      scrollToResults()
-    }
+    const shouldScroll = query.trim().length > 0 || section !== "all" || filter !== "all"
+    executeSearch(query, section, filter, shouldScroll)
   }
 
   const handleClearQuery = () => {
@@ -161,6 +230,9 @@ export function GlobalCivicSearch() {
                 type="search"
                 value={query}
                 onChange={(e) => handleQueryChange(e.target.value)}
+                onFocus={prewarmSearch}
+                onMouseEnter={prewarmSearch}
+                onTouchStart={prewarmSearch}
                 placeholder={homeCopy.searchPlaceholder}
                 aria-label="Search all verified Iriga civic records"
                 className="h-12 w-full rounded-xl bg-background/90 pr-10 pl-10 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-200 focus-visible:border-blue-600 focus-visible:ring-blue-500/20"
@@ -266,7 +338,7 @@ export function GlobalCivicSearch() {
               <Sparkles className="size-3.5 text-blue-600 dark:text-blue-400" />
               Try searching:
             </span>
-            {homeCopy.popularSearches.map((sample) => {
+            {(homeCopy.popularSearches ?? DEFAULT_HOME_COPY.popularSearches).map((sample: string) => {
               const isSelected =
                 query.trim().toLowerCase() === sample.toLowerCase()
               return (
