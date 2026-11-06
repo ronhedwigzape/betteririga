@@ -696,7 +696,7 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     )
   })
 
-  it("integrates @vercel/analytics/next in RootLayout", () => {
+  it("integrates @vercel/analytics/next and @vercel/speed-insights/next in RootLayout", () => {
     const layoutContent = fs.readFileSync("app/layout.tsx", "utf8")
     assert.ok(
       layoutContent.includes('import { Analytics } from "@vercel/analytics/next"'),
@@ -705,6 +705,14 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     assert.ok(
       layoutContent.includes("<Analytics />"),
       "layout.tsx must render <Analytics />"
+    )
+    assert.ok(
+      layoutContent.includes('import { SpeedInsights } from "@vercel/speed-insights/next"'),
+      "layout.tsx must import SpeedInsights from @vercel/speed-insights/next"
+    )
+    assert.ok(
+      layoutContent.includes("<SpeedInsights />") || layoutContent.includes("<SpeedInsights/>"),
+      "layout.tsx must render <SpeedInsights />"
     )
   })
 
