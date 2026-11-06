@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
-import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import "./globals.css"
@@ -9,24 +8,17 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { SiteHeader } from "@/components/civic/site-header"
 import { SiteFooter } from "@/components/civic/site-footer"
 import { getRootMetadata, getCivicSnapshot } from "@/lib/data/iriga-data"
-import { cn } from "@/lib/utils"
 
 const VolunteerModal = dynamic(() =>
   import("@/components/civic/volunteer-modal").then((mod) => mod.VolunteerModal)
 )
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-})
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://betteririga.org"),
   ...getRootMetadata(),
   icons: {
-    icon: "/logo.jpg",
-    apple: "/logo.jpg",
+    icon: "/icon.jpg",
+    apple: "/apple-icon.jpg",
   },
 }
 
@@ -52,11 +44,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(
-        "antialiased",
-        "font-sans",
-        inter.variable
-      )}
+      className="antialiased font-sans"
     >
       <head>
         <link rel="preconnect" href="https://api.open-meteo.com" />

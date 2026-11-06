@@ -499,7 +499,6 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
           >
             <BetterIrigaLogo
               variant="horizontal"
-              priority
               alt={`${brand.fullDomain} Official Logo`}
               className="h-8 sm:h-9 md:h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
             />

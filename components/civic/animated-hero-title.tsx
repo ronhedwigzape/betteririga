@@ -94,12 +94,13 @@ export function AnimatedHeroTitle({
         </div>
       </div>
 
-      {/* Main Title Heading with Shimmer Animation & Ample Space Under Highlight */}
+      {/* Main Title Heading — Unified inline formatting context for instant text LCP */}
       <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.18] sm:leading-[1.22]">
-        <span className="block mb-2.5 sm:mb-3.5 pb-1 sm:pb-2 pt-0.5 bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 bg-clip-text text-transparent dark:from-blue-400 dark:via-indigo-300 dark:to-cyan-300">
+        <span className="text-blue-700 dark:text-blue-400">
           {highlight}:
-        </span>
-        <span className="relative inline-block text-foreground drop-shadow-xs pb-1 sm:pb-1.5">
+        </span>{" "}
+        <br />
+        <span className="text-foreground drop-shadow-xs">
           {title}
         </span>
       </h1>

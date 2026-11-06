@@ -112,7 +112,7 @@ export default function HomePage() {
                 size={180}
                 priority
                 alt={`${snapshot.siteContent.brand.fullDomain} Official Emblem`}
-                className="size-32 sm:size-40 md:size-44 lg:size-48 transition-transform duration-500 hover:scale-105 drop-shadow-2xl"
+                className="size-16 sm:size-36 md:size-40 lg:size-48 transition-transform duration-500 hover:scale-105 sm:drop-shadow-2xl"
               />
             </div>
 

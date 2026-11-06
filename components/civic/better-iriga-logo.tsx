@@ -242,7 +242,7 @@ export function BetterIrigaLogo({
         width={size}
         height={size}
         quality={45}
-        sizes="(max-width: 640px) 96px, (max-width: 1024px) 144px, 192px"
+        sizes="(max-width: 640px) 80px, (max-width: 1024px) 144px, 192px"
         priority={priority}
         fetchPriority={priority ? "high" : undefined}
         loading={priority ? "eager" : "lazy"}
@@ -256,7 +256,7 @@ export function BetterIrigaLogo({
         width={size}
         height={size}
         quality={45}
-        sizes="(max-width: 640px) 96px, (max-width: 1024px) 144px, 192px"
+        sizes="(max-width: 640px) 80px, (max-width: 1024px) 144px, 192px"
         className="hidden h-full w-full object-contain dark:block"
       />
     </div>

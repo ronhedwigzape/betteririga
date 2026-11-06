@@ -54,7 +54,7 @@ export function HeroVideoBackground({
             fill
             loading="lazy"
             decoding="async"
-            sizes="(max-width: 640px) 256px, (max-width: 1024px) 640px, 100vw"
+            sizes="(max-width: 640px) 128px, (max-width: 1024px) 640px, 100vw"
             quality={45}
             className="object-cover object-center opacity-90 dark:opacity-70"
           />
