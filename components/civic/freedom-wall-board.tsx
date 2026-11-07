@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Plus, RotateCcw, X, Move, AlertCircle } from "lucide-react"
-import { createClient } from "@supabase/supabase-js"
+import { createClient, type RealtimeChannel } from "@supabase/supabase-js"
 import { formatNoteTimestamp } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { mapRowToFreedomWallNote, type SupabaseFreedomWallNoteRow } from "@/lib/supabase/freedom-wall"
@@ -50,6 +50,12 @@ export function FreedomWallBoard() {
   const [submitting, setSubmitting] = React.useState(false)
   const [postError, setPostError] = React.useState<string | null>(null)
 
+  // Live presence and real-time typing indicators
+  const [liveCount, setLiveCount] = React.useState<number>(1)
+  const [typingCount, setTypingCount] = React.useState<number>(0)
+  const presenceChannelRef = React.useRef<RealtimeChannel | null>(null)
+  const isComposeOpenRef = React.useRef(isComposeOpen)
+
   // Daily quota limitation per browser session (max 5 notes per day)
   const DAILY_LIMIT = 5
   const [dailyPostsCount, setDailyPostsCount] = React.useState<number>(() => {
@@ -75,6 +81,79 @@ export function FreedomWallBoard() {
       return ""
     }
   })
+
+  // Real-time presence heartbeat function
+  const sendHeartbeat = React.useCallback(
+    async (typing: boolean) => {
+      if (!sessionToken) return
+      try {
+        const res = await fetch("/api/freedom-wall/presence", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: sessionToken,
+            isTyping: typing,
+          }),
+          cache: "no-store",
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.success && typeof data.liveCount === "number") {
+            setLiveCount(Math.max(1, data.liveCount))
+            setTypingCount(data.typingCount || 0)
+          }
+        }
+      } catch {
+        // Heartbeat silently retries next interval
+      }
+    },
+    [sessionToken]
+  )
+
+  const openComposeModal = React.useCallback(() => {
+    setPostError(null)
+    setIsComposeOpen(true)
+    void sendHeartbeat(true)
+  }, [sendHeartbeat])
+
+  const closeComposeModal = React.useCallback(() => {
+    setIsComposeOpen(false)
+    void sendHeartbeat(false)
+  }, [sendHeartbeat])
+
+  // Sync compose open ref and broadcast typing changes to Supabase Presence
+  React.useEffect(() => {
+    isComposeOpenRef.current = isComposeOpen
+    if (presenceChannelRef.current) {
+      void presenceChannelRef.current.track({
+        online_at: new Date().toISOString(),
+        isTyping: isComposeOpen,
+      })
+    }
+  }, [isComposeOpen])
+
+  // Periodic heartbeat & unmount/beforeunload cleanup
+  React.useEffect(() => {
+    void sendHeartbeat(isComposeOpenRef.current)
+
+    const presenceInterval = window.setInterval(() => {
+      void sendHeartbeat(isComposeOpenRef.current)
+    }, 4500)
+
+    const handleBeforeUnload = () => {
+      if (sessionToken && typeof navigator !== "undefined" && navigator.sendBeacon) {
+        const payload = JSON.stringify({ sessionId: sessionToken, leave: true })
+        const blob = new Blob([payload], { type: "application/json" })
+        navigator.sendBeacon("/api/freedom-wall/presence", blob)
+      }
+    }
+    window.addEventListener("beforeunload", handleBeforeUnload)
+
+    return () => {
+      window.clearInterval(presenceInterval)
+      window.removeEventListener("beforeunload", handleBeforeUnload)
+    }
+  }, [sendHeartbeat, sessionToken])
 
   // Real-time remote poll: fetches exclusively from database API
   const refreshRemoteNotes = React.useCallback(async () => {
@@ -137,7 +216,9 @@ export function FreedomWallBoard() {
 
     try {
       const client = createClient(url, key, { auth: { persistSession: false } })
-      const channel = client
+
+      // Postgres changes channel for notes
+      const notesChannel = client
         .channel("freedom-wall-realtime-feed")
         .on(
           "postgres_changes",
@@ -155,13 +236,41 @@ export function FreedomWallBoard() {
         )
         .subscribe()
 
+      // Realtime presence channel for live visitors and typers
+      const presenceChannel = client.channel("freedom-wall-presence", {
+        config: { presence: { key: sessionToken || "anon_user" } },
+      })
+
+      presenceChannel
+        .on("presence", { event: "sync" }, () => {
+          const state = presenceChannel.presenceState()
+          const presences = Object.values(state).flat() as Array<{ isTyping?: boolean }>
+          if (presences.length > 0) {
+            setLiveCount(Math.max(1, presences.length))
+            const typing = presences.filter((p) => Boolean(p.isTyping)).length
+            setTypingCount(typing)
+          }
+        })
+        .subscribe(async (status) => {
+          if (status === "SUBSCRIBED") {
+            await presenceChannel.track({
+              online_at: new Date().toISOString(),
+              isTyping: isComposeOpenRef.current,
+            })
+          }
+        })
+
+      presenceChannelRef.current = presenceChannel
+
       return () => {
-        void client.removeChannel(channel)
+        void client.removeChannel(notesChannel)
+        void client.removeChannel(presenceChannel)
+        presenceChannelRef.current = null
       }
     } catch {
       // Fallback polling guarantees sync
     }
-  }, [notes, refreshRemoteNotes, syncFreedomWallNotes])
+  }, [notes, refreshRemoteNotes, syncFreedomWallNotes, sessionToken])
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -313,7 +422,7 @@ export function FreedomWallBoard() {
           ...notes.filter((n) => n.id !== (json.note as FreedomWallStickyNote).id),
         ])
         setNoteContent("")
-        setIsComposeOpen(false)
+        closeComposeModal()
       } else {
         // Database insert failed or limit reached!
         setPostError(
@@ -353,15 +462,36 @@ export function FreedomWallBoard() {
           data-wall-toolbar
           className="pointer-events-auto absolute top-4 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-2xl border border-slate-700/60 bg-slate-900/90 px-3 py-1.5 shadow-xl backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2"
         >
-          {/* Live Indicator Pill */}
-          <div className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold">
-            <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-bold text-white">
-              {uiCopy.toolbarBadge}
+          {/* Live Indicator Pill with Visitor & Typing Counts */}
+          <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg px-1.5 sm:px-2 py-1 text-xs font-semibold">
+            <span className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true" />
+            <span className="text-xs font-bold uppercase tracking-wide text-white">
+              {uiCopy.toolbarBadge || "Live"}
             </span>
+            <Badge
+              variant="secondary"
+              className="px-1.5 py-0 font-mono text-[11px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 shadow-2xs"
+            >
+              {liveCount} live
+            </Badge>
+            {typingCount > 0 ? (
+              <span
+                role="status"
+                aria-live="polite"
+                className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-1.5 sm:px-2 py-0.5 text-[11px] font-semibold text-amber-300 animate-pulse"
+              >
+                <span className="size-1.5 rounded-full bg-amber-400 animate-ping shrink-0" />
+                <span className="truncate max-w-[75px] sm:max-w-none">
+                  {typingCount === 1 ? "1 typing…" : `${typingCount} typing…`}
+                </span>
+              </span>
+            ) : null}
             {notes.length > 0 ? (
-              <Badge variant="secondary" className="px-1.5 py-0 font-mono text-[11px] bg-slate-800 text-slate-200">
-                {notes.length}
+              <Badge
+                variant="secondary"
+                className="hidden sm:inline-flex px-1.5 py-0 font-mono text-[11px] bg-slate-800 text-slate-300 border border-slate-700/60"
+              >
+                {notes.length} {notes.length === 1 ? "note" : "notes"}
               </Badge>
             ) : null}
           </div>
@@ -396,10 +526,7 @@ export function FreedomWallBoard() {
           <Button
             type="button"
             size="sm"
-            onClick={() => {
-              setPostError(null)
-              setIsComposeOpen(true)
-            }}
+            onClick={openComposeModal}
             className="rounded-xl bg-blue-600 font-bold text-xs text-white shadow-md hover:bg-blue-500 active:bg-blue-700"
           >
             <Plus className="size-3.5 stroke-[2.5] mr-1" />
@@ -502,7 +629,7 @@ export function FreedomWallBoard() {
       {isComposeOpen ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
-          onClick={() => setIsComposeOpen(false)}
+          onClick={closeComposeModal}
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -516,7 +643,7 @@ export function FreedomWallBoard() {
                 type="button"
                 variant="ghost"
                 size="icon-xs"
-                onClick={() => setIsComposeOpen(false)}
+                onClick={closeComposeModal}
                 aria-label="Close modal"
                 className="text-slate-400 hover:bg-slate-800 hover:text-white"
               >
@@ -622,7 +749,7 @@ export function FreedomWallBoard() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setIsComposeOpen(false)}
+                  onClick={closeComposeModal}
                   className="flex-1 rounded-xl border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
                 >
                   {uiCopy.cancelButtonLabel}

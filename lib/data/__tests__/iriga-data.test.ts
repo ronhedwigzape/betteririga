@@ -766,6 +766,107 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
     assert.equal(goodJson.note.content, "Test note from civic test suite")
   })
 
+  it("verifies Freedom Wall Live label, presence count, real-time typing indicators, and presence API", async () => {
+    const {
+      recordPresence,
+      removePresence,
+      getPresenceStats,
+    } = await import("@/lib/security/presence-tracker")
+    const {
+      GET: getPresence,
+      POST: postPresence,
+      DELETE: deletePresence,
+    } = await import("@/app/api/freedom-wall/presence/route")
+
+    // 1. Presence tracker utility tests
+    const session1 = `test_sess_${Date.now()}_1`
+    const session2 = `test_sess_${Date.now()}_2`
+
+    const stats1 = recordPresence(session1, false)
+    assert.ok(stats1.liveCount >= 1, "liveCount should be at least 1")
+
+    const stats2 = recordPresence(session2, true)
+    assert.ok(stats2.liveCount >= 2, "liveCount should increment with multiple users")
+    assert.ok(stats2.typingCount >= 1, "typingCount should reflect user who is typing")
+
+    removePresence(session2)
+    const statsAfterRemove = getPresenceStats()
+    assert.equal(statsAfterRemove.typingCount, 0, "typingCount should reset when typing user leaves")
+
+    // Clean up session 1
+    removePresence(session1)
+
+    // 2. Presence API endpoint tests
+    const getRes = await getPresence()
+    assert.equal(getRes.status, 200)
+    const getJson = await getRes.json()
+    assert.equal(getJson.success, true)
+    assert.ok(typeof getJson.liveCount === "number")
+    assert.ok(typeof getJson.typingCount === "number")
+
+    // POST /api/freedom-wall/presence
+    const testPostSession = `api_test_${Date.now()}`
+    const postReq = new Request("http://localhost/api/freedom-wall/presence", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId: testPostSession, isTyping: true }),
+    })
+    // @ts-expect-error test NextRequest signature with Request
+    const postRes = await postPresence(postReq)
+    assert.equal(postRes.status, 200)
+    const postJson = await postRes.json()
+    assert.equal(postJson.success, true)
+    assert.ok(postJson.typingCount >= 1)
+
+    // DELETE /api/freedom-wall/presence
+    const deleteReq = new Request(
+      `http://localhost/api/freedom-wall/presence?sessionId=${testPostSession}`,
+      { method: "DELETE" }
+    )
+    // @ts-expect-error test NextRequest signature with Request
+    const deleteRes = await deletePresence(deleteReq)
+    assert.equal(deleteRes.status, 200)
+    const deleteJson = await deleteRes.json()
+    assert.equal(deleteJson.success, true)
+
+    // 3. Freedom Wall JSON data file assertions
+    const freedomWallJson = JSON.parse(
+      fs.readFileSync("data/freedom-wall.json", "utf8")
+    )
+    assert.equal(
+      freedomWallJson.uiCopy.toolbarBadge,
+      "Live",
+      "data/freedom-wall.json toolbarBadge must be 'Live'"
+    )
+
+    // 4. Freedom Wall Board component verification
+    const boardContent = fs.readFileSync(
+      "components/civic/freedom-wall-board.tsx",
+      "utf8"
+    )
+    assert.ok(
+      boardContent.includes("bg-emerald-400 animate-pulse"),
+      "freedom-wall-board.tsx must include pulsing green status indicator"
+    )
+    assert.ok(
+      boardContent.includes('uiCopy.toolbarBadge || "Live"'),
+      "freedom-wall-board.tsx must render Live label beside green light"
+    )
+    assert.ok(
+      boardContent.includes("{liveCount} live"),
+      "freedom-wall-board.tsx must render live visitor count badge"
+    )
+    assert.ok(
+      boardContent.includes("typingCount > 0") &&
+      (boardContent.includes("typing…") || boardContent.includes("typing")),
+      "freedom-wall-board.tsx must render real-time typing indicator"
+    )
+    assert.ok(
+      boardContent.includes("/api/freedom-wall/presence"),
+      "freedom-wall-board.tsx must communicate with presence API"
+    )
+  })
+
   it("enforces light mode default, horizontal navbar logo, enlarged hero emblem, and compact hotlines", () => {
     // 1. Theme default is light mode
     const themeProviderContent = fs.readFileSync(
