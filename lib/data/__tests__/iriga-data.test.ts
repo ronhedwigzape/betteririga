@@ -1090,16 +1090,24 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "app/template.tsx must define enter transition and respect prefers-reduced-motion"
     )
 
-    // 5. Weather card background video assets exist
+    // 5. Weather card background video assets exist & cross-browser support
     assert.ok(fs.existsSync("public/weather/sunny.mp4"), "sunny.mp4 must exist")
     assert.ok(fs.existsSync("public/weather/sunny.webm"), "sunny.webm must exist")
+    assert.ok(fs.existsSync("public/weather/sunny-poster.jpg"), "sunny-poster.jpg must exist")
     assert.ok(fs.existsSync("public/weather/cloudy.mp4"), "cloudy.mp4 must exist")
+    assert.ok(fs.existsSync("public/weather/cloudy.webm"), "cloudy.webm must exist")
+    assert.ok(fs.existsSync("public/weather/cloudy-poster.jpg"), "cloudy-poster.jpg must exist")
     assert.ok(fs.existsSync("public/weather/rainy.mp4"), "rainy.mp4 must exist")
+    assert.ok(fs.existsSync("public/weather/rainy.webm"), "rainy.webm must exist")
+    assert.ok(fs.existsSync("public/weather/rainy-poster.jpg"), "rainy-poster.jpg must exist")
 
     assert.ok(
       livelySectionsContent.includes("video") &&
-      livelySectionsContent.includes("WEATHER_VIDEO_ASSETS"),
-      "iriga-lively-sections.tsx must implement live video weather background"
+      livelySectionsContent.includes("WEATHER_VIDEO_ASSETS") &&
+      livelySectionsContent.includes("playsInline") &&
+      livelySectionsContent.includes("preload=\"auto\"") &&
+      livelySectionsContent.includes("glowClass"),
+      "iriga-lively-sections.tsx must implement live video weather background with cross-browser attributes and atmospheric condition glow"
     )
 
     // 6. Facebook section has profile picture, official verified badge, and no preview timeline iframe

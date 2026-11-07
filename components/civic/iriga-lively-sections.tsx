@@ -27,6 +27,7 @@ import { Reveal } from "@/components/civic/reveal"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface WeatherSnapshot {
   temperatureC: number
@@ -46,25 +47,38 @@ type WeatherVideoTheme = "rainy" | "cloudy" | "sunny"
 
 const WEATHER_VIDEO_ASSETS: Record<
   WeatherVideoTheme,
-  { mp4: string; webm: string; poster: string; label: string }
+  {
+    mp4: string
+    webm: string
+    poster: string
+    label: string
+    accentColor: string
+    glowClass: string
+  }
 > = {
   sunny: {
     mp4: "/weather/sunny.mp4",
     webm: "/weather/sunny.webm",
     poster: "/weather/sunny-poster.jpg",
     label: "Sunny Skies (Iriga City)",
+    accentColor: "text-amber-400",
+    glowClass: "bg-amber-400/35",
   },
   cloudy: {
     mp4: "/weather/cloudy.mp4",
     webm: "/weather/cloudy.webm",
     poster: "/weather/cloudy-poster.jpg",
     label: "Mountain Clouds & Overcast",
+    accentColor: "text-amber-200",
+    glowClass: "bg-slate-300/30",
   },
   rainy: {
     mp4: "/weather/rainy.mp4",
     webm: "/weather/rainy.webm",
     poster: "/weather/rainy-poster.jpg",
     label: "Tropical Rain & Showers",
+    accentColor: "text-sky-300",
+    glowClass: "bg-sky-400/35",
   },
 }
 
@@ -82,14 +96,17 @@ function resolveWeatherTheme(
     str.includes("rain") ||
     str.includes("shower") ||
     str.includes("drizzle") ||
-    str.includes("storm")
+    str.includes("storm") ||
+    str.includes("thunder")
   ) {
     return "rainy"
   }
   if (
     str.includes("cloud") ||
     str.includes("overcast") ||
-    str.includes("fog")
+    str.includes("fog") ||
+    str.includes("mist") ||
+    str.includes("haze")
   ) {
     return "cloudy"
   }
@@ -114,7 +131,7 @@ export function IrigaLivelySections() {
     hourly: weatherBaseline.hourly,
   })
   const [refreshingWeather, setRefreshingWeather] = React.useState(false)
-  const [canPlayVideo, setCanPlayVideo] = React.useState(false)
+  const [videoLoaded, setVideoLoaded] = React.useState(false)
 
   const weatherTheme = resolveWeatherTheme(
     weather.weatherCode,
@@ -147,49 +164,24 @@ export function IrigaLivelySections() {
     return () => observer.disconnect()
   }, [])
 
-  // Defer desktop video playback to idle time; mobile preserves 100% performance with lightweight poster
-  React.useEffect(() => {
-    if (typeof window === "undefined" || window.innerWidth < 1024) return
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    let idleId: number | null = null
-    const enableVideo = () => setCanPlayVideo(true)
-
-    const win = window as unknown as Window & {
-      requestIdleCallback?: (
-        cb: () => void,
-        opts: { timeout: number }
-      ) => number
-      cancelIdleCallback?: (id: number) => void
-    }
-
-    if (typeof win.requestIdleCallback === "function") {
-      idleId = win.requestIdleCallback(enableVideo, { timeout: 5000 })
-    } else {
-      idleId = setTimeout(enableVideo, 4000) as unknown as number
-    }
-
-    return () => {
-      if (
-        idleId !== null &&
-        typeof win.cancelIdleCallback === "function"
-      ) {
-        win.cancelIdleCallback(idleId)
-      } else if (idleId !== null) {
-        clearTimeout(idleId)
-      }
+  // Robust cross-browser video autoplay handler (iOS Safari, macOS WebKit, Chrome, Firefox, Edge)
+  const attemptPlay = React.useCallback(() => {
+    const el = videoRef.current
+    if (!el) return
+    el.muted = true
+    el.defaultMuted = true
+    el.playsInline = true
+    const playPromise = el.play()
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay policy prevented playback; ambient atmospheric gradient remains visible
+      })
     }
   }, [])
 
   React.useEffect(() => {
-    if (canPlayVideo && videoRef.current) {
-      videoRef.current.muted = true
-      const playPromise = videoRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {})
-      }
-    }
-  }, [canPlayVideo, weatherTheme])
+    attemptPlay()
+  }, [weatherTheme, attemptPlay])
 
   const fetchLiveWeather = React.useCallback(async () => {
     setRefreshingWeather(true)
@@ -285,36 +277,59 @@ export function IrigaLivelySections() {
             <Card className="relative overflow-hidden flex flex-col justify-between border-border bg-slate-950 p-6 text-white shadow-md lg:col-span-5 min-h-[480px] rounded-2xl">
               {/* Maxxed Out Background Live Weather Video directly inside the Weather Card */}
               <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-                {canPlayVideo ? (
-                  <video
-                    ref={videoRef}
-                    key={weatherTheme}
-                    src={currentVideo.mp4}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="none"
-                    poster={currentVideo.poster}
-                    className="h-full w-full object-cover object-center scale-105 transition-opacity duration-700 motion-reduce:hidden"
-                  >
-                    <source src={currentVideo.mp4} type="video/mp4" />
-                    <source src={currentVideo.webm} type="video/webm" />
-                  </video>
-                ) : (
-                  <div
-                    className="h-full w-full bg-cover bg-center opacity-80"
-                    style={{ backgroundImage: `url(${currentVideo.poster})` }}
-                  />
-                )}
-                {/* Fallback image for prefers-reduced-motion */}
+                {/* 1. Base Atmospheric Condition Poster (Always visible immediately as fallback & instant paint) */}
+                <div
+                  className="absolute inset-0 h-full w-full bg-cover bg-center transition-opacity duration-700"
+                  style={{ backgroundImage: `url(${currentVideo.poster})` }}
+                />
+
+                {/* 2. Hardware-accelerated Live Atmospheric Video (Cross-browser autoplay for Chrome, Safari, Firefox, Edge, Mobile WebKit) */}
+                <video
+                  ref={videoRef}
+                  key={weatherTheme}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  poster={currentVideo.poster}
+                  onCanPlay={(e) => {
+                    const el = e.currentTarget
+                    el.muted = true
+                    el.defaultMuted = true
+                    el.play().catch(() => {})
+                    setVideoLoaded(true)
+                  }}
+                  onLoadedData={() => {
+                    setVideoLoaded(true)
+                  }}
+                  className={cn(
+                    "absolute inset-0 h-full w-full object-cover object-center scale-105 transition-opacity duration-700 motion-reduce:hidden",
+                    videoLoaded ? "opacity-100" : "opacity-0"
+                  )}
+                >
+                  <source src={currentVideo.mp4} type="video/mp4" />
+                  <source src={currentVideo.webm} type="video/webm" />
+                </video>
+
+                {/* 3. Fallback image for prefers-reduced-motion */}
                 <div
                   className="hidden h-full w-full bg-cover bg-center opacity-70 motion-reduce:block"
                   style={{ backgroundImage: `url(${currentVideo.poster})` }}
                 />
-                {/* Subtle Contrast Scrim: allows vivid visibility of sunny sky/clouds/rain video while ensuring WCAG AA text contrast */}
-                <div className="absolute inset-0 bg-slate-950/35" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-slate-950/45" />
+
+                {/* 4. Dynamic Atmospheric Condition Glow centered behind the temperature & icon */}
+                <div
+                  className={cn(
+                    "pointer-events-none absolute -top-12 -left-12 size-96 rounded-full blur-3xl opacity-50 transition-colors duration-1000",
+                    currentVideo.glowClass
+                  )}
+                  aria-hidden="true"
+                />
+
+                {/* 5. Subtle Contrast Scrim: allows vivid visibility of sunny sky/clouds/rain video while ensuring WCAG AA text contrast */}
+                <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[0.5px]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/40" />
               </div>
 
               {/* Foreground Weather Content (z-10 relative) */}
@@ -345,22 +360,22 @@ export function IrigaLivelySections() {
                   </div>
 
                   <div className="mt-6 flex items-center gap-4">
-                    <div className="flex size-16 items-center justify-center rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 shadow-md">
+                    <div className="flex size-16 items-center justify-center rounded-2xl bg-black/45 backdrop-blur-md border border-white/20 shadow-lg shrink-0">
                       {weatherTheme === "rainy" ? (
-                        <CloudRain className="size-10 text-sky-300" />
+                        <CloudRain className="size-10 text-sky-300 drop-shadow-md" />
                       ) : weatherTheme === "cloudy" ? (
-                        <CloudSun className="size-10 text-amber-300" />
+                        <CloudSun className="size-10 text-amber-200 drop-shadow-md" />
                       ) : (
-                        <Sun className="size-10 text-amber-400" />
+                        <Sun className="size-10 text-amber-400 drop-shadow-md" />
                       )}
                     </div>
-                    <div>
-                      <div className="text-4xl font-extrabold tracking-tight sm:text-5xl drop-shadow-md">
+                    <div className="min-w-0">
+                      <div className="text-4xl font-black tracking-tight sm:text-5xl text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
                         {weather.temperatureC}°C
                       </div>
-                      <p className="mt-0.5 text-sm font-medium text-blue-100 flex items-center gap-1.5 drop-shadow-xs">
+                      <p className="mt-0.5 text-sm font-semibold text-blue-100 flex items-center gap-1.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                         {weather.conditionLabel}
-                        <span className="text-[11px] text-blue-200/90">• Live Sky Video</span>
+                        <span className="text-[11px] font-medium text-blue-200/90">• Live Sky Video</span>
                       </p>
                     </div>
                   </div>
