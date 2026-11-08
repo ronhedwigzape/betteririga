@@ -80,6 +80,7 @@ export default function LegislativePage() {
       </Reveal>
 
       {/* Section 1: Presiding Officer & Legislative Council */}
+      <Reveal delayMs={40}>
       <section className="space-y-6">
         <div>
           <h2 className="text-xl font-bold text-foreground sm:text-2xl">
@@ -180,8 +181,10 @@ export default function LegislativePage() {
           </div>
         ) : null}
       </section>
+      </Reveal>
 
       {/* Section 2: Citizen's Charter — How to Request Certified Copies */}
+      <Reveal delayMs={60}>
       <section className="rounded-2xl border border-purple-200/80 bg-gradient-to-br from-purple-50/50 via-card to-card p-5 sm:p-6 dark:border-purple-900/50 dark:from-purple-950/20">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
           <div className="space-y-2">
@@ -235,19 +238,22 @@ export default function LegislativePage() {
           </a>
         </div>
       </section>
+      </Reveal>
 
       {/* Section 3: Below It — Enacted Ordinances & Resolutions Archive */}
       <section className="space-y-4">
-        <div>
-          <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-            2. Enacted Ordinances & Resolutions Archive
-          </h2>
-          <p className="text-xs text-muted-foreground">
-            Search and filter verified local measures enacted by the Sangguniang
-            Panlungsod of Iriga City. Tap any card to read plain-language summaries
-            and download official copies.
-          </p>
-        </div>
+        <Reveal delayMs={80}>
+          <div>
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+              2. Enacted Ordinances & Resolutions Archive
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Search and filter verified local measures enacted by the Sangguniang
+              Panlungsod of Iriga City. Tap any card to read plain-language summaries
+              and download official copies.
+            </p>
+          </div>
+        </Reveal>
 
         <OrdinancesArchive measures={ordinances} />
       </section>

@@ -26,7 +26,9 @@ export default function FreedomWallPage() {
         </header>
       </Reveal>
 
-      <FreedomWallBoard />
+      <Reveal delayMs={40}>
+        <FreedomWallBoard />
+      </Reveal>
     </CivicPageContainer>
   )
 }

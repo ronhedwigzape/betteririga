@@ -5,11 +5,81 @@ import { Plus, RotateCcw, X, Move, AlertCircle } from "lucide-react"
 import { createClient, type RealtimeChannel } from "@supabase/supabase-js"
 import { formatNoteTimestamp } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
-import { mapRowToFreedomWallNote, type SupabaseFreedomWallNoteRow } from "@/lib/supabase/freedom-wall"
+import {
+  mapRowToFreedomWallNote,
+  type SupabaseFreedomWallNoteRow,
+} from "@/lib/supabase/freedom-wall"
 import type { FreedomWallStickyNote } from "@/lib/data/schemas"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+
+const NOTE_CARD_WIDTH = 240
+const NOTE_CARD_HEIGHT = 176
+const NOTE_COLLISION_X = 216
+const NOTE_COLLISION_Y = 156
+
+/**
+ * Deterministic visual de-stacking for Freedom Wall sticky notes so notes
+ * with identical or overlapping coordinates never completely cover each other
+ * across mobile, tablet, or desktop breakpoints.
+ */
+export function resolveVisibleNotePositions(
+  notes: FreedomWallStickyNote[],
+  draggingNoteId: string | null = null
+): Array<FreedomWallStickyNote & { displayX: number; displayY: number }> {
+  const placed: Array<
+    FreedomWallStickyNote & { displayX: number; displayY: number }
+  > = []
+
+  // Sort oldest-first when assigning slots so existing notes stay stable
+  const ordered = [...notes].sort((a, b) =>
+    a.createdAt.localeCompare(b.createdAt) || a.id.localeCompare(b.id)
+  )
+
+  const resolvedMap = new Map<string, { displayX: number; displayY: number }>()
+
+  for (const note of ordered) {
+    let candidateX = note.x
+    let candidateY = note.y
+
+    if (note.id !== draggingNoteId) {
+      let step = 0
+      const maxSteps = 36
+      while (
+        step < maxSteps &&
+        placed.some(
+          (other) =>
+            Math.abs(other.displayX - candidateX) < NOTE_COLLISION_X &&
+            Math.abs(other.displayY - candidateY) < NOTE_COLLISION_Y
+        )
+      ) {
+        step += 1
+        // Golden-angle / hex-grid spiral around the original (x, y)
+        const ring = Math.floor((step - 1) / 6) + 1
+        const slotInRing = (step - 1) % 6
+        const angle = (slotInRing * Math.PI) / 3 + (ring % 2) * (Math.PI / 6)
+        const offsetX = Math.round(
+          Math.cos(angle) * (NOTE_CARD_WIDTH + 20) * ring
+        )
+        const offsetY = Math.round(
+          Math.sin(angle) * (NOTE_CARD_HEIGHT + 20) * ring
+        )
+        candidateX = Math.max(80, Math.min(5600, note.x + offsetX))
+        candidateY = Math.max(80, Math.min(5600, note.y + offsetY))
+      }
+    }
+
+    const resolved = { ...note, displayX: candidateX, displayY: candidateY }
+    placed.push(resolved)
+    resolvedMap.set(note.id, { displayX: candidateX, displayY: candidateY })
+  }
+
+  return notes.map((n) => {
+    const pos = resolvedMap.get(n.id) ?? { displayX: n.x, displayY: n.y }
+    return { ...n, displayX: pos.displayX, displayY: pos.displayY }
+  })
+}
 
 export function FreedomWallBoard() {
   const snapshot = useCivicStore((state) => state.snapshot)
@@ -20,12 +90,15 @@ export function FreedomWallBoard() {
 
   const notes = useCivicStore((state) => state.freedomWallNotes)
   const hydrateFreedomWall = useCivicStore((state) => state.hydrateFreedomWall)
-  const syncFreedomWallNotes = useCivicStore((state) => state.syncFreedomWallNotes)
+  const syncFreedomWallNotes = useCivicStore(
+    (state) => state.syncFreedomWallNotes
+  )
   const moveFreedomWallNote = useCivicStore(
     (state) => state.moveFreedomWallNote
   )
 
   const viewportRef = React.useRef<HTMLDivElement>(null)
+  const toolbarRef = React.useRef<HTMLDivElement>(null)
   const [pan, setPan] = React.useState({ x: 0, y: 0 })
   const [scale, setScale] = React.useState(1)
   const [isPanning, setIsPanning] = React.useState(false)
@@ -34,6 +107,10 @@ export function FreedomWallBoard() {
   const [draggingNoteId, setDraggingNoteId] = React.useState<string | null>(
     null
   )
+  const [activeNoteId, setActiveNoteId] = React.useState<string | null>(null)
+  const hasAutoCenteredNotesRef = React.useRef(false)
+  const lastViewportWidthRef = React.useRef(0)
+
   const dragNoteStartRef = React.useRef({
     clientX: 0,
     clientY: 0,
@@ -56,13 +133,25 @@ export function FreedomWallBoard() {
   const presenceChannelRef = React.useRef<RealtimeChannel | null>(null)
   const isComposeOpenRef = React.useRef(isComposeOpen)
 
+  // De-stacked visible note coordinates so notes never cover each other
+  const visibleNotes = React.useMemo(
+    () => resolveVisibleNotePositions(notes, draggingNoteId),
+    [notes, draggingNoteId]
+  )
+  const visibleNotesRef = React.useRef(visibleNotes)
+  React.useEffect(() => {
+    visibleNotesRef.current = visibleNotes
+  }, [visibleNotes])
+
   // Daily quota limitation per browser session (max 5 notes per day)
   const DAILY_LIMIT = 5
   const [dailyPostsCount, setDailyPostsCount] = React.useState<number>(() => {
     if (typeof window === "undefined") return 0
     try {
       const todayDate = new Date().toISOString().slice(0, 10)
-      return Number(localStorage.getItem(`betteririga_fw_quota_${todayDate}`) || 0)
+      return Number(
+        localStorage.getItem(`betteririga_fw_quota_${todayDate}`) || 0
+      )
     } catch {
       return 0
     }
@@ -141,7 +230,11 @@ export function FreedomWallBoard() {
     }, 4500)
 
     const handleBeforeUnload = () => {
-      if (sessionToken && typeof navigator !== "undefined" && navigator.sendBeacon) {
+      if (
+        sessionToken &&
+        typeof navigator !== "undefined" &&
+        navigator.sendBeacon
+      ) {
         const payload = JSON.stringify({ sessionId: sessionToken, leave: true })
         const blob = new Blob([payload], { type: "application/json" })
         navigator.sendBeacon("/api/freedom-wall/presence", blob)
@@ -173,16 +266,85 @@ export function FreedomWallBoard() {
     }
   }, [syncFreedomWallNotes])
 
+  /**
+   * Toolbar-safe, breakpoint-adaptive board centering.
+   * Ensures all sticky notes are framed below `[data-wall-toolbar]` and inside
+   * the visible viewport across mobile (320px–640px), tablet (768px), and desktop (1024px+).
+   */
   const centerBoard = React.useCallback(() => {
     const el = viewportRef.current
     if (!el) return
     const rect = el.getBoundingClientRect()
-    setScale(1)
+    if (rect.width === 0 || rect.height === 0) return
+
+    const toolbarEl =
+      toolbarRef.current ??
+      (el.querySelector("[data-wall-toolbar]") as HTMLElement | null)
+    const toolbarHeight = toolbarEl
+      ? toolbarEl.getBoundingClientRect().height
+      : 48
+    const safeTop = Math.max(84, Math.ceil(toolbarHeight + 32))
+    const safeBottom = 24
+    const safeSide = rect.width < 640 ? 16 : 32
+
+    const availW = Math.max(200, rect.width - safeSide * 2)
+    const availH = Math.max(200, rect.height - safeTop - safeBottom)
+    const safeCenterScreenX = rect.width / 2
+    const safeCenterScreenY = safeTop + availH / 2
+
+    const currentNotes = visibleNotesRef.current
+    if (currentNotes.length === 0) {
+      const baseScale = rect.width < 640 ? 0.9 : 1
+      setScale(baseScale)
+      setPan({
+        x: Math.round(
+          safeCenterScreenX - canvasConfig.defaultCenterX * baseScale
+        ),
+        y: Math.round(
+          safeCenterScreenY - canvasConfig.defaultCenterY * baseScale
+        ),
+      })
+      return
+    }
+
+    let minX = Infinity
+    let minY = Infinity
+    let maxX = -Infinity
+    let maxY = -Infinity
+
+    for (const n of currentNotes) {
+      minX = Math.min(minX, n.displayX)
+      minY = Math.min(minY, n.displayY)
+      maxX = Math.max(maxX, n.displayX + NOTE_CARD_WIDTH)
+      maxY = Math.max(maxY, n.displayY + NOTE_CARD_HEIGHT)
+    }
+
+    const bboxW = Math.max(NOTE_CARD_WIDTH, maxX - minX)
+    const bboxH = Math.max(NOTE_CARD_HEIGHT, maxY - minY)
+    const bboxCenterX = minX + bboxW / 2
+    const bboxCenterY = minY + bboxH / 2
+
+    const fitScaleX = availW / (bboxW + 24)
+    const fitScaleY = availH / (bboxH + 24)
+    const rawFitScale = Math.min(1, fitScaleX, fitScaleY)
+    const minReadableScale = rect.width < 640 ? 0.65 : 0.72
+    const nextScale = Number(
+      Math.max(
+        Math.max(canvasConfig.minScale, minReadableScale),
+        Math.min(1, rawFitScale)
+      ).toFixed(2)
+    )
+
+    setScale(nextScale)
     setPan({
-      x: Math.round(rect.width / 2 - canvasConfig.defaultCenterX),
-      y: Math.round(rect.height / 2 - canvasConfig.defaultCenterY),
+      x: Math.round(safeCenterScreenX - bboxCenterX * nextScale),
+      y: Math.round(safeCenterScreenY - bboxCenterY * nextScale),
     })
-  }, [canvasConfig.defaultCenterX, canvasConfig.defaultCenterY])
+  }, [
+    canvasConfig.defaultCenterX,
+    canvasConfig.defaultCenterY,
+    canvasConfig.minScale,
+  ])
 
   React.useEffect(() => {
     void hydrateFreedomWall()
@@ -205,6 +367,39 @@ export function FreedomWallBoard() {
     }
   }, [hydrateFreedomWall, refreshRemoteNotes, centerBoard])
 
+  // Auto-center once when initial remote notes finish hydrating so notes are immediately visible
+  React.useEffect(() => {
+    if (notes.length > 0 && !hasAutoCenteredNotesRef.current) {
+      hasAutoCenteredNotesRef.current = true
+      const timer = window.setTimeout(() => {
+        centerBoard()
+      }, 20)
+      return () => window.clearTimeout(timer)
+    }
+  }, [notes.length, centerBoard])
+
+  // Keep notes centered and uncovered across mobile/tablet/desktop viewport breakpoint changes
+  React.useEffect(() => {
+    const el = viewportRef.current
+    if (!el || typeof ResizeObserver === "undefined") return
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (!entry) return
+      const width = Math.round(entry.contentRect.width)
+      if (
+        width > 0 &&
+        Math.abs(width - lastViewportWidthRef.current) > 24
+      ) {
+        lastViewportWidthRef.current = width
+        centerBoard()
+      }
+    })
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [centerBoard])
+
   // Realtime websocket listener (when client env vars are available)
   React.useEffect(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -225,9 +420,14 @@ export function FreedomWallBoard() {
           { event: "*", schema: "public", table: "freedom_wall_posts" },
           (payload) => {
             if (payload.eventType === "INSERT") {
-              const note = mapRowToFreedomWallNote(payload.new as SupabaseFreedomWallNoteRow)
+              const note = mapRowToFreedomWallNote(
+                payload.new as SupabaseFreedomWallNoteRow
+              )
               if (note) {
-                syncFreedomWallNotes([note, ...notes.filter((n) => n.id !== note.id)])
+                syncFreedomWallNotes([
+                  note,
+                  ...notes.filter((n) => n.id !== note.id),
+                ])
               }
             } else {
               void refreshRemoteNotes()
@@ -244,7 +444,9 @@ export function FreedomWallBoard() {
       presenceChannel
         .on("presence", { event: "sync" }, () => {
           const state = presenceChannel.presenceState()
-          const presences = Object.values(state).flat() as Array<{ isTyping?: boolean }>
+          const presences = Object.values(state).flat() as Array<{
+            isTyping?: boolean
+          }>
           if (presences.length > 0) {
             setLiveCount(Math.max(1, presences.length))
             const typing = presences.filter((p) => Boolean(p.isTyping)).length
@@ -343,6 +545,7 @@ export function FreedomWallBoard() {
     noteY: number
   ) => {
     e.stopPropagation()
+    setActiveNoteId(noteId)
     setDraggingNoteId(noteId)
     dragNoteStartRef.current = {
       clientX: e.clientX,
@@ -368,20 +571,55 @@ export function FreedomWallBoard() {
     setPostError(null)
 
     const el = viewportRef.current
-    let targetX = canvasConfig.defaultCenterX
-    let targetY = canvasConfig.defaultCenterY
+    let targetX = canvasConfig.defaultCenterX - NOTE_CARD_WIDTH / 2
+    let targetY = canvasConfig.defaultCenterY - NOTE_CARD_HEIGHT / 2
+
     if (el) {
       const rect = el.getBoundingClientRect()
-      targetX = Math.round(
-        (rect.width / 2 - pan.x) / scale -
-          112 +
-          (Math.random() - 0.5) * 180
+      const toolbarEl =
+        toolbarRef.current ??
+        (el.querySelector("[data-wall-toolbar]") as HTMLElement | null)
+      const toolbarHeight = toolbarEl
+        ? toolbarEl.getBoundingClientRect().height
+        : 48
+      const safeTop = Math.max(84, Math.ceil(toolbarHeight + 32))
+      const safeBottom = 24
+      const safeCenterScreenX = rect.width / 2
+      const safeCenterScreenY =
+        safeTop + Math.max(180, rect.height - safeTop - safeBottom) / 2
+
+      const baseCanvasX = Math.round(
+        (safeCenterScreenX - pan.x) / scale - NOTE_CARD_WIDTH / 2
       )
-      targetY = Math.round(
-        (rect.height / 2 - pan.y) / scale -
-          90 +
-          (Math.random() - 0.5) * 140
+      const baseCanvasY = Math.round(
+        (safeCenterScreenY - pan.y) / scale - NOTE_CARD_HEIGHT / 2
       )
+
+      // Find an uncovered position near the center of the toolbar-safe viewport
+      const existingVisible = visibleNotesRef.current
+      targetX = baseCanvasX
+      targetY = baseCanvasY
+
+      let step = 0
+      while (
+        step < 24 &&
+        existingVisible.some(
+          (other) =>
+            Math.abs(other.displayX - targetX) < NOTE_COLLISION_X &&
+            Math.abs(other.displayY - targetY) < NOTE_COLLISION_Y
+        )
+      ) {
+        step += 1
+        const ring = Math.floor((step - 1) / 6) + 1
+        const slot = (step - 1) % 6
+        const angle = (slot * Math.PI) / 3 + (ring % 2) * (Math.PI / 6)
+        targetX = Math.round(
+          baseCanvasX + Math.cos(angle) * (NOTE_CARD_WIDTH + 20) * ring
+        )
+        targetY = Math.round(
+          baseCanvasY + Math.sin(angle) * (NOTE_CARD_HEIGHT + 20) * ring
+        )
+      }
     }
 
     const newCandidate = {
@@ -390,7 +628,7 @@ export function FreedomWallBoard() {
       x: Math.max(80, Math.min(5600, targetX)),
       y: Math.max(80, Math.min(5600, targetY)),
       color: selectedColor,
-      rotation: Number(((Math.random() - 0.5) * 8).toFixed(2)),
+      rotation: Number(((Math.random() - 0.5) * 6).toFixed(2)),
       createdAt: new Date().toISOString(),
       authorLabel: "Anonymous",
     }
@@ -412,17 +650,27 @@ export function FreedomWallBoard() {
         setDailyPostsCount(newCount)
         try {
           const todayDate = new Date().toISOString().slice(0, 10)
-          localStorage.setItem(`betteririga_fw_quota_${todayDate}`, String(newCount))
+          localStorage.setItem(
+            `betteririga_fw_quota_${todayDate}`,
+            String(newCount)
+          )
         } catch {
           // Ignore storage write error
         }
 
+        const postedNote = json.note as FreedomWallStickyNote
+        setActiveNoteId(postedNote.id)
         syncFreedomWallNotes([
-          json.note as FreedomWallStickyNote,
-          ...notes.filter((n) => n.id !== (json.note as FreedomWallStickyNote).id),
+          postedNote,
+          ...notes.filter((n) => n.id !== postedNote.id),
         ])
         setNoteContent("")
         closeComposeModal()
+
+        // Ensure newly posted note is framed below the toolbar across all breakpoints
+        window.setTimeout(() => {
+          centerBoard()
+        }, 30)
       } else {
         // Database insert failed or limit reached!
         setPostError(
@@ -459,12 +707,16 @@ export function FreedomWallBoard() {
       >
         {/* Top Floating Pill Toolbar */}
         <div
+          ref={toolbarRef}
           data-wall-toolbar
           className="pointer-events-auto absolute top-4 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-2xl border border-slate-700/60 bg-slate-900/90 px-3 py-1.5 shadow-xl backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2"
         >
           {/* Live Indicator Pill with Visitor & Typing Counts */}
           <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg px-1.5 sm:px-2 py-1 text-xs font-semibold">
-            <span className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true" />
+            <span
+              className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0"
+              aria-hidden="true"
+            />
             <span className="text-xs font-bold uppercase tracking-wide text-white">
               {uiCopy.toolbarBadge || "Live"}
             </span>
@@ -482,7 +734,9 @@ export function FreedomWallBoard() {
               >
                 <span className="size-1.5 rounded-full bg-amber-400 animate-ping shrink-0" />
                 <span className="truncate max-w-[75px] sm:max-w-none">
-                  {typingCount === 1 ? "1 typing…" : `${typingCount} typing…`}
+                  {typingCount === 1
+                    ? "1 typing…"
+                    : `${typingCount} typing…`}
                 </span>
               </span>
             ) : null}
@@ -536,7 +790,7 @@ export function FreedomWallBoard() {
 
         {/* Empty State Overlay (When database has 0 notes) */}
         {notes.length === 0 ? (
-          <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 px-6 text-center">
+          <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 px-6 pt-16 text-center">
             <div className="flex size-16 items-center justify-center rounded-full border-2 border-dashed border-slate-700 bg-slate-900/60">
               <Plus className="size-6 text-slate-500" />
             </div>
@@ -578,27 +832,35 @@ export function FreedomWallBoard() {
           </div>
 
           {/* Sticky Notes */}
-          {notes.map((note) => {
+          {visibleNotes.map((note, idx) => {
             const isDragging = draggingNoteId === note.id
+            const isActive = activeNoteId === note.id
             return (
               <div
                 key={note.id}
                 data-sticky-note
                 onPointerDown={(e) =>
-                  handleNotePointerDown(e, note.id, note.x, note.y)
+                  handleNotePointerDown(
+                    e,
+                    note.id,
+                    note.displayX,
+                    note.displayY
+                  )
                 }
                 style={{
-                  left: note.x,
-                  top: note.y,
+                  left: note.displayX,
+                  top: note.displayY,
                   transform: `rotate(${note.rotation}deg) scale(${isDragging ? 1.05 : 1})`,
-                  zIndex: isDragging ? 50 : 10,
+                  zIndex: isDragging ? 50 : isActive ? 25 : 10 + (idx % 10),
                 }}
                 className={cn(
                   "absolute w-56 sm:w-60 cursor-grab rounded-2xl border-2 p-4 text-xs shadow-md transition-shadow active:cursor-grabbing",
                   note.color,
                   isDragging
                     ? "shadow-2xl ring-2 ring-blue-500/80"
-                    : "hover:shadow-xl"
+                    : isActive
+                      ? "shadow-xl ring-1 ring-blue-400/50"
+                      : "hover:shadow-xl"
                 )}
               >
                 {/* Note Pin / Tape Header */}
@@ -654,9 +916,13 @@ export function FreedomWallBoard() {
             <form onSubmit={handlePostNote} className="mt-4">
               {/* Daily Quota Indicator */}
               <div className="mb-3 flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-xs">
-                <span className="text-slate-400 font-medium">Daily Browser Quota</span>
+                <span className="text-slate-400 font-medium">
+                  Daily Browser Quota
+                </span>
                 <Badge
-                  variant={dailyPostsCount < DAILY_LIMIT ? "secondary" : "destructive"}
+                  variant={
+                    dailyPostsCount < DAILY_LIMIT ? "secondary" : "destructive"
+                  }
                   className={cn(
                     "text-[11px] font-semibold",
                     dailyPostsCount < DAILY_LIMIT
@@ -664,7 +930,8 @@ export function FreedomWallBoard() {
                       : "bg-amber-900/60 text-amber-200 border-amber-700/50"
                   )}
                 >
-                  {Math.max(0, DAILY_LIMIT - dailyPostsCount)} of {DAILY_LIMIT} notes remaining today
+                  {Math.max(0, DAILY_LIMIT - dailyPostsCount)} of {DAILY_LIMIT}{" "}
+                  notes remaining today
                 </Badge>
               </div>
 
@@ -673,9 +940,14 @@ export function FreedomWallBoard() {
                 <div className="mb-3 flex items-start gap-2.5 rounded-xl border border-amber-500/50 bg-amber-950/40 p-3 text-xs text-amber-200">
                   <AlertCircle className="size-4 shrink-0 text-amber-400 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="font-semibold text-amber-300">Daily Posting Limit Reached</p>
+                    <p className="font-semibold text-amber-300">
+                      Daily Posting Limit Reached
+                    </p>
                     <p className="text-[11px] text-amber-200/90 leading-relaxed">
-                      To keep the community freedom wall open and prevent database overload, each browser can post up to {DAILY_LIMIT} notes per day. Thank you for sharing your voice — please come back tomorrow to post again!
+                      To keep the community freedom wall open and prevent
+                      database overload, each browser can post up to{" "}
+                      {DAILY_LIMIT} notes per day. Thank you for sharing your
+                      voice — please come back tomorrow to post again!
                     </p>
                   </div>
                 </div>
@@ -684,8 +956,12 @@ export function FreedomWallBoard() {
               {/* Error Notice if Database Insert Failed */}
               {postError ? (
                 <div className="mb-3 rounded-xl border border-rose-500/50 bg-rose-950/60 p-3 text-xs text-rose-200">
-                  <p className="font-semibold text-rose-300">Could not place note</p>
-                  <p className="mt-0.5 text-rose-200/90 text-[11px] leading-relaxed">{postError}</p>
+                  <p className="font-semibold text-rose-300">
+                    Could not place note
+                  </p>
+                  <p className="mt-0.5 text-rose-200/90 text-[11px] leading-relaxed">
+                    {postError}
+                  </p>
                 </div>
               ) : null}
 
@@ -756,14 +1032,18 @@ export function FreedomWallBoard() {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={!noteContent.trim() || submitting || dailyPostsCount >= DAILY_LIMIT}
+                  disabled={
+                    !noteContent.trim() ||
+                    submitting ||
+                    dailyPostsCount >= DAILY_LIMIT
+                  }
                   className="flex-1 rounded-xl bg-blue-600 font-bold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   {dailyPostsCount >= DAILY_LIMIT
                     ? "Daily Limit Reached"
                     : submitting
-                    ? uiCopy.submittingButtonLabel
-                    : uiCopy.submitButtonLabel}
+                      ? uiCopy.submittingButtonLabel
+                      : uiCopy.submitButtonLabel}
                 </Button>
               </div>
             </form>

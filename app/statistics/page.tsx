@@ -162,19 +162,22 @@ export default function StatisticsPage() {
       </Reveal>
 
       {/* Interactive City Data Charts (Chart.js) */}
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-            Interactive City Data Charts
-          </h2>
-          <p className="text-xs text-muted-foreground">
-            Explore official visual analytics for population growth, statutory budget distribution, top communities, and competitiveness pillars.
-          </p>
-        </div>
-        <StatisticsCharts stats={stats} />
-      </section>
+      <Reveal delayMs={40}>
+        <section className="space-y-4">
+          <div>
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+              Interactive City Data Charts
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Explore official visual analytics for population growth, statutory budget distribution, top communities, and competitiveness pillars.
+            </p>
+          </div>
+          <StatisticsCharts stats={stats} />
+        </section>
+      </Reveal>
 
       {/* Section 1: Demographics & Population Growth Trends */}
+      <Reveal delayMs={60}>
       <section className="space-y-4">
         <div>
           <h2 className="text-xl font-bold text-foreground sm:text-2xl">
@@ -297,8 +300,10 @@ export default function StatisticsPage() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* Section 2: Population by Barangay (Ranked Bar Chart) */}
+      <Reveal delayMs={80}>
       <section className="space-y-4">
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div>
@@ -346,8 +351,10 @@ export default function StatisticsPage() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* Section 3: Municipal Income Composition & Mandatory Funds */}
+      <Reveal delayMs={100}>
       <section className="space-y-4">
         <div>
           <h2 className="text-xl font-bold text-foreground sm:text-2xl">
@@ -408,8 +415,10 @@ export default function StatisticsPage() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* Section 4: DTI Cities & Municipalities Competitiveness Index (CMCI) */}
+      <Reveal delayMs={120}>
       <section className="space-y-4">
         <div>
           <h2 className="text-xl font-bold text-foreground sm:text-2xl">
@@ -486,8 +495,10 @@ export default function StatisticsPage() {
           </div>
         </div>
       </section>
+      </Reveal>
 
       {/* Citations & Primary Sources */}
+      <Reveal delayMs={120}>
       <section className="rounded-2xl border border-border bg-muted/20 p-5 sm:p-6">
         <h3 className="text-sm font-bold text-foreground uppercase tracking-wide text-muted-foreground">
           Primary Sources & Verification Audit
@@ -501,6 +512,7 @@ export default function StatisticsPage() {
           ))}
         </div>
       </section>
+      </Reveal>
     </CivicPageContainer>
   )
 }

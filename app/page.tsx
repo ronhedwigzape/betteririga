@@ -31,6 +31,7 @@ import { CivicPageContainer } from "@/components/civic/civic-page-container"
 import { HeroVideoBackground } from "@/components/civic/hero-video-background"
 import { AnimatedHeroTitle } from "@/components/civic/animated-hero-title"
 import { FreedomWallCtaSection } from "@/components/civic/freedom-wall-cta"
+import { Reveal } from "@/components/civic/reveal"
 
 import { LivelySectionsLazy } from "@/components/civic/lively-sections-lazy"
 import {
@@ -271,6 +272,7 @@ export default function HomePage() {
       <CivicPageContainer className="space-y-16 py-8 sm:py-12 pb-16">
         {/* Popular Municipal Services Section (Natural Surface Cards - No Outer Card Wrapper) */}
         <Suspense fallback={null}>
+          <Reveal>
           <section className="space-y-6">
           <div className="flex flex-col justify-between gap-3 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
@@ -362,10 +364,12 @@ export default function HomePage() {
             </Card>
           </div>
         </section>
+        </Reveal>
       </Suspense>
 
       {/* Civic Pillar Cards (100% shadcn UI Cards) */}
       <Suspense fallback={null}>
+        <Reveal delayMs={40}>
         <section className="civic-section-defer space-y-6">
         <div className="flex flex-col justify-between gap-2 border-b border-border/80 pb-4 sm:flex-row sm:items-end">
             <div>
@@ -422,10 +426,12 @@ export default function HomePage() {
             })}
           </div>
         </section>
+        </Reveal>
       </Suspense>
 
       {/* Dedicated BetterGov.ph Open Data Showcase Section (Natural Surface Cards - No Outer Card Wrapper) */}
       <Suspense fallback={null}>
+        <Reveal delayMs={60}>
         <section className="civic-section-defer space-y-6">
         <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 lg:flex-row lg:items-center">
             <div className="space-y-1.5">
@@ -521,10 +527,12 @@ export default function HomePage() {
             </Button>
           </div>
         </section>
+        </Reveal>
       </Suspense>
 
       {/* Executive & Legislative Leadership (Natural Surface Cards - No Outer Card Wrapper) */}
       <Suspense fallback={null}>
+        <Reveal delayMs={80}>
         <section className="civic-section-defer space-y-6">
         <div className="flex flex-col justify-between gap-4 border-b border-border/80 pb-4 sm:flex-row sm:items-center">
             <div>
@@ -618,24 +626,26 @@ export default function HomePage() {
             </div>
           ) : null}
         </section>
+        </Reveal>
       </Suspense>
 
       {/* Lively Sections: Live Weather + Interactive Map, History of Iriga, and Live Facebook Page */}
       <Suspense fallback={null}>
-        <div className="civic-section-defer">
+        <Reveal delayMs={100} className="civic-section-defer">
           <LivelySectionsLazy />
-        </div>
+        </Reveal>
       </Suspense>
 
       {/* Community Freedom Wall Sticky-Note CTA */}
       <Suspense fallback={null}>
-        <div className="civic-section-defer">
+        <Reveal delayMs={110} className="civic-section-defer">
           <FreedomWallCtaSection />
-        </div>
+        </Reveal>
       </Suspense>
 
       {/* Emergency Hotlines & Plain-Language Accuracy Section (Natural Surface Cards) */}
       <Suspense fallback={null}>
+        <Reveal delayMs={120}>
         <section className="civic-section-defer grid gap-6 lg:grid-cols-3">
         {/* Emergency Hotlines Cards */}
         <div className="space-y-4 lg:col-span-2">
@@ -723,6 +733,7 @@ export default function HomePage() {
           </div>
         </Card>
       </section>
+      </Reveal>
       </Suspense>
       </CivicPageContainer>
     </div>

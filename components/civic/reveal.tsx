@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -9,84 +7,33 @@ interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-function subscribeReducedMotion(callback: () => void) {
-  if (typeof window === "undefined") return () => {}
-  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-  mediaQuery.addEventListener("change", callback)
-  return () => mediaQuery.removeEventListener("change", callback)
-}
-
-function getReducedMotionSnapshot() {
-  if (typeof window === "undefined") return false
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches
-}
-
-function getReducedMotionServerSnapshot() {
-  return false
-}
-
 /**
- * Smooth entrance & scroll-reveal wrapper for non-technical civic presentation.
- * Uses IntersectionObserver asynchronously so it respects React 19 hook rules
- * and `prefers-reduced-motion`.
+ * Consistent, GPU-composited entrance animation wrapper across all routes and breakpoints.
+ * Uses pure CSS keyframes (`civic-fade-up`) starting from `opacity: 0.01` on Frame 0 and
+ * ending at `transform: none` so:
+ * 1. Content never stays invisible (`opacity: 0`) waiting for JS hydration or IntersectionObserver.
+ * 2. Every navigated page and section animates with identical timing and easing.
+ * 3. `position: sticky` toolbars and child elements are never broken by lingering transforms.
+ * 4. Lighthouse FCP / LCP / CLS remain near 100 across Mobile and Desktop.
  */
 export function Reveal({
   children,
   delayMs = 0,
   className,
+  style,
   ...props
 }: RevealProps) {
-  const ref = React.useRef<HTMLDivElement | null>(null)
-  const isReducedMotion = React.useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot
-  )
-  const [inView, setInView] = React.useState(false)
-
-  const visible = isReducedMotion || inView
-
-  React.useEffect(() => {
-    if (isReducedMotion) return
-
-    const element = ref.current
-    if (!element) return
-
-    if (typeof IntersectionObserver === "undefined") {
-      queueMicrotask(() => setInView(true))
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setInView(true)
-            observer.disconnect()
-            break
-          }
-        }
-      },
-      {
-        rootMargin: "80px 0px 80px 0px",
-        threshold: 0,
-      }
-    )
-
-    observer.observe(element)
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [isReducedMotion])
+  const cappedDelay = Math.min(Math.max(0, delayMs), 120)
 
   return (
     <div
-      ref={ref}
-      style={delayMs > 0 && visible ? { transitionDelay: `${delayMs}ms` } : undefined}
+      style={
+        cappedDelay > 0
+          ? { animationDelay: `${cappedDelay}ms`, ...style }
+          : style
+      }
       className={cn(
-        "transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100",
-        visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+        "animate-civic-fade-up motion-reduce:animate-none",
         className
       )}
       {...props}
@@ -95,4 +42,3 @@ export function Reveal({
     </div>
   )
 }
-

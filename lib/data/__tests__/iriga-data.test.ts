@@ -1520,4 +1520,95 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "app/statistics/page.tsx must dynamically import StatisticsCharts with a skeleton loader"
     )
   })
+
+  it("enforces consistent load/navigation animations, uncovered Freedom Wall sticky notes across all breakpoints, and ADR-0009 near-100 performance mandate", async () => {
+    // 1. Consistent entrance animation across template.tsx, reveal.tsx, and globals.css
+    const globalsCss = fs.readFileSync("app/globals.css", "utf8")
+    assert.ok(
+      globalsCss.includes("@keyframes civic-fade-up") &&
+      globalsCss.includes("opacity: 0.01;") &&
+      globalsCss.includes("transform: none;") &&
+      globalsCss.includes(".animate-in.fade-in-0"),
+      "app/globals.css must define GPU-accelerated civic-fade-up starting at opacity 0.01 and ending at transform: none, plus .animate-in.fade-in-0"
+    )
+
+    const revealContent = fs.readFileSync("components/civic/reveal.tsx", "utf8")
+    assert.ok(
+      revealContent.includes("animate-civic-fade-up") &&
+      revealContent.includes("motion-reduce:animate-none") &&
+      !revealContent.includes("opacity-0"),
+      "components/civic/reveal.tsx must use pure CSS animate-civic-fade-up without hiding content behind JS opacity-0"
+    )
+
+    // 2. Freedom Wall sticky notes de-stacking and toolbar-safe viewport centering across breakpoints
+    const { resolveVisibleNotePositions } = await import(
+      "@/components/civic/freedom-wall-board"
+    )
+
+    const stackedNotes = [
+      {
+        id: "note-a",
+        content: "First note at 2500,2500",
+        x: 2500,
+        y: 2500,
+        color: "bg-yellow-100 border-yellow-300 text-yellow-900",
+        rotation: 0,
+        createdAt: "2026-11-08T10:00:00.000Z",
+        authorLabel: "Anonymous",
+      },
+      {
+        id: "note-b",
+        content: "Second note at exact same coordinates",
+        x: 2500,
+        y: 2500,
+        color: "bg-blue-100 border-blue-300 text-blue-900",
+        rotation: 1,
+        createdAt: "2026-11-08T10:01:00.000Z",
+        authorLabel: "Anonymous",
+      },
+      {
+        id: "note-c",
+        content: "Third note overlapping closely",
+        x: 2510,
+        y: 2505,
+        color: "bg-emerald-100 border-emerald-300 text-emerald-900",
+        rotation: -1,
+        createdAt: "2026-11-08T10:02:00.000Z",
+        authorLabel: "Anonymous",
+      },
+    ]
+
+    const resolved = resolveVisibleNotePositions(stackedNotes)
+    assert.equal(resolved.length, 3, "All 3 notes must be returned")
+    for (let i = 0; i < resolved.length; i++) {
+      for (let j = i + 1; j < resolved.length; j++) {
+        const dx = Math.abs(resolved[i].displayX - resolved[j].displayX)
+        const dy = Math.abs(resolved[i].displayY - resolved[j].displayY)
+        assert.ok(
+          dx >= 216 || dy >= 156,
+          `Notes ${resolved[i].id} and ${resolved[j].id} must not overlap and cover each other (dx=${dx}, dy=${dy})`
+        )
+      }
+    }
+
+    const boardContent = fs.readFileSync(
+      "components/civic/freedom-wall-board.tsx",
+      "utf8"
+    )
+    assert.ok(
+      boardContent.includes("safeTop") &&
+      boardContent.includes("ResizeObserver") &&
+      boardContent.includes("hasAutoCenteredNotesRef") &&
+      boardContent.includes("resolveVisibleNotePositions"),
+      "freedom-wall-board.tsx must center notes in the toolbar-safe area across all breakpoints and de-stack overlapping notes"
+    )
+
+    // 3. ADR-0009 near-100 performance mandate recorded in AGENTS.md
+    const agentsMd = fs.readFileSync("AGENTS.md", "utf8")
+    assert.ok(
+      agentsMd.includes("ADR-0009") &&
+      agentsMd.includes("Near-100 Web Performance Mandate"),
+      "AGENTS.md must document ADR-0009 requiring near-100 web performance after every change"
+    )
+  })
 })

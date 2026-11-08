@@ -158,12 +158,21 @@
 
 @keyframes civic-fade-up {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    opacity: 0.01;
+    transform: translate3d(0, 8px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+  }
+}
+
+@keyframes civic-route-fade {
+  from {
+    opacity: 0.01;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -207,7 +216,11 @@
 }
 
 .animate-civic-fade-up {
-  animation: civic-fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: civic-fade-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-in.fade-in-0 {
+  animation: civic-route-fade 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-civic-pulse {
@@ -235,6 +248,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-civic-fade-up,
+  .animate-in.fade-in-0,
   .animate-civic-dropdown,
   .animate-civic-pulse,
   .animate-shimmer-text {

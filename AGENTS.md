@@ -127,6 +127,14 @@ To ensure Iriga City residents have 100% verifiable access to municipal governme
 3. **Official Telecom Carrier & Facebook Brand Logos**: Published emergency hotlines and contact channels display official Smart Communications, Globe Telecom, Landline, and Facebook vector marks, giving citizens immediate clarity on network charges and communication channels.
 4. **Primary Sources Only**: Data must originate from official sources (`iriga.gov.ph`, PSA, DBM, DTI, Sangguniang Panlungsod, COMELEC, or BetterGov.ph for DPWH Camarines Sur 5th District works). Any unverified detail remains an explicit Gap.
 
+### ADR-0009: Non-Negotiable Near-100 Web Performance Mandate After Every Change
+
+After **every** code, content, or UI change, all agents must optimize and verify web performance to remain **near 100 (95–100 Lighthouse Performance score)** across all breakpoints (Mobile and Desktop):
+1. **Zero LCP/FCP Blocking Animations**: Entrance animations (`app/template.tsx`, `<Reveal>`, `.animate-civic-fade-up`) must use pure CSS GPU-composited keyframes starting from `opacity: 0.01` (never `opacity: 0` waiting on JS `IntersectionObserver` hydration) and ending at `transform: none` so First Contentful Paint (FCP) and Largest Contentful Paint (LCP) are recorded on Frame 0 and `position: sticky` children are never broken.
+2. **Strict Bundle & Main-Thread Discipline**: Root layout components (`SiteHeader`, `BetterIrigaLogo`, `CarrierBadge`) must never pull the full 245KB civic snapshot JSON into the shared client bundle. Below-the-fold heavy widgets (`Chart.js`, interactive maps, live streams) must be code-split with `next/dynamic` or `IntersectionObserver` lazy wrappers (`LivelySectionsLazy`, `BudgetChartsLazy`), and non-critical timers must defer past the initial paint window.
+3. **Media & Asset Optimization**: Video backgrounds must use `-movflags +faststart` (`moov` atom at byte 0), compressed poster frames, and responsive `<source media="...">` rules; images must specify accurate `sizes` and `quality` attributes.
+4. **Post-Change Verification**: Every change must maintain `CLS = 0`, low Total Blocking Time (`TBT < 100ms`), and near-100 performance on both Mobile and Desktop breakpoints before completion is claimed.
+
 ---
 
 ## 5. Project Specification & Completed Issues (`betteririga-v1`)

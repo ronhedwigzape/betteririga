@@ -21,6 +21,7 @@ import { formatPeso, type ProjectRecord, type BetterGovRecord } from "@/lib/data
 import { useCivicStore } from "@/lib/store/civic-store"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { GapNotice } from "@/components/civic/gap-notice"
+import { Reveal } from "@/components/civic/reveal"
 import {
   Card,
   CardHeader,
@@ -250,6 +251,7 @@ export function ProjectsExplorer({
   return (
     <div className="space-y-8">
       {/* City-Wide Public Works & Funding Spotlight Summary */}
+      <Reveal delayMs={40}>
       <section
         aria-label="Overview statistics of tracked works"
         className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4"
@@ -322,6 +324,7 @@ export function ProjectsExplorer({
           </CardContent>
         </Card>
       </section>
+      </Reveal>
 
       {/* Sticky Source Switcher & Filter Bar with shadcn UI */}
       <Card className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 rounded-2xl border border-border/90 bg-card/95 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85">
@@ -570,6 +573,7 @@ export function ProjectsExplorer({
 
       {/* BetterGov.ph DPWH & 5th District Section with shadcn Card */}
       {(sourceTab === "all" || sourceTab === "bettergov") && filteredBetterGov.length > 0 ? (
+        <Reveal delayMs={60}>
         <section id="bettergov" className="scroll-mt-24 space-y-4">
           <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
             <div>
@@ -716,10 +720,12 @@ export function ProjectsExplorer({
             ))}
           </div>
         </section>
+        </Reveal>
       ) : null}
 
       {/* City Hall & Local Projects Grid with shadcn Card */}
       {(sourceTab === "all" || sourceTab === "lgu-iriga") && filteredLguProjects.length > 0 ? (
+        <Reveal delayMs={80}>
         <section className="space-y-4">
           <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
             <div>
@@ -864,6 +870,7 @@ export function ProjectsExplorer({
             ))}
           </div>
         </section>
+        </Reveal>
       ) : null}
     </div>
   )

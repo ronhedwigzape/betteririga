@@ -139,7 +139,8 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
       </div>
 
       {/* Services Cards */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <Reveal delayMs={40}>
+        <div className="grid gap-6 lg:grid-cols-2">
         {filtered.map((service) => (
           <article
             key={service.id}
@@ -276,7 +277,8 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
             </div>
           </article>
         ))}
-      </div>
+        </div>
+      </Reveal>
     </div>
   )
 }
