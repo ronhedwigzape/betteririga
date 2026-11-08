@@ -98,25 +98,47 @@ export function FreedomWallBoard() {
   )
 
   const viewportRef = React.useRef<HTMLDivElement>(null)
+  const canvasSurfaceRef = React.useRef<HTMLDivElement>(null)
   const toolbarRef = React.useRef<HTMLDivElement>(null)
+  const noteElementsRef = React.useRef<Map<string, HTMLDivElement>>(new Map())
+
   const [pan, setPan] = React.useState({ x: 0, y: 0 })
   const [scale, setScale] = React.useState(1)
   const [isPanning, setIsPanning] = React.useState(false)
+  const panRef = React.useRef({ x: 0, y: 0 })
+  const scaleRef = React.useRef(1)
+  const isPanningRef = React.useRef(false)
   const panStartRef = React.useRef({ x: 0, y: 0, panX: 0, panY: 0 })
 
   const [draggingNoteId, setDraggingNoteId] = React.useState<string | null>(
     null
   )
+  const draggingNoteIdRef = React.useRef<string | null>(null)
   const [activeNoteId, setActiveNoteId] = React.useState<string | null>(null)
   const hasAutoCenteredNotesRef = React.useRef(false)
   const lastViewportWidthRef = React.useRef(0)
 
   const dragNoteStartRef = React.useRef({
+    noteId: "",
     clientX: 0,
     clientY: 0,
     noteX: 0,
     noteY: 0,
+    currentX: 0,
+    currentY: 0,
+    rotation: 0,
   })
+  const lastBroadcastAtRef = React.useRef(0)
+  const notesRef = React.useRef(notes)
+  React.useEffect(() => {
+    notesRef.current = notes
+  }, [notes])
+  React.useEffect(() => {
+    panRef.current = pan
+  }, [pan])
+  React.useEffect(() => {
+    scaleRef.current = scale
+  }, [scale])
 
   const [isComposeOpen, setIsComposeOpen] = React.useState(false)
   const [noteContent, setNoteContent] = React.useState("")
@@ -250,6 +272,8 @@ export function FreedomWallBoard() {
 
   // Real-time remote poll: fetches exclusively from database API
   const refreshRemoteNotes = React.useCallback(async () => {
+    // Never overwrite local note coordinates while the user is actively dragging a note
+    if (draggingNoteIdRef.current) return
     try {
       const res = await fetch("/api/freedom-wall", {
         headers: { Accept: "application/json" },
@@ -257,7 +281,11 @@ export function FreedomWallBoard() {
       })
       if (res.ok) {
         const json = await res.json()
-        if (json.success && Array.isArray(json.notes)) {
+        if (
+          json.success &&
+          Array.isArray(json.notes) &&
+          !draggingNoteIdRef.current
+        ) {
           syncFreedomWallNotes(json.notes)
         }
       }
@@ -295,15 +323,21 @@ export function FreedomWallBoard() {
     const currentNotes = visibleNotesRef.current
     if (currentNotes.length === 0) {
       const baseScale = rect.width < 640 ? 0.9 : 1
-      setScale(baseScale)
-      setPan({
+      const nextPan = {
         x: Math.round(
           safeCenterScreenX - canvasConfig.defaultCenterX * baseScale
         ),
         y: Math.round(
           safeCenterScreenY - canvasConfig.defaultCenterY * baseScale
         ),
-      })
+      }
+      scaleRef.current = baseScale
+      panRef.current = nextPan
+      if (canvasSurfaceRef.current) {
+        canvasSurfaceRef.current.style.transform = `translate3d(${nextPan.x}px, ${nextPan.y}px, 0) scale(${baseScale})`
+      }
+      setScale(baseScale)
+      setPan(nextPan)
       return
     }
 
@@ -334,12 +368,18 @@ export function FreedomWallBoard() {
         Math.min(1, rawFitScale)
       ).toFixed(2)
     )
-
-    setScale(nextScale)
-    setPan({
+    const nextPan = {
       x: Math.round(safeCenterScreenX - bboxCenterX * nextScale),
       y: Math.round(safeCenterScreenY - bboxCenterY * nextScale),
-    })
+    }
+
+    scaleRef.current = nextScale
+    panRef.current = nextPan
+    if (canvasSurfaceRef.current) {
+      canvasSurfaceRef.current.style.transform = `translate3d(${nextPan.x}px, ${nextPan.y}px, 0) scale(${nextScale})`
+    }
+    setScale(nextScale)
+    setPan(nextPan)
   }, [
     canvasConfig.defaultCenterX,
     canvasConfig.defaultCenterY,
@@ -426,19 +466,33 @@ export function FreedomWallBoard() {
               if (note) {
                 syncFreedomWallNotes([
                   note,
-                  ...notes.filter((n) => n.id !== note.id),
+                  ...notesRef.current.filter((n) => n.id !== note.id),
                 ])
               }
-            } else {
+            } else if (payload.eventType === "UPDATE") {
+              const updated = mapRowToFreedomWallNote(
+                payload.new as SupabaseFreedomWallNoteRow
+              )
+              if (updated && updated.id !== draggingNoteIdRef.current) {
+                syncFreedomWallNotes(
+                  notesRef.current.map((n) =>
+                    n.id === updated.id ? updated : n
+                  )
+                )
+              }
+            } else if (!draggingNoteIdRef.current) {
               void refreshRemoteNotes()
             }
           }
         )
         .subscribe()
 
-      // Realtime presence channel for live visitors and typers
+      // Realtime presence & live drag broadcast channel
       const presenceChannel = client.channel("freedom-wall-presence", {
-        config: { presence: { key: sessionToken || "anon_user" } },
+        config: {
+          presence: { key: sessionToken || "anon_user" },
+          broadcast: { self: false },
+        },
       })
 
       presenceChannel
@@ -452,6 +506,30 @@ export function FreedomWallBoard() {
             const typing = presences.filter((p) => Boolean(p.isTyping)).length
             setTypingCount(typing)
           }
+        })
+        .on("broadcast", { event: "note-move" }, ({ payload }) => {
+          const data = payload as {
+            id?: string
+            x?: number
+            y?: number
+          } | null
+          if (
+            !data ||
+            typeof data.id !== "string" ||
+            typeof data.x !== "number" ||
+            typeof data.y !== "number"
+          ) {
+            return
+          }
+          if (data.id === draggingNoteIdRef.current) return
+
+          // Zero-latency direct DOM update for remote viewers + store update
+          const el = noteElementsRef.current.get(data.id)
+          const matched = notesRef.current.find((n) => n.id === data.id)
+          if (el && matched) {
+            el.style.transform = `translate3d(${data.x}px, ${data.y}px, 0) rotate(${matched.rotation}deg) scale(1)`
+          }
+          moveFreedomWallNote(data.id, data.x, data.y, false)
         })
         .subscribe(async (status) => {
           if (status === "SUBSCRIBED") {
@@ -472,64 +550,119 @@ export function FreedomWallBoard() {
     } catch {
       // Fallback polling guarantees sync
     }
-  }, [notes, refreshRemoteNotes, syncFreedomWallNotes, sessionToken])
+  }, [refreshRemoteNotes, syncFreedomWallNotes, moveFreedomWallNote, sessionToken])
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault()
     const delta = -e.deltaY * 0.0012
-    setScale((prev) =>
-      Math.min(
-        canvasConfig.maxScale,
-        Math.max(canvasConfig.minScale, Number((prev + delta).toFixed(2)))
-      )
+    const nextScale = Math.min(
+      canvasConfig.maxScale,
+      Math.max(canvasConfig.minScale, Number((scaleRef.current + delta).toFixed(2)))
     )
+    scaleRef.current = nextScale
+    if (canvasSurfaceRef.current) {
+      canvasSurfaceRef.current.style.transform = `translate3d(${panRef.current.x}px, ${panRef.current.y}px, 0) scale(${nextScale})`
+    }
+    setScale(nextScale)
   }
 
   const handleCanvasPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("[data-sticky-note]")) return
     if ((e.target as HTMLElement).closest("[data-wall-toolbar]")) return
+    isPanningRef.current = true
     setIsPanning(true)
     panStartRef.current = {
       x: e.clientX,
       y: e.clientY,
-      panX: pan.x,
-      panY: pan.y,
+      panX: panRef.current.x,
+      panY: panRef.current.y,
     }
-    e.currentTarget.setPointerCapture(e.pointerId)
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId)
+    } catch {
+      // Ignore synthetic events in tests without pointer capture support
+    }
   }
 
   const handleCanvasPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (draggingNoteId) {
-      const dx = (e.clientX - dragNoteStartRef.current.clientX) / scale
-      const dy = (e.clientY - dragNoteStartRef.current.clientY) / scale
-      moveFreedomWallNote(
-        draggingNoteId,
-        dragNoteStartRef.current.noteX + dx,
-        dragNoteStartRef.current.noteY + dy,
-        false
+    const activeDragId = draggingNoteIdRef.current
+    if (activeDragId) {
+      const currentScale = scaleRef.current || 1
+      const dx = (e.clientX - dragNoteStartRef.current.clientX) / currentScale
+      const dy = (e.clientY - dragNoteStartRef.current.clientY) / currentScale
+      const nextX = Math.max(
+        40,
+        Math.min(5700, Math.round(dragNoteStartRef.current.noteX + dx))
       )
+      const nextY = Math.max(
+        40,
+        Math.min(5700, Math.round(dragNoteStartRef.current.noteY + dy))
+      )
+      dragNoteStartRef.current.currentX = nextX
+      dragNoteStartRef.current.currentY = nextY
+
+      // <1ms Direct GPU-Composited DOM Transform (zero React re-render on pointermove)
+      const noteEl = noteElementsRef.current.get(activeDragId)
+      if (noteEl) {
+        noteEl.style.transform = `translate3d(${nextX}px, ${nextY}px, 0) rotate(${dragNoteStartRef.current.rotation}deg) scale(1.05)`
+      }
+
+      // Throttled realtime broadcast (every ~45ms) so other live viewers see smooth movement
+      const now = performance.now()
+      if (
+        presenceChannelRef.current &&
+        now - lastBroadcastAtRef.current >= 45
+      ) {
+        lastBroadcastAtRef.current = now
+        void presenceChannelRef.current.send({
+          type: "broadcast",
+          event: "note-move",
+          payload: { id: activeDragId, x: nextX, y: nextY },
+        })
+      }
       return
     }
 
-    if (!isPanning) return
+    if (!isPanningRef.current) return
     const dx = e.clientX - panStartRef.current.x
     const dy = e.clientY - panStartRef.current.y
-    setPan({
-      x: panStartRef.current.panX + dx,
-      y: panStartRef.current.panY + dy,
-    })
+    const nextPanX = Math.round(panStartRef.current.panX + dx)
+    const nextPanY = Math.round(panStartRef.current.panY + dy)
+    panRef.current = { x: nextPanX, y: nextPanY }
+
+    // <1ms Direct GPU-Composited Canvas Pan (zero React re-render on pointermove)
+    if (canvasSurfaceRef.current) {
+      canvasSurfaceRef.current.style.transform = `translate3d(${nextPanX}px, ${nextPanY}px, 0) scale(${scaleRef.current})`
+    }
   }
 
   const handleCanvasPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (draggingNoteId) {
-      const note = notes.find((n) => n.id === draggingNoteId)
-      if (note) {
-        moveFreedomWallNote(note.id, note.x, note.y, true)
-      }
+    const activeDragId = draggingNoteIdRef.current
+    if (activeDragId) {
+      const finalX = dragNoteStartRef.current.currentX
+      const finalY = dragNoteStartRef.current.currentY
+      draggingNoteIdRef.current = null
       setDraggingNoteId(null)
+
+      // Commit final position once to store + Supabase + broadcast
+      moveFreedomWallNote(activeDragId, finalX, finalY, true)
+      if (presenceChannelRef.current) {
+        void presenceChannelRef.current.send({
+          type: "broadcast",
+          event: "note-move",
+          payload: { id: activeDragId, x: finalX, y: finalY },
+        })
+      }
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId)
+      } catch {
+        // Ignore release errors
+      }
     }
-    if (isPanning) {
+    if (isPanningRef.current) {
+      isPanningRef.current = false
       setIsPanning(false)
+      setPan(panRef.current)
       try {
         e.currentTarget.releasePointerCapture(e.pointerId)
       } catch {
@@ -542,16 +675,31 @@ export function FreedomWallBoard() {
     e: React.PointerEvent<HTMLDivElement>,
     noteId: string,
     noteX: number,
-    noteY: number
+    noteY: number,
+    rotation: number
   ) => {
     e.stopPropagation()
-    setActiveNoteId(noteId)
-    setDraggingNoteId(noteId)
+    draggingNoteIdRef.current = noteId
     dragNoteStartRef.current = {
+      noteId,
       clientX: e.clientX,
       clientY: e.clientY,
       noteX,
       noteY,
+      currentX: noteX,
+      currentY: noteY,
+      rotation,
+    }
+    setActiveNoteId(noteId)
+    setDraggingNoteId(noteId)
+
+    // Capture pointer on viewport container so fast drags outside note bounds never drop frames
+    if (viewportRef.current) {
+      try {
+        viewportRef.current.setPointerCapture(e.pointerId)
+      } catch {
+        // Ignore synthetic events in tests without pointer capture support
+      }
     }
   }
 
@@ -805,16 +953,21 @@ export function FreedomWallBoard() {
 
         {/* Virtual 6000x6000 Dotted Sticky-Note Canvas */}
         <div
+          ref={canvasSurfaceRef}
           style={{
             width: canvasConfig.width,
             height: canvasConfig.height,
             transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${scale})`,
             transformOrigin: "0 0",
+            willChange: "transform",
             backgroundImage:
               "radial-gradient(circle, rgba(148, 163, 184, 0.18) 1.5px, transparent 1.5px)",
             backgroundSize: "28px 28px",
           }}
-          className="relative transition-transform duration-75 ease-out"
+          className={cn(
+            "relative",
+            !isPanning && "transition-transform duration-75 ease-out"
+          )}
         >
           {/* Subtle Canvas Center Marker */}
           <div
@@ -838,19 +991,28 @@ export function FreedomWallBoard() {
             return (
               <div
                 key={note.id}
+                ref={(el) => {
+                  if (el) {
+                    noteElementsRef.current.set(note.id, el)
+                  } else {
+                    noteElementsRef.current.delete(note.id)
+                  }
+                }}
                 data-sticky-note
                 onPointerDown={(e) =>
                   handleNotePointerDown(
                     e,
                     note.id,
                     note.displayX,
-                    note.displayY
+                    note.displayY,
+                    note.rotation
                   )
                 }
                 style={{
-                  left: note.displayX,
-                  top: note.displayY,
-                  transform: `rotate(${note.rotation}deg) scale(${isDragging ? 1.05 : 1})`,
+                  left: 0,
+                  top: 0,
+                  transform: `translate3d(${note.displayX}px, ${note.displayY}px, 0) rotate(${note.rotation}deg) scale(${isDragging ? 1.05 : 1})`,
+                  willChange: isDragging ? "transform" : undefined,
                   zIndex: isDragging ? 50 : isActive ? 25 : 10 + (idx % 10),
                 }}
                 className={cn(

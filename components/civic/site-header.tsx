@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
 import {
   PhoneCall,
@@ -333,10 +333,15 @@ const DEFAULT_GEO: CityProfile["geo"] = {
 
 export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {}) {
   const pathname = usePathname()
+  const router = useRouter()
   const { resolvedTheme, setTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const [guideOpen, setGuideOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const [optimisticHref, setOptimisticHref] = React.useState<string | null>(
+    null
+  )
+  const [prefetchReady, setPrefetchReady] = React.useState(false)
 
   const brand = initialData?.brand ?? DEFAULT_BRAND
   const navItems = initialData?.navItems ?? DEFAULT_NAV
@@ -345,6 +350,37 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
   const weatherBaseline = initialData?.weatherBaseline ?? DEFAULT_WEATHER_BASELINE
   const geo = initialData?.geo ?? DEFAULT_GEO
   const officialWebsite = initialData?.officialWebsite ?? "https://iriga.gov.ph"
+
+  // Warm all navigation routes right after the initial LCP window so clicking any tab is 0ms instant
+  React.useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setPrefetchReady(true)
+      for (const item of navItems) {
+        try {
+          router.prefetch(item.href)
+        } catch {
+          // Ignore router prefetch errors in non-Next test environments
+        }
+      }
+      try {
+        router.prefetch("/verification")
+      } catch {
+        // Ignore router prefetch errors in non-Next test environments
+      }
+    }, 1500)
+    return () => window.clearTimeout(timer)
+  }, [navItems, router])
+
+  const warmRoute = React.useCallback(
+    (href: string) => {
+      try {
+        router.prefetch(href)
+      } catch {
+        // Ignore in test environments
+      }
+    },
+    [router]
+  )
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -400,13 +436,16 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
     }
   }, [])
 
-  // Render-phase state adjustment: close mobile menu and guide modal when navigating
+  // Render-phase state adjustment: close mobile menu, guide modal, and clear optimistic tab when pathname updates
   const [prevPathname, setPrevPathname] = React.useState(pathname)
   if (prevPathname !== pathname) {
     setPrevPathname(pathname)
+    setOptimisticHref(null)
     setMobileOpen(false)
     setGuideOpen(false)
   }
+
+  const effectivePath = optimisticHref ?? pathname
 
   return (
     <>
@@ -493,7 +532,9 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-2.5 sm:gap-3 sm:py-3 sm:px-6 lg:px-8">
           <Link
             href="/"
-            prefetch={false}
+            prefetch={prefetchReady ? undefined : false}
+            onPointerEnter={() => warmRoute("/")}
+            onClick={() => setOptimisticHref("/")}
             className="group flex min-w-0 shrink items-center gap-2 sm:gap-2.5"
             aria-label={`${brand.fullDomain} - Home`}
           >
@@ -515,8 +556,8 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
             {navItems.map((item) => {
               const active =
                 item.href === "/"
-                  ? pathname === "/"
-                  : pathname?.startsWith(item.href)
+                  ? effectivePath === "/"
+                  : effectivePath?.startsWith(item.href)
               return (
                 <Button
                   key={item.href}
@@ -530,7 +571,13 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
                       : "text-foreground/80 hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <Link href={item.href} prefetch={false}>
+                  <Link
+                    href={item.href}
+                    prefetch={prefetchReady ? undefined : false}
+                    onPointerEnter={() => warmRoute(item.href)}
+                    onFocus={() => warmRoute(item.href)}
+                    onClick={() => setOptimisticHref(item.href)}
+                  >
                     {item.label}
                   </Link>
                 </Button>
@@ -628,8 +675,8 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
                 const Icon = NAV_ICON_MAP[item.iconKey ?? ""] ?? Landmark
                 const active =
                   item.href === "/"
-                    ? pathname === "/"
-                    : pathname?.startsWith(item.href)
+                    ? effectivePath === "/"
+                    : effectivePath?.startsWith(item.href)
                 return (
                   <Button
                     key={item.href}
@@ -644,8 +691,13 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
                   >
                     <Link
                       href={item.href}
-                      prefetch={false}
-                      onClick={() => setMobileOpen(false)}
+                      prefetch={prefetchReady ? undefined : false}
+                      onPointerEnter={() => warmRoute(item.href)}
+                      onTouchStart={() => warmRoute(item.href)}
+                      onClick={() => {
+                        setOptimisticHref(item.href)
+                        setMobileOpen(false)
+                      }}
                     >
                       <Icon className="size-4 shrink-0" />
                       <span>{item.label}</span>
@@ -750,17 +802,23 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
                     variant="outline"
                     size="sm"
                     className="rounded-xl"
-                    onClick={() => setGuideOpen(false)}
+                    onClick={() => {
+                      setOptimisticHref("/about")
+                      setGuideOpen(false)
+                    }}
                   >
-                    <Link href="/about" prefetch={false}>Learn More in About</Link>
+                    <Link href="/about">Learn More in About</Link>
                   </Button>
                   <Button
                     asChild
                     size="sm"
                     className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
-                    onClick={() => setGuideOpen(false)}
+                    onClick={() => {
+                      setOptimisticHref("/verification")
+                      setGuideOpen(false)
+                    }}
                   >
-                    <Link href="/verification" prefetch={false}>View Verification Ledger</Link>
+                    <Link href="/verification">View Verification Ledger</Link>
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -778,7 +836,9 @@ export function SiteHeader({ initialData }: { initialData?: SiteHeaderData } = {
               <CheckCircle2 className="size-3.5" />
               <Link
                 href="/verification"
-                prefetch={false}
+                prefetch={prefetchReady ? undefined : false}
+                onPointerEnter={() => warmRoute("/verification")}
+                onClick={() => setOptimisticHref("/verification")}
                 className="font-semibold underline underline-offset-2 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 {brand.verifyLinkLabel}

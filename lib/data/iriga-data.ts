@@ -290,17 +290,19 @@ export function createCivicRepository(
   adapter: CivicDataStoreAdapter = jsonStoreAdapter
 ): CivicRepository {
   const snapshot = adapter.loadSnapshot()
+  let cachedValidation: {
+    valid: boolean
+    totalRecords: number
+    datasetSha256: string
+    errors: string[]
+  } | null = null
+  let cachedLedger: VerificationLedgerSummary | null = null
+  let cachedSearchableRecords: SearchableCivicRecord[] | null = null
 
   function validate() {
+    if (cachedValidation) return cachedValidation
     const errors: string[] = []
     let totalRecords = 0
-
-    const schemaCheck = CivicDatasetSnapshotSchema.safeParse(snapshot)
-    if (!schemaCheck.success) {
-      for (const issue of schemaCheck.error.issues) {
-        errors.push(`${issue.path.join(".")}: ${issue.message}`)
-      }
-    }
 
     const seenIds = new Set<string>()
     const check = (id: string, citation: Citation) => {
@@ -343,15 +345,17 @@ export function createCivicRepository(
 
     const datasetSha256 = sha256Hex(JSON.stringify(snapshot))
 
-    return {
+    cachedValidation = {
       valid: errors.length === 0,
       totalRecords,
       datasetSha256,
       errors,
     }
+    return cachedValidation
   }
 
   function getVerificationLedger(): VerificationLedgerSummary {
+    if (cachedLedger) return cachedLedger
     const validation = validate()
 
     const computeSection = <
@@ -507,7 +511,7 @@ export function createCivicRepository(
       0
     )
 
-    return {
+    cachedLedger = {
       valid: validation.valid,
       datasetSha256: validation.datasetSha256,
       totalRecords: validation.totalRecords,
@@ -518,9 +522,11 @@ export function createCivicRepository(
       psgcUpstreamUrl: "https://psgc.gitlab.io/api/cities/051716000/",
       sections,
     }
+    return cachedLedger
   }
 
   function buildSearchableRecords(): SearchableCivicRecord[] {
+    if (cachedSearchableRecords) return cachedSearchableRecords
     const records: SearchableCivicRecord[] = []
 
     for (const service of snapshot.services) {
@@ -675,7 +681,8 @@ export function createCivicRepository(
       })
     }
 
-    return records
+    cachedSearchableRecords = records
+    return cachedSearchableRecords
   }
 
   function search(

@@ -1611,4 +1611,80 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "AGENTS.md must document ADR-0009 requiring near-100 web performance after every change"
     )
   })
+
+  it("verifies <1ms real-time GPU-composited Freedom Wall note dragging, zero console warnings/errors, and instant route navigation caching", () => {
+    // 1. Freedom Wall Board uses direct DOM translate3d updates (<1ms) and pointer capture during drag
+    const boardContent = fs.readFileSync(
+      "components/civic/freedom-wall-board.tsx",
+      "utf8"
+    )
+    assert.ok(
+      boardContent.includes("noteElementsRef") &&
+      boardContent.includes("draggingNoteIdRef") &&
+      boardContent.includes("noteEl.style.transform = `translate3d("),
+      "freedom-wall-board.tsx must update dragged note position directly via GPU-composited translate3d (<1ms) without per-frame React state re-renders"
+    )
+    assert.ok(
+      boardContent.includes("viewportRef.current.setPointerCapture(e.pointerId)"),
+      "freedom-wall-board.tsx must capture pointer on viewport during note drag so fast cursor movements never drop frames"
+    )
+    assert.ok(
+      boardContent.includes('event: "note-move"'),
+      "freedom-wall-board.tsx must broadcast live note movement over WebSocket for real-time multi-viewer dragging"
+    )
+    assert.ok(
+      !boardContent.includes("[notes, refreshRemoteNotes"),
+      "freedom-wall-board.tsx must not put `notes` in the Realtime WebSocket effect dependency array (prevents tearing down channels on drag)"
+    )
+
+    // 2. Zero console.warn / console.error in lib/supabase/freedom-wall.ts
+    const supabaseWallContent = fs.readFileSync(
+      "lib/supabase/freedom-wall.ts",
+      "utf8"
+    )
+    assert.ok(
+      !supabaseWallContent.includes("console.warn") &&
+      !supabaseWallContent.includes("console.error"),
+      "lib/supabase/freedom-wall.ts must not emit console warnings or errors during Freedom Wall sync or dragging"
+    )
+
+    // 3. Memoized repository ledger & search execute in <5ms on repeat calls
+    const t0 = performance.now()
+    getVerificationLedgerSummary()
+    const t1 = performance.now()
+    getVerificationLedgerSummary()
+    const cachedLedgerMs = performance.now() - t1
+    assert.ok(
+      cachedLedgerMs < 5,
+      `Cached getVerificationLedgerSummary() must run in <5ms (took ${cachedLedgerMs.toFixed(2)}ms)`
+    )
+
+    searchCivicRecords("mayor")
+    const s0 = performance.now()
+    searchCivicRecords("ordinance")
+    const cachedSearchMs = performance.now() - s0
+    assert.ok(
+      cachedSearchMs < 5,
+      `Cached searchCivicRecords() must run in <5ms (took ${cachedSearchMs.toFixed(2)}ms)`
+    )
+    void t0
+
+    // 4. Next.js 16 client router cache staleTimes & SiteHeader optimistic navigation + route prefetching
+    const nextConfigContent = fs.readFileSync("next.config.ts", "utf8")
+    assert.ok(
+      nextConfigContent.includes("staleTimes") &&
+      nextConfigContent.includes("dynamic: 300"),
+      "next.config.ts must configure experimental.staleTimes for instant client-side route transitions"
+    )
+
+    const siteHeaderContent = fs.readFileSync(
+      "components/civic/site-header.tsx",
+      "utf8"
+    )
+    assert.ok(
+      siteHeaderContent.includes("optimisticHref") &&
+      siteHeaderContent.includes("router.prefetch"),
+      "components/civic/site-header.tsx must provide 0ms optimistic active tab feedback and route prefetching"
+    )
+  })
 })

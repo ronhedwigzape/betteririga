@@ -162,11 +162,17 @@ export interface CivicStoreState {
 
 export const useCivicStore = create<CivicStoreState>((set, get) => {
   const initialSnapshot = getCivicSnapshot()
+  let cachedLedgerSummary: VerificationLedgerSummary | null = null
 
   return {
     snapshot: initialSnapshot,
     directoryControls: initialSnapshot.siteContent.directoryControls,
-    ledger: getVerificationLedgerSummary(),
+    get ledger() {
+      if (!cachedLedgerSummary) {
+        cachedLedgerSummary = getVerificationLedgerSummary()
+      }
+      return cachedLedgerSummary
+    },
     searchQuery: "",
     searchSection: "all",
     verificationFilter: "all",
@@ -370,10 +376,10 @@ export const useCivicStore = create<CivicStoreState>((set, get) => {
       note.id === noteId ? { ...note, x: clampedX, y: clampedY } : note
     )
 
-    safeWriteJson(STORAGE_KEYS.stickyNotes, updated)
     set({ freedomWallNotes: updated })
 
     if (persistRemote) {
+      safeWriteJson(STORAGE_KEYS.stickyNotes, updated)
       void (async () => {
         const { updateSupabaseFreedomWallNotePosition } = await import(
           "@/lib/supabase/freedom-wall"

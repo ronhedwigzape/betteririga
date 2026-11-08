@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   experimental: {
+    staleTimes: {
+      dynamic: 300,
+      static: 3600,
+    },
     optimizePackageImports: [
       "lucide-react",
       "@radix-ui/react-dialog",

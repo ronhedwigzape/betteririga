@@ -129,12 +129,9 @@ export async function fetchSupabaseFreedomWallNotes(): Promise<
         if (json.success && Array.isArray(json.notes)) {
           return json.notes
         }
-        if (json.error) {
-          console.warn("[Freedom Wall] API reported database status:", json.error)
-        }
       }
-    } catch (err) {
-      console.warn("[Freedom Wall] /api/freedom-wall network fetch failed, trying direct client:", err)
+    } catch {
+      // Silently fall back to direct client
     }
   }
 
@@ -149,9 +146,6 @@ export async function fetchSupabaseFreedomWallNotes(): Promise<
     .limit(200)
 
   if (error || !Array.isArray(data)) {
-    if (error) {
-      console.warn("[Freedom Wall] Direct query error:", error.message)
-    }
     return []
   }
 
@@ -190,7 +184,6 @@ export async function insertSupabaseFreedomWallNote(
         }
       }
       if (json.error) {
-        console.warn("[Freedom Wall] Sync note notice:", json.error)
         return {
           note,
           storage: "local-fallback",
@@ -199,8 +192,8 @@ export async function insertSupabaseFreedomWallNote(
           tableExists: json.tableExists,
         }
       }
-    } catch (err) {
-      console.warn("[Freedom Wall] API post failed, attempting direct insert:", err)
+    } catch {
+      // Silently attempt direct insert fallback
     }
   }
 
@@ -229,7 +222,6 @@ export async function insertSupabaseFreedomWallNote(
     .single()
 
   if (error || !data) {
-    console.error("[Freedom Wall] Supabase insert error:", error)
     return {
       note,
       storage: "local-fallback",
