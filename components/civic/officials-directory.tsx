@@ -1,7 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { Search, Users, Building2, MapPin, Phone, Mail } from "lucide-react"
+import {
+  Search,
+  Users,
+  Building2,
+  MapPin,
+  Phone,
+  Mail,
+  SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react"
 import { useCivicStore } from "@/lib/store/civic-store"
 import { CitationBadge } from "@/components/civic/citation-badge"
 import { GapNotice } from "@/components/civic/gap-notice"
@@ -42,6 +52,8 @@ export function OfficialsDirectory() {
   >("elected-2025")
   const [query, setQuery] = React.useState("")
   const [brgyFilter, setBrgyFilter] = React.useState<string>("all")
+  const [mobileTabsOpen, setMobileTabsOpen] = React.useState(false)
+  const [showAllBarangaysMobile, setShowAllBarangaysMobile] = React.useState(false)
 
   const q = query.trim().toLowerCase()
 
@@ -69,8 +81,50 @@ export function OfficialsDirectory() {
   return (
     <div className="space-y-6">
       {/* Sticky Controls & Search */}
-      <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 flex flex-col gap-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:gap-4 sm:p-5">
-        <div className="flex flex-wrap gap-2">
+      <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 flex flex-col gap-2.5 rounded-2xl border border-border/90 bg-card/95 p-3 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:gap-4 sm:p-5">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <Search className="size-4 text-muted-foreground" />
+            </div>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by official's name, department, barangay, or position..."
+              aria-label="Filter officials and barangays"
+              className="h-10 w-full rounded-xl border border-input bg-background pr-3 pl-10 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none"
+            />
+          </div>
+
+          <button
+            type="button"
+            data-mobile-filter-toggle="officials"
+            aria-expanded={mobileTabsOpen}
+            onClick={() => setMobileTabsOpen((prev) => !prev)}
+            className={cn(
+              "inline-flex sm:hidden h-10 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition",
+              mobileTabsOpen
+                ? "border-blue-600 bg-blue-600 text-white shadow-xs"
+                : "border-border bg-muted/80 text-foreground hover:bg-muted"
+            )}
+          >
+            <SlidersHorizontal className="size-3.5" />
+            <span>Directory</span>
+            {mobileTabsOpen ? (
+              <ChevronUp className="size-3.5" />
+            ) : (
+              <ChevronDown className="size-3.5" />
+            )}
+          </button>
+        </div>
+
+        <div
+          className={cn(
+            !mobileTabsOpen && "flex-nowrap overflow-x-auto no-scrollbar sm:flex-wrap",
+            "flex flex-wrap gap-1.5 sm:gap-2"
+          )}
+        >
           {officialTabs.map((tab) => {
             const Icon = getOfficialTabIcon(tab.id)
             const count = getTabCount(tab.id)
@@ -78,33 +132,22 @@ export function OfficialsDirectory() {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                onClick={() => {
+                  setActiveTab(tab.id as typeof activeTab)
+                  setMobileTabsOpen(false)
+                }}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition sm:gap-2 sm:px-3.5 sm:py-2",
+                  "inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition sm:gap-2 sm:px-3.5 sm:py-2",
                   activeTab === tab.id
                     ? "bg-blue-600 text-white shadow-xs"
                     : "bg-muted text-foreground/80 hover:bg-muted/80"
                 )}
               >
-                <Icon className="size-3.5" />
-                {tab.label} ({count})
+                <Icon className="size-3.5 shrink-0" />
+                <span>{tab.label} ({count})</span>
               </button>
             )
           })}
-        </div>
-
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-            <Search className="size-4 text-muted-foreground" />
-          </div>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by official's name, department, barangay, or position..."
-            aria-label="Filter officials and barangays"
-            className="h-10 w-full rounded-xl border border-input bg-background pr-4 pl-10 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none"
-          />
         </div>
       </div>
 
@@ -284,7 +327,13 @@ export function OfficialsDirectory() {
               {filteredBarangays.map((brgy, index) => (
                 <div
                   key={brgy.id}
-                  className="civic-card-hover flex flex-col justify-between rounded-xl border border-border bg-card p-4 shadow-2xs"
+                  className={cn(
+                    !showAllBarangaysMobile &&
+                      !q &&
+                      index >= 12 &&
+                      "hidden sm:flex",
+                    "civic-card-hover flex flex-col justify-between rounded-xl border border-border bg-card p-4 shadow-2xs"
+                  )}
                 >
                   <div>
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
@@ -319,6 +368,26 @@ export function OfficialsDirectory() {
                 </div>
               ))}
             </div>
+
+            {filteredBarangays.length > 12 && !q ? (
+              <button
+                type="button"
+                data-mobile-expand-barangays="officials"
+                onClick={() => setShowAllBarangaysMobile((prev) => !prev)}
+                className="flex sm:hidden w-full items-center justify-center gap-2 rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-3 text-xs font-bold text-blue-900 shadow-2xs transition hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-200"
+              >
+                <span>
+                  {showAllBarangaysMobile
+                    ? "Show Fewer Barangays (Top 12)"
+                    : `Show All ${filteredBarangays.length} Barangays`}
+                </span>
+                {showAllBarangaysMobile ? (
+                  <ChevronUp className="size-4" />
+                ) : (
+                  <ChevronDown className="size-4" />
+                )}
+              </button>
+            ) : null}
           </div>
         </Reveal>
       ) : null}

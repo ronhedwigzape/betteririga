@@ -9,6 +9,7 @@ import {
 } from "@/lib/data/iriga-data"
 import dynamic from "next/dynamic"
 import { CitationBadge } from "@/components/civic/citation-badge"
+import { BarangayPopulationGrid } from "@/components/civic/barangay-population-grid"
 import { Reveal } from "@/components/civic/reveal"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -314,42 +315,12 @@ export default function StatisticsPage() {
               Ranked from largest to smallest population according to the PSA 2020 Census.
             </p>
           </div>
-          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-900 dark:bg-blue-950 dark:text-blue-200">
+          <span className="self-start sm:self-auto rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-900 dark:bg-blue-950 dark:text-blue-200">
             36 Barangays • Total: 114,457
           </span>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs sm:p-6">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {barangays.map((b, idx) => (
-              <div
-                key={b.name}
-                className="rounded-xl border border-border/70 bg-background p-3 text-xs transition-colors hover:border-blue-300 dark:hover:border-blue-800"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-foreground">
-                    #{idx + 1}. Barangay {b.name}
-                  </span>
-                  <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                    {b.population.toLocaleString()}
-                  </span>
-                </div>
-                <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span className="truncate">{b.classification.split("/")[0]}</span>
-                  <span>{b.pctOfCity}% of city</span>
-                </div>
-                <div className="mt-1.5 h-1.5 w-full rounded-full bg-muted">
-                  <div
-                    className="h-1.5 rounded-full bg-blue-500"
-                    style={{
-                      width: `${((b.population / 10792) * 100).toFixed(1)}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <BarangayPopulationGrid barangays={barangays} />
       </section>
       </Reveal>
 

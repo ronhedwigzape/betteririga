@@ -252,8 +252,8 @@ export function OpenDataExplorer() {
               </div>
 
               {/* Endpoint Code Box */}
-              <div className="flex items-center justify-between gap-2 rounded-xl border border-border/80 bg-muted/40 px-3 py-2 text-xs">
-                <code className="font-mono text-[11px] text-foreground truncate max-w-[280px] sm:max-w-md">
+              <div className="flex items-center justify-between gap-2 rounded-xl border border-border/80 bg-muted/40 px-3 py-2 text-xs min-w-0">
+                <code className="font-mono text-[11px] text-foreground truncate min-w-0 flex-1">
                   {ep.path}
                 </code>
                 <button

@@ -16,6 +16,9 @@ import {
   Layers,
   ShieldCheck,
   X,
+  SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react"
 import { formatPeso, type ProjectRecord, type BetterGovRecord } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -114,6 +117,20 @@ export function ProjectsExplorer({
     "default" | "date-desc" | "date-asc" | "amount-desc" | "amount-asc" | "title-asc"
   >("default")
   const [query, setQuery] = React.useState("")
+  const [mobileFiltersOpen, setMobileFiltersOpen] = React.useState(false)
+  const [expandedProjectIds, setExpandedProjectIds] = React.useState<string[]>([])
+
+  const toggleProjectExpanded = (id: string) => {
+    setExpandedProjectIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    )
+  }
+
+  const activeFilterCount =
+    (sourceTab !== "all" ? 1 : 0) +
+    (category !== "all" ? 1 : 0) +
+    (status !== "all" ? 1 : 0) +
+    (sortBy !== "default" ? 1 : 0)
 
   const filteredLguProjects = React.useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -328,15 +345,15 @@ export function ProjectsExplorer({
 
       {/* Sticky Source Switcher & Filter Bar with shadcn UI */}
       <Card className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 rounded-2xl border border-border/90 bg-card/95 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85">
-        <CardContent className="p-3.5 sm:p-5 space-y-4">
+        <CardContent className="p-3 sm:p-5 space-y-2.5 sm:space-y-4">
         {/* Source Switcher Tabs using shadcn Tabs */}
-        <div className="border-b border-border/80 pb-3">
+        <div className="border-b border-border/80 pb-2.5 sm:pb-3">
           <Tabs
             value={sourceTab}
             onValueChange={(val) => setSourceTab(val as typeof sourceTab)}
             className="w-full"
           >
-            <TabsList className="h-auto w-full flex-wrap justify-start gap-1.5 rounded-xl bg-muted/70 p-1 sm:h-11 sm:items-center">
+            <TabsList className="h-auto w-full flex-nowrap sm:flex-wrap justify-start gap-1.5 overflow-x-auto no-scrollbar rounded-xl bg-muted/70 p-1 sm:h-11 sm:items-center">
               {sourceTabs.map((tab) => {
                 const currentCount =
                   tab.id === "all"
@@ -394,35 +411,69 @@ export function ProjectsExplorer({
 
         {/* Search and Sort Row */}
         <div className="grid gap-3 md:grid-cols-12 items-center">
-          {/* Search Input */}
-          <div className="relative h-10 md:col-span-8 lg:col-span-9">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 z-10">
-              <Search className="size-4 text-muted-foreground" />
-            </div>
-            <Input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by barangay (e.g. San Roque, Sagrada), road, contractor, or GAA..."
-              aria-label="Search infrastructure projects and social programs"
-              className="h-10 w-full rounded-xl pl-10 pr-10 text-sm border-input bg-background focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
-            />
-            {query ? (
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 z-10">
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  aria-label="Clear search query"
-                  className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-                >
-                  <X className="size-4" />
-                </button>
+          <div className="flex items-center gap-2 md:col-span-8 lg:col-span-9">
+            {/* Search Input */}
+            <div className="relative h-10 md:col-span-8 lg:col-span-9 flex-1">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 z-10">
+                <Search className="size-4 text-muted-foreground" />
               </div>
-            ) : null}
+              <Input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search by barangay (e.g. San Roque, Sagrada), road, contractor, or GAA..."
+                aria-label="Search infrastructure projects and social programs"
+                className="h-10 w-full rounded-xl pl-10 pr-10 text-sm border-input bg-background focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+              />
+              {query ? (
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 z-10">
+                  <button
+                    type="button"
+                    onClick={() => setQuery("")}
+                    aria-label="Clear search query"
+                    className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  >
+                    <X className="size-4" />
+                  </button>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Mobile Filter Drawer Toggle Button */}
+            <button
+              type="button"
+              data-mobile-filter-toggle="projects"
+              aria-expanded={mobileFiltersOpen}
+              onClick={() => setMobileFiltersOpen((prev) => !prev)}
+              className={cn(
+                "inline-flex md:hidden h-10 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition",
+                activeFilterCount > 0 || mobileFiltersOpen
+                  ? "border-blue-600 bg-blue-600 text-white shadow-xs"
+                  : "border-border bg-muted/80 text-foreground hover:bg-muted"
+              )}
+            >
+              <SlidersHorizontal className="size-3.5" />
+              <span>Filters</span>
+              {activeFilterCount > 0 ? (
+                <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px]">
+                  {activeFilterCount}
+                </span>
+              ) : null}
+              {mobileFiltersOpen ? (
+                <ChevronUp className="size-3.5" />
+              ) : (
+                <ChevronDown className="size-3.5" />
+              )}
+            </button>
           </div>
 
           {/* Sort Dropdown Selector using shadcn Select */}
-          <div className="md:col-span-4 lg:col-span-3">
+          <div
+            className={cn(
+              !mobileFiltersOpen && "hidden md:block",
+              "md:col-span-4 lg:col-span-3"
+            )}
+          >
             <Select
               value={sortBy}
               onValueChange={(val) =>
@@ -454,6 +505,32 @@ export function ProjectsExplorer({
           </div>
         </div>
 
+        {/* Mobile Compact Result Summary */}
+        <div className="flex md:hidden items-center justify-between gap-2 text-[11px] text-muted-foreground">
+          <span className="truncate">
+            Showing <strong className="text-foreground">{totalDisplayed}</strong>{" "}
+            of <strong className="text-foreground">{totalAllTracked}</strong>{" "}
+            verified works
+          </span>
+          {isFiltered ? (
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="inline-flex shrink-0 items-center gap-1 font-semibold text-blue-600 hover:underline dark:text-blue-400"
+            >
+              <RotateCcw className="size-3" />
+              Reset Filters
+            </button>
+          ) : null}
+        </div>
+
+        {/* Collapsible Status & Category Filter Rows on Mobile (Always visible on md+) */}
+        <div
+          className={cn(
+            !mobileFiltersOpen && "hidden md:block",
+            "space-y-3"
+          )}
+        >
         {/* Status Filter Buttons Row */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -545,6 +622,7 @@ export function ProjectsExplorer({
             </div>
           )}
         </div>
+        </div>
         </CardContent>
       </Card>
 
@@ -604,7 +682,10 @@ export function ProjectsExplorer({
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            {filteredBetterGov.map((rec) => (
+            {filteredBetterGov.map((rec) => {
+              const isCardExpanded = expandedProjectIds.includes(rec.id)
+
+              return (
               <Card
                 key={rec.id}
                 className="civic-card-hover flex flex-col justify-between"
@@ -638,9 +719,9 @@ export function ProjectsExplorer({
                     </CardTitle>
 
                     {rec.engineeringMarker ? (
-                      <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground font-mono">
                         <Badge variant="outline">DPWH Station:</Badge>
-                        <span>{rec.engineeringMarker}</span>
+                        <span className="break-all">{rec.engineeringMarker}</span>
                       </div>
                     ) : null}
                   </div>
@@ -671,8 +752,34 @@ export function ProjectsExplorer({
                     </CardContent>
                   </Card>
 
-                  {/* Location & District Details */}
-                  <Card size="sm" className="bg-muted/20">
+                  {/* Mobile Toggle for Location & District Details */}
+                  <button
+                    type="button"
+                    data-mobile-card-toggle={rec.id}
+                    aria-expanded={isCardExpanded}
+                    onClick={() => toggleProjectExpanded(rec.id)}
+                    className="flex sm:hidden w-full items-center justify-between gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2 text-left text-xs font-semibold text-foreground transition hover:bg-muted"
+                  >
+                    <span>
+                      {isCardExpanded
+                        ? "Hide Location & District Info"
+                        : "Show Location & District Info"}
+                    </span>
+                    {isCardExpanded ? (
+                      <ChevronUp className="size-3.5 shrink-0 text-muted-foreground" />
+                    ) : (
+                      <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
+                    )}
+                  </button>
+
+                  {/* Location & District Details (Collapsible on mobile, always visible on sm+) */}
+                  <Card
+                    size="sm"
+                    className={cn(
+                      !isCardExpanded && "hidden sm:block",
+                      "bg-muted/20"
+                    )}
+                  >
                     <CardContent className="grid gap-1.5 text-xs">
                       <div className="flex items-start gap-2">
                         <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
@@ -692,21 +799,21 @@ export function ProjectsExplorer({
 
                 {/* Card Actions & Citation */}
                 <CardFooter className="flex flex-col gap-2.5">
-                  <Button asChild className="w-full">
+                  <Button asChild className="h-auto min-h-9 w-full py-2 whitespace-normal text-center">
                     <Link href={`/projects/${rec.id}`}>
-                      <Layers className="size-3.5 mr-1.5" />
+                      <Layers className="size-3.5 mr-1.5 shrink-0" />
                       <span>View Dedicated Project Page & API Data →</span>
                     </Link>
                   </Button>
 
                   {rec.citation.archiveUrl ? (
-                    <Button asChild variant="outline" className="w-full">
+                    <Button asChild variant="outline" className="h-auto min-h-9 w-full py-2 whitespace-normal text-center">
                       <a
                         href={rec.citation.archiveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <ShieldCheck className="size-3.5 mr-1.5" />
+                        <ShieldCheck className="size-3.5 mr-1.5 shrink-0" />
                         <span>Open Official Legislative PDF / Award Archive ↗</span>
                       </a>
                     </Button>
@@ -717,7 +824,8 @@ export function ProjectsExplorer({
                   </div>
                 </CardFooter>
               </Card>
-            ))}
+              )
+            })}
           </div>
         </section>
         </Reveal>
@@ -747,7 +855,10 @@ export function ProjectsExplorer({
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            {filteredLguProjects.map((project) => (
+            {filteredLguProjects.map((project) => {
+              const isCardExpanded = expandedProjectIds.includes(project.id)
+
+              return (
               <Card
                 key={project.id}
                 className="civic-card-hover flex flex-col justify-between"
@@ -806,58 +917,85 @@ export function ProjectsExplorer({
                     </CardContent>
                   </Card>
 
-                  {/* Location, Agency, and Reference Details */}
-                  <Card size="sm" className="bg-muted/20">
-                    <CardContent className="grid gap-2 text-xs">
-                      <div className="flex items-start gap-2">
-                        <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
-                        <span>
-                          <strong>Location:</strong> {project.location}
-                        </span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Building2 className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
-                        <span>
-                          <strong>Office in Charge:</strong>{" "}
-                          {project.implementingAgency}
-                        </span>
-                      </div>
-                      {project.contractOrReferenceId ? (
-                        <p className="font-mono text-[11px] text-muted-foreground">
-                          Reference: {project.contractOrReferenceId}
-                          {project.contractor
-                            ? ` • Contractor: ${project.contractor}`
-                            : ""}
-                        </p>
-                      ) : null}
-                    </CardContent>
-                  </Card>
+                  {/* Mobile Toggle for Location & Contract Details */}
+                  <button
+                    type="button"
+                    data-mobile-card-toggle={project.id}
+                    aria-expanded={isCardExpanded}
+                    onClick={() => toggleProjectExpanded(project.id)}
+                    className="flex sm:hidden w-full items-center justify-between gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2 text-left text-xs font-semibold text-foreground transition hover:bg-muted"
+                  >
+                    <span>
+                      {isCardExpanded
+                        ? "Hide Location & Office Details"
+                        : "Show Location & Office Details"}
+                    </span>
+                    {isCardExpanded ? (
+                      <ChevronUp className="size-3.5 shrink-0 text-muted-foreground" />
+                    ) : (
+                      <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
+                    )}
+                  </button>
 
-                  {/* Honest Gap Disclosure Notice */}
-                  {project.gaps ? (
-                    <GapNotice
-                      gaps={project.gaps}
-                      title="Contract Disclosed Amount Note"
-                    />
-                  ) : null}
+                  {/* Location, Agency, and Reference Details */}
+                  <div
+                    className={cn(
+                      !isCardExpanded && "hidden sm:block",
+                      "space-y-3"
+                    )}
+                  >
+                    <Card size="sm" className="bg-muted/20">
+                      <CardContent className="grid gap-2 text-xs">
+                        <div className="flex items-start gap-2">
+                          <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+                          <span>
+                            <strong>Location:</strong> {project.location}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <Building2 className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+                          <span>
+                            <strong>Office in Charge:</strong>{" "}
+                            {project.implementingAgency}
+                          </span>
+                        </div>
+                        {project.contractOrReferenceId ? (
+                          <p className="font-mono text-[11px] text-muted-foreground break-words">
+                            Reference: {project.contractOrReferenceId}
+                            {project.contractor
+                              ? ` • Contractor: ${project.contractor}`
+                              : ""}
+                          </p>
+                        ) : null}
+                      </CardContent>
+                    </Card>
+
+                    {/* Honest Gap Disclosure Notice */}
+                    {project.gaps ? (
+                      <GapNotice
+                        gaps={project.gaps}
+                        title="Contract Disclosed Amount Note"
+                      />
+                    ) : null}
+                  </div>
                 </CardContent>
 
                 {/* Primary Dedicated Action & Direct Verified Links */}
                 <CardFooter className="flex flex-col gap-2.5">
-                  <Button asChild className="w-full">
+                  <Button asChild className="h-auto min-h-9 w-full py-2 whitespace-normal text-center">
                     <Link href={`/projects/${project.id}`}>
-                      <Layers className="size-3.5 mr-1.5" />
+                      <Layers className="size-3.5 mr-1.5 shrink-0" />
                       <span>View Dedicated Project Page & Details →</span>
                     </Link>
                   </Button>
 
-                  <Button asChild variant="outline" className="w-full">
+                  <Button asChild variant="outline" className="h-auto min-h-9 w-full py-2 whitespace-normal text-center">
                     <a
                       href={project.citation.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <ExternalLink className="size-3.5 mr-1.5" />
+                      <ExternalLink className="size-3.5 mr-1.5 shrink-0" />
                       <span>Open Official Department Page ↗</span>
                     </a>
                   </Button>
@@ -867,7 +1005,8 @@ export function ProjectsExplorer({
                   </div>
                 </CardFooter>
               </Card>
-            ))}
+              )
+            })}
           </div>
         </section>
         </Reveal>

@@ -349,13 +349,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
           {/* Direct Action Links in CardFooter */}
           <CardFooter className="flex flex-wrap items-center gap-3 border-t border-border p-5 sm:p-8 pt-4">
-            <Button asChild>
+            <Button asChild className="h-auto min-h-9 py-2 whitespace-normal text-center">
               <a
                 href={citation.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ExternalLink className="size-4" />
+                <ExternalLink className="size-4 shrink-0" />
                 <span>
                   {isLgu
                     ? "Open Official LGU / Agency Page ↗"
@@ -368,14 +368,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <Button
                 asChild
                 variant="outline"
-                className="rounded-xl text-xs font-semibold"
+                className="h-auto min-h-9 py-2 whitespace-normal text-center rounded-xl text-xs font-semibold"
               >
                 <a
                   href={citation.archiveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ShieldCheck className="size-4 text-emerald-600" />
+                  <ShieldCheck className="size-4 shrink-0 text-emerald-600" />
                   <span>View Official Archive / Notice of Award ↗</span>
                 </a>
               </Button>
@@ -384,10 +384,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             <Button
               asChild
               variant="outline"
-              className="rounded-xl text-xs font-semibold"
+              className="h-auto min-h-9 py-2 whitespace-normal text-center rounded-xl text-xs font-semibold"
             >
               <Link href="/open-data">
-                <Layers className="size-4 text-blue-600" />
+                <Layers className="size-4 shrink-0 text-blue-600" />
                 <span>Explore All Open APIs</span>
               </Link>
             </Button>

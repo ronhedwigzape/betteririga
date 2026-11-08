@@ -243,10 +243,10 @@ export default function ContactsPage() {
                     href={channel.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-blue-600 underline dark:text-blue-400"
+                    className="inline-flex items-center gap-1 break-all font-mono text-xs font-semibold text-blue-600 underline dark:text-blue-400"
                   >
-                    {channel.url}
-                    <ExternalLink className="size-3" />
+                    <span>{channel.url}</span>
+                    <ExternalLink className="size-3 shrink-0" />
                   </a>
                   <p className="text-xs leading-relaxed text-muted-foreground">
                     {channel.verifiedNote}
@@ -269,7 +269,8 @@ export default function ContactsPage() {
               3. Phone & Email Directory for All 29 City Hall Offices
             </h2>
             <p className="text-xs text-muted-foreground">
-              Verified from <code>https://iriga.gov.ph/contact-us-2/</code>.
+              Verified from{" "}
+              <code className="break-all">https://iriga.gov.ph/contact-us-2/</code>.
               Where an office phone or email was left blank on City Hall&apos;s
               official directory, we show{" "}
               <strong>&ldquo;Data not yet available&rdquo;</strong>.

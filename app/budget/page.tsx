@@ -261,7 +261,7 @@ export default function BudgetPage() {
                 Camarines Sur 5th District Engineering Office Public Works
               </h2>
               <p className="mt-1 max-w-2xl text-xs text-muted-foreground">
-                Official appropriations history from the BetterGov.ph Budget Data API (<code>/api/v1/hgab/2027/districts/leg:camarines-sur:5th</code>).
+                Official appropriations history from the BetterGov.ph Budget Data API (<code className="break-all">/api/v1/hgab/2027/districts/leg:camarines-sur:5th</code>).
                 Representative: {nationalBudget.camSur5thDistrictLedger.representativeName} (Member Code: {nationalBudget.camSur5thDistrictLedger.representativeCode}).
               </p>
             </div>

@@ -1,7 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { Plus, RotateCcw, X, Move, AlertCircle } from "lucide-react"
+import {
+  Plus,
+  RotateCcw,
+  X,
+  Move,
+  AlertCircle,
+  LayoutGrid,
+  Compass,
+} from "lucide-react"
 import { createClient, type RealtimeChannel } from "@supabase/supabase-js"
 import { formatNoteTimestamp } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -141,6 +149,7 @@ export function FreedomWallBoard() {
   }, [scale])
 
   const [isComposeOpen, setIsComposeOpen] = React.useState(false)
+  const [viewMode, setViewMode] = React.useState<"canvas" | "list">("canvas")
   const [noteContent, setNoteContent] = React.useState("")
   const [selectedColor, setSelectedColor] = React.useState(
     stickyColors[0]?.cardClass ??
@@ -857,10 +866,10 @@ export function FreedomWallBoard() {
         <div
           ref={toolbarRef}
           data-wall-toolbar
-          className="pointer-events-auto absolute top-4 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1.5 rounded-2xl border border-slate-700/60 bg-slate-900/90 px-3 py-1.5 shadow-xl backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2"
+          className="pointer-events-auto absolute top-3 sm:top-4 left-1/2 z-30 flex flex-wrap sm:flex-nowrap justify-center max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1 sm:gap-2.5 rounded-2xl border border-slate-700/60 bg-slate-900/95 px-2.5 py-1.5 shadow-xl backdrop-blur-md sm:px-4 sm:py-2"
         >
           {/* Live Indicator Pill with Visitor & Typing Counts */}
-          <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg px-1.5 sm:px-2 py-1 text-xs font-semibold">
+          <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg px-1 sm:px-2 py-0.5 sm:py-1 text-xs font-semibold">
             <span
               className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0"
               aria-hidden="true"
@@ -881,7 +890,7 @@ export function FreedomWallBoard() {
                 className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-1.5 sm:px-2 py-0.5 text-[11px] font-semibold text-amber-300 animate-pulse"
               >
                 <span className="size-1.5 rounded-full bg-amber-400 animate-ping shrink-0" />
-                <span className="truncate max-w-[75px] sm:max-w-none">
+                <span className="truncate max-w-[65px] sm:max-w-none">
                   {typingCount === 1
                     ? "1 typing…"
                     : `${typingCount} typing…`}
@@ -900,7 +909,7 @@ export function FreedomWallBoard() {
 
           <div className="hidden h-4 w-px bg-slate-700 sm:block" />
 
-          <span className="hidden items-center gap-1.5 text-xs text-slate-400 md:inline-flex">
+          <span className="hidden items-center gap-1.5 text-xs text-slate-400 lg:inline-flex">
             <Move className="size-3.5 text-slate-500" />
             {uiCopy.toolbarHint}
           </span>
@@ -908,19 +917,49 @@ export function FreedomWallBoard() {
           <div className="h-4 w-px bg-slate-700" />
 
           <div className="flex items-center gap-1">
-            <span className="min-w-[3rem] text-center font-mono text-xs text-slate-300">
-              {Math.round(scale * 100)}%
-            </span>
-            <Button
+            {viewMode === "canvas" ? (
+              <>
+                <span className="hidden xs:inline min-w-[2.5rem] sm:min-w-[3rem] text-center font-mono text-[11px] sm:text-xs text-slate-300">
+                  {Math.round(scale * 100)}%
+                </span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={centerBoard}
+                  title={uiCopy.resetViewLabel}
+                  className="text-slate-400 hover:bg-slate-800 hover:text-white"
+                >
+                  <RotateCcw className="size-3.5" />
+                </Button>
+              </>
+            ) : null}
+
+            <button
               type="button"
-              variant="ghost"
-              size="icon-xs"
-              onClick={centerBoard}
-              title={uiCopy.resetViewLabel}
-              className="text-slate-400 hover:bg-slate-800 hover:text-white"
+              data-wall-view-toggle
+              onClick={() =>
+                setViewMode((prev) => (prev === "canvas" ? "list" : "canvas"))
+              }
+              title={
+                viewMode === "canvas"
+                  ? "Switch to Readable Card List View"
+                  : "Switch to Interactive 2D Sticky-Note Canvas"
+              }
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800/90 px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:bg-slate-700 hover:text-white"
             >
-              <RotateCcw className="size-3.5" />
-            </Button>
+              {viewMode === "canvas" ? (
+                <>
+                  <LayoutGrid className="size-3 text-blue-400" />
+                  <span>List ({notes.length})</span>
+                </>
+              ) : (
+                <>
+                  <Compass className="size-3 text-emerald-400" />
+                  <span>Canvas</span>
+                </>
+              )}
+            </button>
           </div>
 
           <div className="h-4 w-px bg-slate-700" />
@@ -929,12 +968,81 @@ export function FreedomWallBoard() {
             type="button"
             size="sm"
             onClick={openComposeModal}
-            className="rounded-xl bg-blue-600 font-bold text-xs text-white shadow-md hover:bg-blue-500 active:bg-blue-700"
+            className="h-7 sm:h-8 rounded-xl bg-blue-600 px-2.5 sm:px-3 font-bold text-xs text-white shadow-md hover:bg-blue-500 active:bg-blue-700"
           >
             <Plus className="size-3.5 stroke-[2.5] mr-1" />
             {uiCopy.addNoteButtonLabel}
           </Button>
         </div>
+
+        {/* Readable Mobile & Desktop Card Feed Overlay (When viewMode === "list") */}
+        {viewMode === "list" ? (
+          <div
+            data-wall-list-view
+            onPointerDown={(e) => e.stopPropagation()}
+            className="pointer-events-auto absolute inset-0 z-20 overflow-y-auto bg-slate-950/95 px-4 pt-20 pb-8 sm:px-6 sm:pt-20"
+          >
+            <div className="mx-auto max-w-4xl space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                <div>
+                  <h3 className="text-sm font-bold text-white">
+                    Community Sticky Notes ({notes.length})
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Easy-to-read scrollable card view for mobile & desktop. Switch back to Canvas anytime to drag notes!
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("canvas")}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-700"
+                >
+                  <Compass className="size-3.5 text-emerald-400" />
+                  Back to 2D Canvas
+                </button>
+              </div>
+
+              {notes.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-800 p-8 text-center">
+                  <p className="text-sm font-bold text-slate-300">
+                    {uiCopy.emptyStateTitle}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {uiCopy.emptyStateSubtitle}
+                  </p>
+                </div>
+              ) : (
+                <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+                  {notes.map((note) => (
+                    <div
+                      key={note.id}
+                      className={cn(
+                        "flex flex-col justify-between rounded-2xl border-2 p-4 text-xs shadow-md",
+                        note.color
+                      )}
+                    >
+                      <div>
+                        <div className="mb-2 flex items-center justify-between opacity-70">
+                          <span className="size-2 rounded-full bg-black/25" />
+                          <span className="font-mono text-[10px] font-medium">
+                            {formatNoteTimestamp(note.createdAt)}
+                          </span>
+                        </div>
+                        <p className="font-medium leading-relaxed break-words whitespace-pre-wrap">
+                          {note.content}
+                        </p>
+                      </div>
+                      <div className="mt-3 pt-2 border-t border-black/10 flex items-center justify-between text-[10px] opacity-65 font-mono">
+                        <span>{note.authorLabel || "Anonymous"}</span>
+                        <span>Iriga City</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : null}
 
         {/* Empty State Overlay (When database has 0 notes) */}
         {notes.length === 0 ? (

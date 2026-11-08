@@ -14,6 +14,9 @@ import {
   ExternalLink,
   Briefcase,
   Building2,
+  SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react"
 import type { CivicService, CivicServiceCategory } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -37,6 +40,17 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
     "all"
   )
   const [query, setQuery] = React.useState("")
+  const [mobileFiltersOpen, setMobileFiltersOpen] = React.useState(false)
+  const [expandedServiceIds, setExpandedServiceIds] = React.useState<string[]>(
+    []
+  )
+  const [expandAllMobile, setExpandAllMobile] = React.useState(false)
+
+  const toggleServiceExpanded = (id: string) => {
+    setExpandedServiceIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    )
+  }
 
   const filtered = activeServices.filter((srv) => {
     const matchesCategory = category === "all" || srv.category === category
@@ -93,30 +107,83 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
       </Reveal>
 
       {/* Sticky Search & Category Filter Bar */}
-      <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 sm:p-4 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85">
-        {/* Search Input */}
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-            <Search className="size-4 text-muted-foreground" />
+      <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-2.5 sm:space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3 sm:p-4 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85">
+        {/* Search Input + Mobile Filter Toggle */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <Search className="size-4 text-muted-foreground" />
+            </div>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search services (e.g., birth certificate, business permit, amilyar, cedula)..."
+              aria-label="Search Iriga City services"
+              className="h-10 sm:h-11 w-full rounded-xl border border-input bg-background pr-3 pl-10 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none"
+            />
           </div>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search services (e.g., birth certificate, marriage license, business permit, amilyar, cedula, building permit, senior ID, PWD, medical, jobs)..."
-            aria-label="Search Iriga City services"
-            className="h-11 w-full rounded-xl border border-input bg-background pr-4 pl-10 text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none"
-          />
+
+          <button
+            type="button"
+            data-mobile-filter-toggle="services"
+            aria-expanded={mobileFiltersOpen}
+            onClick={() => setMobileFiltersOpen((prev) => !prev)}
+            className={cn(
+              "inline-flex sm:hidden h-10 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition",
+              category !== "all" || mobileFiltersOpen
+                ? "border-blue-600 bg-blue-600 text-white shadow-xs"
+                : "border-border bg-muted/80 text-foreground hover:bg-muted"
+            )}
+          >
+            <SlidersHorizontal className="size-3.5" />
+            <span>Categories</span>
+            {category !== "all" ? (
+              <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px]">
+                1
+              </span>
+            ) : null}
+            {mobileFiltersOpen ? (
+              <ChevronUp className="size-3.5" />
+            ) : (
+              <ChevronDown className="size-3.5" />
+            )}
+          </button>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
+        {/* Mobile Compact Summary Strip */}
+        <div className="flex sm:hidden items-center justify-between gap-2 text-[11px] text-muted-foreground">
+          <span className="truncate">
+            Showing <strong className="text-foreground">{filtered.length}</strong> of{" "}
+            <strong className="text-foreground">{activeServices.length}</strong>{" "}
+            {category !== "all" ? `in ${category}` : "services"}
+          </span>
+          <button
+            type="button"
+            data-mobile-expand-all="services"
+            onClick={() => setExpandAllMobile((prev) => !prev)}
+            className="shrink-0 font-semibold text-blue-600 hover:underline dark:text-blue-400"
+          >
+            {expandAllMobile ? "Collapse All Steps" : "Expand All Steps"}
+          </button>
+        </div>
+
+        {/* Category Pills (Collapsible on mobile, always visible on sm+) */}
+        <div
+          className={cn(
+            !mobileFiltersOpen && "hidden sm:flex",
+            "flex flex-wrap items-center justify-between gap-2 pt-1 sm:pt-0"
+          )}
+        >
           <div className="flex flex-wrap gap-1.5">
             {serviceCategories.map((cat) => (
               <button
                 key={cat}
                 type="button"
-                onClick={() => setCategory(cat)}
+                onClick={() => {
+                  setCategory(cat)
+                  setMobileFiltersOpen(false)
+                }}
                 className={cn(
                   "rounded-full px-3 py-1 text-xs font-semibold transition",
                   category === cat
@@ -131,7 +198,7 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
             ))}
           </div>
 
-          <span className="text-xs text-muted-foreground">
+          <span className="hidden sm:inline text-xs text-muted-foreground">
             Showing <strong>{filtered.length}</strong> of{" "}
             <strong>{activeServices.length}</strong> services
           </span>
@@ -140,12 +207,16 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
 
       {/* Services Cards */}
       <Reveal delayMs={40}>
-        <div className="grid gap-6 lg:grid-cols-2">
-        {filtered.map((service) => (
+        <div className="grid gap-5 sm:gap-6 lg:grid-cols-2">
+        {filtered.map((service) => {
+          const isDetailsOpen =
+            expandAllMobile || expandedServiceIds.includes(service.id)
+
+          return (
           <article
             key={service.id}
             id={service.id}
-            className="civic-card-hover flex scroll-mt-28 flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-2xs"
+            className="civic-card-hover flex scroll-mt-28 flex-col justify-between rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-2xs"
           >
             <div className="space-y-4">
               {/* Top Badges */}
@@ -154,8 +225,8 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
                   {service.category}
                 </span>
                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                  <Building2 className="size-3" />
-                  {service.officeName}
+                  <Building2 className="size-3 shrink-0" />
+                  <span className="break-words">{service.officeName}</span>
                 </span>
               </div>
 
@@ -180,36 +251,64 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
                 </p>
               </div>
 
-              {/* Step-by-Step Guide */}
-              <div className="space-y-2">
-                <p className="text-xs font-bold tracking-wide text-foreground uppercase">
-                  Step-by-Step Process:
-                </p>
-                <ol className="space-y-1.5 text-xs text-muted-foreground">
-                  {service.steps.map((step, idx) => (
-                    <li key={step} className="flex items-start gap-2">
-                      <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
-                        {idx + 1}
-                      </span>
-                      <span>{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+              {/* Mobile Toggle Button for Step-by-Step & Requirements Checklist */}
+              <button
+                type="button"
+                data-mobile-card-toggle={service.id}
+                aria-expanded={isDetailsOpen}
+                onClick={() => toggleServiceExpanded(service.id)}
+                className="flex sm:hidden w-full items-center justify-between gap-2 rounded-xl border border-blue-200 bg-blue-50/70 px-3.5 py-2.5 text-left text-xs font-bold text-blue-900 transition hover:bg-blue-100/80 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-200"
+              >
+                <span>
+                  {isDetailsOpen
+                    ? "Hide Step-by-Step & Requirements"
+                    : `Show Step-by-Step (${service.steps.length}) & Requirements (${service.requirements.length})`}
+                </span>
+                {isDetailsOpen ? (
+                  <ChevronUp className="size-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                ) : (
+                  <ChevronDown className="size-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                )}
+              </button>
 
-              {/* Checklist of Requirements */}
-              <div className="space-y-1.5 rounded-xl border border-emerald-200/70 bg-emerald-50/40 p-3.5 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                <p className="text-xs font-bold text-emerald-950 dark:text-emerald-200">
-                  What to Bring (Requirements Checklist):
-                </p>
-                <ul className="space-y-1 text-xs text-emerald-900/90 dark:text-emerald-200/90">
-                  {service.requirements.map((req) => (
-                    <li key={req} className="flex items-start gap-1.5">
-                      <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                      <span>{req}</span>
-                    </li>
-                  ))}
-                </ul>
+              {/* Collapsible Step-by-Step Guide & Requirements on Mobile (Always visible on sm+) */}
+              <div
+                className={cn(
+                  !isDetailsOpen && "hidden sm:block",
+                  "space-y-4"
+                )}
+              >
+                {/* Step-by-Step Guide */}
+                <div className="space-y-2">
+                  <p className="text-xs font-bold tracking-wide text-foreground uppercase">
+                    Step-by-Step Process:
+                  </p>
+                  <ol className="space-y-1.5 text-xs text-muted-foreground">
+                    {service.steps.map((step, idx) => (
+                      <li key={step} className="flex items-start gap-2">
+                        <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                          {idx + 1}
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Checklist of Requirements */}
+                <div className="space-y-1.5 rounded-xl border border-emerald-200/70 bg-emerald-50/40 p-3.5 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                  <p className="text-xs font-bold text-emerald-950 dark:text-emerald-200">
+                    What to Bring (Requirements Checklist):
+                  </p>
+                  <ul className="space-y-1 text-xs text-emerald-900/90 dark:text-emerald-200/90">
+                    {service.requirements.map((req) => (
+                      <li key={req} className="flex items-start gap-1.5">
+                        <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               {/* Fee & Processing Time */}
@@ -276,7 +375,8 @@ export function ServicesDirectory({ services }: ServicesDirectoryProps) {
               <CitationBadge citation={service.citation} compact />
             </div>
           </article>
-        ))}
+          )
+        })}
         </div>
       </Reveal>
     </div>

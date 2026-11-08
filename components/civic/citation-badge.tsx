@@ -17,7 +17,7 @@ export function CitationBadge({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border border-emerald-200/80 bg-emerald-50/70 px-2.5 py-1.5 text-xs text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/35 dark:text-emerald-200",
+        "flex flex-wrap items-center gap-x-3 gap-y-1.5 min-w-0 break-words rounded-lg border border-emerald-200/80 bg-emerald-50/70 px-2.5 py-1.5 text-xs text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/35 dark:text-emerald-200",
         className
       )}
     >

@@ -1687,4 +1687,106 @@ describe("BetterIriga Civic Data & Provenance Engine (ADR-0001, ADR-0002, ADR-00
       "components/civic/site-header.tsx must provide 0ms optimistic active tab feedback and route prefetching"
     )
   })
+
+  it("verifies mobile-first collapsible filter toolbars, toggable card checklists/details, and zero horizontal overflow across all pages", () => {
+    // 1. ServicesDirectory (/services): compact mobile filter toggle + per-card & expand-all steps/requirements toggles
+    const servicesDir = fs.readFileSync(
+      "components/civic/services-directory.tsx",
+      "utf8"
+    )
+    assert.ok(
+      servicesDir.includes("sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30") &&
+      servicesDir.includes('data-mobile-filter-toggle="services"') &&
+      servicesDir.includes('data-mobile-expand-all="services"') &&
+      servicesDir.includes("data-mobile-card-toggle={service.id}"),
+      "services-directory.tsx must provide collapsible mobile category filters and per-card/all step-by-step toggles"
+    )
+
+    // 2. ProjectsExplorer (/projects): compact mobile filter drawer toggle + per-card location/office toggle + wrappable action buttons
+    const projectsExp = fs.readFileSync(
+      "components/civic/projects-explorer.tsx",
+      "utf8"
+    )
+    assert.ok(
+      projectsExp.includes("sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30") &&
+      projectsExp.includes('data-mobile-filter-toggle="projects"') &&
+      projectsExp.includes("data-mobile-card-toggle=") &&
+      projectsExp.includes("whitespace-normal text-center"),
+      "projects-explorer.tsx must provide collapsible mobile filter drawer, per-card location toggles, and wrappable mobile action buttons"
+    )
+
+    // 3. OrdinancesArchive (/ordinances & /legislative): compact mobile topic/kind filter toggle
+    const ordinancesArch = fs.readFileSync(
+      "components/civic/ordinances-archive.tsx",
+      "utf8"
+    )
+    assert.ok(
+      ordinancesArch.includes("sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30") &&
+      ordinancesArch.includes('data-mobile-filter-toggle="ordinances"'),
+      "ordinances-archive.tsx must provide a collapsible mobile filter toggle"
+    )
+
+    // 4. OfficialsDirectory (/officials): compact mobile directory tab toggle + 36 barangays show-all toggle
+    const officialsDir = fs.readFileSync(
+      "components/civic/officials-directory.tsx",
+      "utf8"
+    )
+    assert.ok(
+      officialsDir.includes("sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30") &&
+      officialsDir.includes('data-mobile-filter-toggle="officials"') &&
+      officialsDir.includes('data-mobile-expand-barangays="officials"'),
+      "officials-directory.tsx must provide mobile directory tab toggle and 36-barangay expand/collapse toggle"
+    )
+
+    // 5. ContactsDirectory (/contacts): compact mobile office category filter toggle
+    const contactsDir = fs.readFileSync(
+      "components/civic/contacts-directory.tsx",
+      "utf8"
+    )
+    assert.ok(
+      contactsDir.includes("sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30") &&
+      contactsDir.includes('data-mobile-filter-toggle="contacts"'),
+      "contacts-directory.tsx must provide a collapsible mobile category filter toggle"
+    )
+
+    // 6. Statistics (/statistics): interactive BarangayPopulationGrid with search + Top 12 / Show All 36 toggle on mobile
+    const statsPage = fs.readFileSync("app/statistics/page.tsx", "utf8")
+    const brgyGrid = fs.readFileSync(
+      "components/civic/barangay-population-grid.tsx",
+      "utf8"
+    )
+    assert.ok(
+      statsPage.includes("<BarangayPopulationGrid") &&
+      brgyGrid.includes('data-mobile-expand-barangays="statistics"') &&
+      brgyGrid.includes("showAllMobile"),
+      "statistics page must use BarangayPopulationGrid with mobile Top 12 / Show All 36 toggle"
+    )
+
+    // 7. Freedom Wall (/freedom-wall): mobile-friendly List View / Canvas View toggle alongside 2D canvas
+    const fwBoard = fs.readFileSync(
+      "components/civic/freedom-wall-board.tsx",
+      "utf8"
+    )
+    assert.ok(
+      fwBoard.includes("data-wall-view-toggle") &&
+      fwBoard.includes("data-wall-list-view"),
+      "freedom-wall-board.tsx must provide a toggleable Readable Card List View alongside the 2D interactive canvas"
+    )
+
+    // 8. Long URLs and API paths across About, Contacts, Budget, Open Data, and CitationBadge have break-all / break-words protection
+    const aboutPage = fs.readFileSync("app/about/page.tsx", "utf8")
+    const contactsPage = fs.readFileSync("app/contacts/page.tsx", "utf8")
+    const budgetPage = fs.readFileSync("app/budget/page.tsx", "utf8")
+    const citationBadge = fs.readFileSync(
+      "components/civic/citation-badge.tsx",
+      "utf8"
+    )
+    assert.ok(
+      aboutPage.includes("break-all") &&
+      contactsPage.includes("break-all") &&
+      budgetPage.includes("break-all") &&
+      citationBadge.includes("break-words"),
+      "All long URLs, API paths, and citation badges must include break-all / break-words to prevent mobile horizontal overflow"
+    )
+  })
 })

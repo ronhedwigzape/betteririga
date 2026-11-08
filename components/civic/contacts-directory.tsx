@@ -1,7 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { Search, Mail, MapPin, User } from "lucide-react"
+import {
+  Search,
+  Mail,
+  MapPin,
+  User,
+  SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react"
 import { CarrierIconOnly } from "@/components/civic/telecom-and-channel-icons"
 import type { OfficeContact } from "@/lib/data/iriga-data"
 import { useCivicStore } from "@/lib/store/civic-store"
@@ -11,6 +19,7 @@ import { Reveal } from "@/components/civic/reveal"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 
 interface ContactsDirectoryProps {
   offices?: OfficeContact[]
@@ -27,6 +36,7 @@ export function ContactsDirectory({ offices }: ContactsDirectoryProps) {
     "all" | OfficeContact["category"]
   >("all")
   const [query, setQuery] = React.useState("")
+  const [mobileFiltersOpen, setMobileFiltersOpen] = React.useState(false)
 
   const filtered = activeOffices.filter((o) => {
     const matchesCat = category === "all" || o.category === category
@@ -42,35 +52,88 @@ export function ContactsDirectory({ offices }: ContactsDirectoryProps) {
   return (
     <div className="space-y-6">
       {/* Sticky Search & Category Filter */}
-      <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3.5 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 z-10">
-            <Search className="size-4 text-muted-foreground" />
+      <div className="sticky top-[4.75rem] sm:top-[5rem] lg:top-[5.25rem] z-30 space-y-2.5 sm:space-y-3 rounded-2xl border border-border/90 bg-card/95 p-3 shadow-md backdrop-blur-md supports-[backdrop-filter]:bg-card/85 sm:p-5">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 z-10">
+              <Search className="size-4 text-muted-foreground" />
+            </div>
+            <Input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search 29 City Hall offices by name, phone number, email, or head..."
+              aria-label="Search Iriga City Hall offices"
+              className="h-10 w-full rounded-xl pr-3 pl-10 text-sm bg-background"
+            />
           </div>
-          <Input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search 29 City Hall offices by name, phone number, email, or department head..."
-            aria-label="Search Iriga City Hall offices"
-            className="h-10 w-full rounded-xl pr-4 pl-10 text-sm bg-background"
-          />
+
+          <button
+            type="button"
+            data-mobile-filter-toggle="contacts"
+            aria-expanded={mobileFiltersOpen}
+            onClick={() => setMobileFiltersOpen((prev) => !prev)}
+            className={cn(
+              "inline-flex sm:hidden h-10 shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition",
+              category !== "all" || mobileFiltersOpen
+                ? "border-blue-600 bg-blue-600 text-white shadow-xs"
+                : "border-border bg-muted/80 text-foreground hover:bg-muted"
+            )}
+          >
+            <SlidersHorizontal className="size-3.5" />
+            <span>Filter</span>
+            {category !== "all" ? (
+              <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px]">
+                1
+              </span>
+            ) : null}
+            {mobileFiltersOpen ? (
+              <ChevronUp className="size-3.5" />
+            ) : (
+              <ChevronDown className="size-3.5" />
+            )}
+          </button>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
+        <div className="flex sm:hidden items-center justify-between gap-2 text-[11px] text-muted-foreground">
+          <span className="truncate">
+            Showing <strong className="text-foreground">{filtered.length}</strong>{" "}
+            of <strong className="text-foreground">{activeOffices.length}</strong>{" "}
+            offices
+          </span>
+          {category !== "all" ? (
+            <button
+              type="button"
+              onClick={() => setCategory("all")}
+              className="shrink-0 font-semibold text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Show All
+            </button>
+          ) : null}
+        </div>
+
+        <div
+          className={cn(
+            !mobileFiltersOpen && "hidden sm:flex",
+            "flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3"
+          )}
+        >
           <div className="flex flex-wrap gap-1.5">
             {contactCategories.map((cat) => (
               <Badge
                 key={cat}
                 variant={category === cat ? "default" : "secondary"}
-                onClick={() => setCategory(cat)}
+                onClick={() => {
+                  setCategory(cat)
+                  setMobileFiltersOpen(false)
+                }}
                 className="cursor-pointer font-semibold"
               >
                 {cat === "all" ? `All Offices (${activeOffices.length})` : cat}
               </Badge>
             ))}
           </div>
-          <span className="text-xs text-muted-foreground">
+          <span className="hidden sm:inline text-xs text-muted-foreground">
             Showing <strong>{filtered.length}</strong> of{" "}
             <strong>{activeOffices.length}</strong> offices
           </span>

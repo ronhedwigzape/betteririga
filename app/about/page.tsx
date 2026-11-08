@@ -186,10 +186,10 @@ export default function AboutPage() {
                     href={src.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 underline dark:text-blue-400"
+                    className="inline-flex items-center gap-1 break-all text-xs font-semibold text-blue-600 underline dark:text-blue-400"
                   >
-                    {src.url}
-                    <ExternalLink className="size-3" />
+                    <span>{src.url}</span>
+                    <ExternalLink className="size-3 shrink-0" />
                   </a>
 
                   <p className="text-xs leading-relaxed text-foreground/90">
